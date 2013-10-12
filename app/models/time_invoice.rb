@@ -1,6 +1,5 @@
 class TimeInvoice < ActiveRecord::Base
   unloadable
-<<<<<<< HEAD
   belongs_to :project
   has_many :time_invoice_details
   belongs_to :submitted_by, class_name: User.name   
@@ -18,6 +17,4 @@ class TimeInvoice < ActiveRecord::Base
       )
     end
   end
-=======
->>>>>>> 7b8cb405674ed3941ef7151d0dc7b29f823cba97
 end

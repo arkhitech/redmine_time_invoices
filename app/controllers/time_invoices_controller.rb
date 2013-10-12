@@ -1,6 +1,5 @@
 class TimeInvoicesController < ApplicationController
   unloadable
-<<<<<<< HEAD
   def index
     @project=Project.find(params[:project_id])
     p=Project.where(identifier: params[:project_id])
@@ -39,18 +38,3 @@ class TimeInvoicesController < ApplicationController
     @time_invoice=TimeInvoice.find(params[:id])
   end
 end
-=======
-
-
- def index
-  @project = Project.find(params[:project_id])
-  
-    @time_invoices=Timeinvoices.find(:all)
-  end
-  
- #private
-  #def find_project
-    
-  #end
-end
->>>>>>> 7b8cb405674ed3941ef7151d0dc7b29f823cba97
