@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <th>User Name</th>
+    <th>Logged Hours</th>
+    <th>Invoiced Quantity</th>
+    <th>Invoiced Unit</th>
+    <th>Comments</th>  
+
+  </tr>  
+  <%= time_invoice_form.fields_for :time_invoice_details do |f|%>
+  <tr>
+    <td><%=f.object.user.name%>
+      <%=f.hidden_field :user_id%>
+    </td>
+    <td>
+      <%=  f.text_field :logged_hours, disabled: true%>
+    </td>
+    <td><%=  f.text_field :invoiced_quantity%></td>
+    <td><%=  f.select :invoiced_unit, 
+              options_for_select(['hour(s)','month'], f.object.invoiced_unit)%></td>
+    <td><%=  f.text_area :comment,:size => "40x3" %></td>  
+  </tr>
+  <%end%>
+</table>
