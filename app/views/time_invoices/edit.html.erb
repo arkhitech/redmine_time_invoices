@@ -1,14 +1,17 @@
-
-<%project=Project.find(@time_invoice.project_id)%>
-<%member=User.current.membership(project)%>
-<%  if member.nil?%>
-<%  puts 'You are not even a member'%>
-<%  else %>
-<%permission=member.roles.detect {|role| role.has_permission?(:submit_invoiceable_time)} %>
-<%end%>
-<%if permission%>
-<%= render partial: 'form'%>
+<%if @time_invoice.submitted_by.nil?%>
+  <%project=Project.find(@time_invoice.project_id)%>
+  <%member=User.current.membership(project)%>
+  <%  if member.nil?%>
+    <%  puts 'You are not even a member'%>
+  <%  else %>
+    <%permission=member.roles.detect {|role| role.has_permission?(:submit_invoiceable_time)} %>
+  <%end%>
+  <%if permission%>
+    <%= render partial: 'form'%>
+  <%else%>
+    <%='Sorry you do not have the rights to perform this action'%>
+    <%=  link_to 'Back', :indexall%>
+  <%end%>
 <%else%>
-<%='Sorry you do not have the rights to perform this action'%>
-<%=  link_to 'Back', :indexall%>
+  <%='you are not allowed to submit'%>
 <%end%>
