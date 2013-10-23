@@ -1,0 +1,36 @@
+<%= form_for @time_invoice do |f|%>
+  <% if @time_invoice.errors.any? %>
+    <h2><%= pluralize(@time_invoice.errors.count, "error") %> prohibited
+      this post from being updated:</h2>
+    <ul>
+    <% @time_invoice.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  <% end %>
+  <p>
+    <%=f.label :project%><br/>
+    <%= @time_invoice.project.name %>
+  </p>
+  <p> <%=f.label :start_date %><br/>
+    <%=f.date_select :start_date, disabled: true%>
+  </p>
+  <p>
+    <%=f.label :end_date%><br/>
+    <%=f.date_select :end_date, disabled: true%>
+  </p>
+  <%=  f.hidden_field :submitted_by_id, :value=> User.current.id%>
+  <p> 
+    <%= f.label :comment %><br/>
+    <%=f.text_area :comment, :size => "60x3"%>
+  </p>
+  <%if @time_invoice.time_invoice_details.empty?%>
+    <%='No activity performed yet'%>
+  <%else%>
+    <%= render partial: 'time_invoice_details/fields_table', 
+      locals: {time_invoice_form: f} %>
+  <%end%>  
+  <p>
+    <%= f.submit %>
+  </p>
+<%end%>

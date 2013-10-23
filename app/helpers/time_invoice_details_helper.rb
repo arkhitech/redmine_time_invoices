@@ -1,0 +1,2 @@
+module TimeInvoiceDetailsHelper
+end

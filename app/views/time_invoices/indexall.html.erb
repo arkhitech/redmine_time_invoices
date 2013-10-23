@@ -1,0 +1,43 @@
+<strong><%=  'List of TimeInvoices'%></strong>
+
+<% if @time_invoices.empty? %>
+  <br/><label><%= 'No TimeInvoices to show yet' %></label>
+<%else%>
+  <table border="1">
+    <tr><th>ID</th><th>Start Date</th> <th>End Date</th> 
+      <th>Invoice Owner</th> <th>Project Name</th> <th>Remarks</th>
+      <th></th>
+    </tr>
+    <%  @time_invoices.each do |ti| %>
+      <tr>
+        <td>
+          <%=  ti.id%>
+        </td>
+        <td>
+          <%=  ti.start_date%>
+        </td>
+        <td>
+          <%=  ti.end_date%>
+        </td>
+        <td>
+          <%=  ti.submitted_by && ti.submitted_by.name%>
+        </td>
+        <td>
+          <%=  ti.project.name %>
+        </td>
+        <td>
+          <%=  ti.comment %>
+        </td>
+        <%if ti.submitted_by %>
+          <td>
+            <%=  link_to 'View', ti%>
+          </td>
+        <%else%>
+          <td>
+            <%=  link_to 'Edit/Submit', edit_time_invoice_path(ti) %>
+          </td>
+        <%end%>
+      </tr>
+    <%end%>
+  </table>
+<%end%>
