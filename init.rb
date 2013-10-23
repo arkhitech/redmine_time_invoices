@@ -1,6 +1,8 @@
 Redmine::Plugin.register :redmine_time_invoices do
   name 'Redmine Time Invoices'
   author 'Arkhitech'
+  url 'http://github.com/arkhitech/redmine_time_invoices'
+  author_url 'https://github.com/arkhitech'
   description 'Generates time invoice for each project where the Redmine Time Invoices plugin module is installed'
   version '0.0.1'
    
