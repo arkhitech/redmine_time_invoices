@@ -5,6 +5,9 @@ class TimeInvoice < ActiveRecord::Base
   belongs_to :submitted_by, class_name: User.name   
   accepts_nested_attributes_for :time_invoice_details
   
+  after_save :notify_the_concerned_person
+
+  
   def build_time_invoice_details
     user_hours = TimeEntry.group(:user_id).where(
       project_id: self.project_id,
@@ -17,4 +20,12 @@ class TimeInvoice < ActiveRecord::Base
       )
     end
   end
+
+  def notify_the_concerned_person
+    unless self.submited_by.nil?
+      TimeInvoiceMailer.notify_accounts_mail(self).deliver
+    end
+  end
+  private :notify_the_concerned_person
+
 end

@@ -28,21 +28,17 @@ Restart Redmine
 You should now be able to see the plugin list in Administration -> Plugins 
 
 Setup Cron
-Go to redmine_time_invoices plugins directory and `wheneverize` the downloaded plugin directory.
-Open config directory and and edit schedule.rb
+Go to redmine_time_invoices plugins directory and `wheneverize` the redmine_time_invoices plugin directory.
+Open config directory and edit schedule.rb
 
 for example:
 
 	set :environment, "production"
-	every 15.minutes do
-	rake "redmine_update_reminder:send_reminders"
-	end 
+        every 1.month, :at=> 'end of the month at 11pm' do
+        rake "redmine_time_invoices:generate_invoices"
+        end
 
-This will check for all issues that have not been updated in the specified duration from current time and send them an email. 
-These issues will be checked every 15 minutes and will be sent emails till they are updated. 
+This will generate a time invoice one hour before the end of month, which generates 
+time invoices for all projects in which time invoice plugin is enabled.  
 
 Check whenever gems documentation for detailed description of its working.
-
-
-
-

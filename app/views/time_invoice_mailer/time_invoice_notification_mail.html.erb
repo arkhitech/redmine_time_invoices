@@ -1,8 +1,6 @@
-<strong><%= "Dear #{@member.user}" %></strong>
+<strong><%= @member.user %></strong>
 <p>
-  <%="Time Invoice of #{@member.project} for the duration of #{@time_invoice.start_date} - #{@time_invoice.end_date} is ready for your viewing and submission."%><br/>
-</p>
-<p>
-  Regards
-  TimeInvoicePlugin
+  <%= "Time Invoice of #{@member.project} for " %>
+  <%=link_to("#{@time_invoice.start_date} - #{@time_invoice.end_date}", {controller: 'time_invoices', action: 'edit',id: @time_invoice,only_path: false})%>
+  <%=' is ready for viewing and submission'%>
 </p>

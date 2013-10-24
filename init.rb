@@ -11,12 +11,12 @@ Redmine::Plugin.register :redmine_time_invoices do
     
     menu :project_menu, :time_invoices, 
       { controller: 'time_invoices', action: 'index' }, 
-      caption: 'time_invoices', after: :activity, param: :project_id,
-      if: Proc.new {User.current.allowed_to?(:submit_invoiceable_time, Project.find(params[:project_id]))}
+       after: :activity, param: :project_id,
+      if: Proc.new {|project| User.current.allowed_to?(:submit_invoiceable_time, project)}
     
     menu :top_menu, :time_invoices, 
       { controller: 'time_invoices', action: 'indexall' }, 
-      caption: 'time_invoices', if: Proc.new {User.current.allowed_to_globally?(:submit_invoiceable_time,{})}
+       if: Proc.new {User.current.allowed_to_globally?(:submit_invoiceable_time,{})}
   
   end
   settings default: {'mail' => 'info@arkhitech.com'}, partial: 'settings/invoice_settings'

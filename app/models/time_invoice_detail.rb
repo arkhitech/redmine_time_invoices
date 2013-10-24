@@ -3,7 +3,6 @@ class TimeInvoiceDetail < ActiveRecord::Base
       belongs_to :time_invoice
   belongs_to :user
   before_save :reset_protected_attributes
-  after_save :notify_the_concerned_person
   
   validate :validate_invoiced_quantity_input
   
@@ -35,12 +34,6 @@ class TimeInvoiceDetail < ActiveRecord::Base
     end
   end
   private :reset_invoiced_hours
-  
-  def notify_the_concerned_person
-    @time_invoice=self.time_invoice
-    TimeInvoiceMailer.notify_accounts_mail(@time_invoice).deliver
-  end
-  private :notify_the_concerned_person
   
   def validate_invoiced_quantity_input
     unless invoiced_quantity.present?

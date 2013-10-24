@@ -1,3 +1,5 @@
 # English strings go here for Rails i18n
 en:
   # my_label: "My label"
+  time_invoices: "Time Invoices"
+  submit_invoiceable_time: "Submit Invoiceable Time"

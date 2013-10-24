@@ -1,0 +1,20 @@
+ <%=link_to("#{@time_invoice.project}#{@time_invoice.start_date} - #{@time_invoice.end_date}", {controller: 'time_invoices', action: 'show',id: @time_invoice,only_path: false})%>
+<strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong>
+<strong><%='Remarks:'%></strong><%=@time_invoice.comment%>
+<table border="1">
+  <%time_invoice_detail=@time_invoice.time_invoice_details%>
+  <tr>
+    <th>User</th>
+    <th>Logged hours</th>
+    <th>Invoiced hours</th>
+    <th>comments</th>
+  </tr>
+  <%time_invoice_detail.each do |details|%>
+    <tr>
+      <td><%=details.user.name%></td>
+      <td><%=details.logged_hours%></td>
+      <td><%=details.invoiced_hours%></td>
+      <td><%=details.comment%></td>
+    </tr>
+  <%end%>
+</table>

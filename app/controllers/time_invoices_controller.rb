@@ -24,6 +24,7 @@ class TimeInvoicesController < ApplicationController
   def allowed_to_submit?(time_invoice)
     return false if time_invoice.submitted_by_id.present?
     return false unless User.current.allowed_to? :submit_invoiceable_time, @time_invoice.project
+    return true
   end
 
   def edit
@@ -35,9 +36,9 @@ class TimeInvoicesController < ApplicationController
   end
   
   def update
-    return deny_access unless allowed_to_submit?(@time_invoice)
-    
+       
     @time_invoice = TimeInvoice.find(params[:id])
+    return deny_access unless allowed_to_submit?(@time_invoice)
     if @time_invoice.update_attributes(params[:time_invoice])
       redirect_to @time_invoice
     else
