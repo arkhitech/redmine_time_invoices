@@ -1,6 +1,13 @@
 class TimeInvoicesController < ApplicationController
   unloadable
-  def index    
+  before_filter :init_project
+
+  def init_project
+    @project = params[:project_id] && Project.find(params[:project_id])    
+  end
+  private :init_project
+  
+  def index
     project = Project.find(params[:project_id])
     return deny_access unless User.current.allowed_to?(:submit_invoiceable_time , project)
     

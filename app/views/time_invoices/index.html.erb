@@ -1,11 +1,11 @@
 
-<strong><%=  'List of TimeInvoices'%></strong>
+<h3><%=  'List of TimeInvoices'%></h3>
 
 <% if @time_invoices.empty? %>
 <br/><label><%= 'No TimeInvoices to show yet' %></label>
 <%else%>
   <table border="1">
-    <tr><th>ID</th><th>Start Date</th> <th>End Date</th> <th>Invoice Owner</th> <th>Project Name</th> <th>Remarks</th></tr>
+    <tr><th>ID</th><th>Start Date</th> <th>End Date</th> <th>Invoice Owner</th> <th>Project Name</th> <th>Remarks</th> <th>Action</th></tr>
     <%  @time_invoices.each do |ti| %>
       <tr>
         <td>
@@ -28,11 +28,11 @@
         </td>
         <%if ti.submitted_by %>
         <td>
-          <%=  link_to 'View', ti%>
+          <%=  link_to 'View', [ti.project, ti]%>
          </td>
         <%else%>
         <td>
-          <%=  link_to 'Edit/Submit', edit_time_invoice_path(ti) %>
+          <%=  link_to 'Edit/Submit', edit_project_time_invoice_path(ti.project, ti) %>
          </td>
         <%end%>
       </tr>

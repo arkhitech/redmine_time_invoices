@@ -1,7 +1,7 @@
-<h1><%="TimeInvoice for #{@time_invoice.project.name}"%></h1>
-<h2><%="For Duration of #{@time_invoice.start_date} -  #{@time_invoice.end_date}"%></h2>
-<h3><%="Submitted By #{@time_invoice.submitted_by.name}"%></h3>
-<strong><%='Remarks:'%></strong><%=@time_invoice.comment%>
+<h3><%="TimeInvoice for #{@time_invoice.project.name}"%></h3>
+<%="For Duration of #{@time_invoice.start_date} -  #{@time_invoice.end_date}"%><br/>
+<strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong><br/>
+<strong><%='Remarks:'%><br/></strong><%=@time_invoice.comment%><br/>
 <table border="1">
   <%time_invoice_detail=@time_invoice.time_invoice_details%>
   <tr>

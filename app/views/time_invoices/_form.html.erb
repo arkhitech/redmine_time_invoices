@@ -8,10 +8,7 @@
     <% end %>
     </ul>
   <% end %>
-  <p>
-    <%=f.label :project%><br/>
-    <%= @time_invoice.project.name %>
-  </p>
+    <h3><%= @time_invoice.project.name %></h3><br/>
   <p> <%=f.label :start_date %><br/>
     <%=f.date_select :start_date, disabled: true%>
   </p>

@@ -3,3 +3,4 @@ en:
   # my_label: "My label"
   time_invoices: "Time Invoices"
   submit_invoiceable_time: "Submit Invoiceable Time"
+  field_end_date: "End date"

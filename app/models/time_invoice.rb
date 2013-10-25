@@ -22,7 +22,7 @@ class TimeInvoice < ActiveRecord::Base
   end
 
   def notify_the_concerned_person
-    unless self.submited_by.nil?
+    unless self.submitted_by.nil?
       TimeInvoiceMailer.notify_accounts_mail(self).deliver
     end
   end
