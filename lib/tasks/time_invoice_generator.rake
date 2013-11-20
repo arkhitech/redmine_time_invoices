@@ -6,7 +6,7 @@ namespace :redmine_time_invoices do
     enabled_modules = EnabledModule.joins(:project).where(name: 'time_invoices', 
       "#{Project.table_name}.status" => Project::STATUS_ACTIVE)
   
-    start_date = Date.today.beginning_of_month-1.month
+    start_date = Date.today.beginning_of_month#-1.month
     end_date = start_date.end_of_month
 
     roles=Role.all
@@ -35,15 +35,23 @@ namespace :redmine_time_invoices do
         start_date: start_date,
         end_date: end_date,      
       )
-    
+      users=[]
       members = project_members[enabled_module.project_id]
-    
-      unless members.nil?
-        members.each {|member| TimeInvoiceMailer.
-            time_invoice_notification_mail(member,time_invoice).deliver }
-      else
-        logger.debug "Project: #{enabled_module.project.name} does not have any member with submit invoice permission"
+      members.each do |member|
+        uorg=member
+        if User.exists?(uorg.user_id)
+          users<<User.find(uorg.user_id)
+        else
+          users<<Group.find(uorg.user_id).users
+        end
+        users=users.flatten.uniq
+      end
+        unless users.nil?
+          users.each {|user| TimeInvoiceMailer.
+              time_invoice_notification_mail(user,time_invoice).deliver }
+        else
+          logger.debug "Project: #{enabled_module.project.name} does not have any member with submit invoice permission"
+        end
       end
     end
   end
-end
