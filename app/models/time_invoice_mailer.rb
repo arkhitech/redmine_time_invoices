@@ -4,10 +4,10 @@ class TimeInvoiceMailer < ActionMailer::Base
   def self.default_url_options
     Mailer.default_url_options
   end
-  def time_invoice_notification_mail(member,time_invoice)
-    @member=member
+  def time_invoice_notification_mail(user,time_invoice)
+    @user=user
     @time_invoice=time_invoice
-    mail(to: member.user.mail, subject: "TimeInvoice for Project: #{@member.project}" )
+    mail(to: @user.mail, subject: "TimeInvoice for Project: #{@time_invoice.project}" )
   end
   
   def notify_accounts_mail(time_invoice)
