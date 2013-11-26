@@ -1,0 +1,31 @@
+<%= form_for [@time_invoice] do |f|%>
+  <% if @time_invoice.errors.any? %>
+
+    <h2><%= pluralize(@time_invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+    <ul>
+      <% @time_invoice.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+    <% unless params[:time_invoice].nil?%>
+      <%=  f.hidden_field :project_id, :value=> params[:time_invoice][:project_id]%>
+    <%else%>
+  <%=  f.select :project_id,options_for_select(@projects.collect{|u| [u.name,u.id]})%>
+  <%end%>
+  <p> <%=f.label :start_date %><br/>
+    <%=f.date_select :start_date, disabled: false, default: (Date.today-1.month).beginning_of_month%>
+  </p>
+  <p>
+    <%=f.label :end_date%><br/>
+    <%=f.date_select :end_date, disabled: false, default: (Date.today-1.month).end_of_month%>
+  </p>
+  <%=  f.hidden_field :submitted_by_id, :value=> nil%>
+  <p>
+    <%= f.label :comment %><br/>
+    <%=f.text_area :comment, :size => "60x3"%>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<%end%>

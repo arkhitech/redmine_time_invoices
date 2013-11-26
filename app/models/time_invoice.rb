@@ -1,10 +1,10 @@
 class TimeInvoice < ActiveRecord::Base
   unloadable
   belongs_to :project
-  has_many :time_invoice_details
+  has_many :time_invoice_details, dependent: :destroy
   belongs_to :submitted_by, class_name: User.name   
   accepts_nested_attributes_for :time_invoice_details
-  
+  validate :correctness_of_date, :overlapping
   after_save :notify_the_concerned_person
 
   
@@ -27,5 +27,17 @@ class TimeInvoice < ActiveRecord::Base
     end
   end
   private :notify_the_concerned_person
-
+  
+  def correctness_of_date
+    if start_date.present? && end_date.present? && start_date > end_date
+      errors.add(:Date_format, ": 'end date' less than 'start date' is not permitted")
+    end
+  end
+  def overlapping
+    time_invoices=TimeInvoice.where("project_id=? AND ((start_date<=? AND end_date>=?) OR (start_date<=? AND end_date>=?))", project_id,start_date,start_date,end_date,end_date)
+    puts "#{"*"*300}these are the results we got form sir's query#{time_invoices.inspect},#{time_invoices.count}"
+    if time_invoices.count>0
+      errors.add(:Overlapping, ":Time invoices cannot overlap,Change the date range")
+    end
+  end
 end
