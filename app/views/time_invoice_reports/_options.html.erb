@@ -1,0 +1,115 @@
+<%=  form_tag controller: 'time_invoice_reports', action: 'report' do %>
+
+<!-- OLD START DATE ----------------------------------------------------------->
+  <table>
+    <tr align="left"><h4>Start Date Range</h4></tr>
+    <tr align="left">
+      <td><strong>From</strong> </td>
+      <td>
+      <%= text_field_tag "time_invoice_report[start_date_from]",
+      params[:time_invoice_report] && params[:time_invoice_report][:start_date_from] %>
+      <%= calendar_for 'time_invoice_report_start_date_from' %>
+      </td>
+      
+      <td width='100'></td>
+      <td><strong>To</strong> </td>
+      <td> <%= text_field_tag "time_invoice_report[start_date_to]",
+      params[:time_invoice_report] && params[:time_invoice_report][:start_date_to] %> 
+      <%= calendar_for 'time_invoice_report_start_date_to' %>
+      </td>    
+    </tr>
+  </table>
+    <br/><br/>
+    
+<!-- Added END DATE-------------------------------------------------------------------------------------------------------------------------- -->
+<table>
+
+  <tr align="left"><h4>End Date Range</h4></tr>
+    <tr align="left">
+      <td > <strong>From</strong> </td>
+      <td>
+      <%= text_field_tag "time_invoice_report[end_date_from]",
+      params[:time_invoice_report] && params[:time_invoice_report][:end_date_from] %>
+      <%= calendar_for 'time_invoice_report_end_date_from' %>
+      </td>    
+      <td  width='100'></td>
+      <td><strong>To</strong> </td>
+      <td> <%= text_field_tag "time_invoice_report[end_date_to]",
+      params[:time_invoice_report] && params[:time_invoice_report][:end_date_to] %> 
+      <%= calendar_for 'time_invoice_report_end_date_to' %>
+      </td>    
+    </tr>
+  </table>
+
+  <br/><br/>
+  
+ <!-- USER AND GROUP FILTERS-------------------------------------------------------------------------------------------------------------------------- --> 
+  <table>
+    <tr align="left"><h4>User And Group Filters</h4></tr>
+    <tr align="left">
+   
+      <th align="center">User</th>
+      <td  width='100'></td>
+      <th align="center">Group</th>
+      <td  width='100'></td>
+      <th align="center">Submitted By User</th>
+      
+    </tr>
+    <tr align="left">
+      <td> 
+        <%=select_tag "time_invoice_report[selected_users][]", 
+        options_from_collection_for_select(@all_users, "id", "name"),multiple: true%>
+      </td>
+      <td  width='100'></td>
+      <td>
+          <%= select_tag 'time_invoice_report[groups][]',
+          select_group_options(@time_invoice_reports), multiple: true %>
+      </td>
+      
+      <td  width='100'></td>
+       <td> <!-- From User_Leaves_Reports | Use permissions in helpers **-->
+        <%= select_tag("time_invoice_report[submitted_by_user]",
+          submitted_by_user_options(params[:time_invoice_report] &&
+              params[:time_invoice_report][:submitted_by_user])) %>
+        </td>
+      
+    </tr>
+  </table><br/>
+  
+   <table>
+      <tr align="left"><h4>Time Filters</h4></tr>
+    <tr align="left">
+      <th>Total Invoiced Time is</th> 
+    </tr>
+    <!-- Total Invoiced Time: Details of Time Invoices where the sum of invoiced
+      time by the user is less than/greater than the given number of hours-->
+ 
+    <tr align="left">
+      <td><%= select_tag("time_invoice_report[invoiced_operator_value]", 
+       options_for_operator_type(params[:time_invoice_report] &&
+              params[:time_invoice_report][:invoiced_operator_value])) %>
+      </td>
+      <td><%= text_field_tag "time_invoice_report[invoiced_time_compared_hours]",
+      params[:time_invoice_report] && params[:time_invoice_report][:invoiced_time_compared_hours] %>
+      <%#= text_field_tag "time_invoice_report[invoiced_hours]", new_time_entry.invoiced_hours, :size => 10%>
+      </td>    
+    </tr>
+    
+    <tr align="left">
+      <th>Total Logged Time is </th>
+   </tr>
+   <!-- Total Logged Time: Details of Time Invoices where the sum of invoiced 
+   time by the user is less than/greater than the given number of hours -->
+   <tr align="left">
+      <td><%= select_tag("time_invoice_report[logged_operator_value]", 
+       options_for_operator_type(params[:time_invoice_report] &&
+              params[:time_invoice_report][:logged_operator_value])) %>
+      <td>
+       <%= text_field_tag "time_invoice_report[logged_time_compared_hours]",
+         params[:time_invoice_report] && params[:time_invoice_report][:logged_time_compared_hours] %>
+      </td>    
+    </tr>
+  </table>
+  <%= submit_tag 'Apply' %>
+<% end %>
+

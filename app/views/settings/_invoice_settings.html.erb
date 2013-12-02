@@ -1,4 +1,23 @@
-<p>
-  <label for="settings_mail">Mailing address of concerned person</label>
-<%= text_field_tag 'settings[mail]', settings['mail'] %>
-</p>
+
+
+<table>
+  <tbody>
+ 
+    <tr align="left">
+    <label for="settings_mail">Mailing address of concerned person</label>
+    <%= text_field_tag 'settings[mail]', settings['mail'] %>
+    </tr>
+ 
+
+  
+    <tr align="left">
+      <th>Eligible for Leave Group(s)</th>
+      <td><%= select_tag('settings[eligible_to_submit_invoices_users]', 
+              options_from_collection_for_select(User.all, :id, :name, 
+                settings['eligible_to_submit_invoices_users']), 
+              multiple: true) %>
+      </td>
+  
+    </tr>
+  </tbody>
+</table>

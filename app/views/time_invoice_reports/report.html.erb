@@ -1,0 +1,38 @@
+<h2> Time Invoices Report </h2>
+
+<%= render 'options' %><br/><br/>
+<% if @user_leaves.nil? ||  @user_leaves.empty? %> <!--  Idher user_time_invoices aye ga-->
+  <% flash.now[:error] = 'No Results Found!' %>
+<% else %>
+  <table border="1">
+    <tbody>
+      <tr align="left">
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Leave Type</th>
+        <th>Leave Date</th>
+        <% if User.current.admin? %>
+          <th></th>
+        <% end %>
+      </tr>
+      <% @user_leaves.each do |user_leave|%>
+        <tr align="left" class="<%= cycle("odd", "even")%>">
+          <td><%= user_leave.user_id %></td>
+
+          <td><%= User.find(user_leave.user_id).name %></td>
+          <td><%= user_leave.leave_type %></td>
+          <td><%= user_leave.leave_date %></td>
+          <% if User.current.admin? %>
+            <td>
+              <%= link_to 'Edit', edit_user_leafe_path(user_leave) %> | 
+              <%= link_to 'Delete', user_leafe_path(user_leave),
+                  method: :delete, data: { confirm: 'Are you sure?' }%>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<!-- Generate Reports in SCV, pdf, atom Issue Display page-->
+<% end %>  

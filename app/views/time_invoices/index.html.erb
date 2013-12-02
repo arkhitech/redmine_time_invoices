@@ -1,7 +1,8 @@
 
 <h3><%=  'List of TimeInvoices'%></h3>
 <%  id=@project.id%>
-<%= link_to 'Generate a new invoice', :controller=>'time_invoices',:action=>'new',:project_id=>@project_id%><br/><br/>
+<%= link_to 'Generate a new invoice', :controller=>'time_invoices',:action=>'new',:project_id=>@project_id%><br/>
+<%= link_to 'View Time Invoice Report', :controller=>'time_invoice_reports',:action=>'index'%><br/><br/>
 <% if @time_invoices.empty? %>
 <br/><label><%= 'No TimeInvoices to show yet' %></label>
 <%else%>
