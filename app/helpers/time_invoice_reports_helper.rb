@@ -4,10 +4,22 @@ module TimeInvoiceReportsHelper
   include ActionView
   
   
+#   def options_for_operator_type(operator_value)
+#    options_for_select([['greater-than'],
+#                        ['less-than']],
+#                        operator_value)
+#  end
+
    def options_for_operator_type(operator_value)
-    options_for_select([['greater-than'],
-                        ['less-than']],
+    options_for_select([['Greater Than [>]','>'],
+                        ['Less    Than [<]','<']],
                         operator_value)
+#                      
+#     options_for_select([['Choose Operator',0],
+#                        ['>',1],
+#                        ['<',2]],
+#                        operator_value)
+                     
   end
   
    

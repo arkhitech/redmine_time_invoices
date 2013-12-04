@@ -2,6 +2,7 @@
 
 <!-- OLD START DATE ----------------------------------------------------------->
   <table>
+    <tr><%= link_to 'Back', :controller=>'time_invoices',:action=>'indexall'%><br/></tr>
     <tr align="left"><h4>Start Date Range</h4></tr>
     <tr align="left">
       <td><strong>From</strong> </td>
@@ -63,53 +64,58 @@
       <td  width='100'></td>
       <td>
           <%= select_tag 'time_invoice_report[groups][]',
-          select_group_options(@time_invoice_reports), multiple: true %>
+          select_group_options(@time_invoice_details), multiple: true %>
       </td>
       
       <td  width='100'></td>
        <td> <!-- From User_Leaves_Reports | Use permissions in helpers **-->
         <%= select_tag("time_invoice_report[submitted_by_user]",
           submitted_by_user_options(params[:time_invoice_report] &&
-              params[:time_invoice_report][:submitted_by_user])) %>
+              params[:time_invoice_report][:submitted_by_user]),:include_blank => true) %>
         </td>
       
     </tr>
   </table><br/>
   
    <table>
-      <tr align="left"><h4>Time Filters</h4></tr>
+    <tr align="left"><h4>Time Filters</h4></tr>
     <tr align="left">
-      <th>Total Invoiced Time is</th> 
-    </tr>
+     <th>Total Invoiced Time is</th> 
+    
     <!-- Total Invoiced Time: Details of Time Invoices where the sum of invoiced
       time by the user is less than/greater than the given number of hours-->
- 
-    <tr align="left">
+    <td width="25"></td>
       <td><%= select_tag("time_invoice_report[invoiced_operator_value]", 
        options_for_operator_type(params[:time_invoice_report] &&
-              params[:time_invoice_report][:invoiced_operator_value])) %>
+              params[:time_invoice_report][:invoiced_operator_value]),:prompt => "Choose Operator") %>
       </td>
+      <td width="25"></td>
       <td><%= text_field_tag "time_invoice_report[invoiced_time_compared_hours]",
       params[:time_invoice_report] && params[:time_invoice_report][:invoiced_time_compared_hours] %>
       <%#= text_field_tag "time_invoice_report[invoiced_hours]", new_time_entry.invoiced_hours, :size => 10%>
-      </td>    
+      </td>
+      <td><b> Hours </b></td>
     </tr>
     
     <tr align="left">
       <th>Total Logged Time is </th>
-   </tr>
+   
    <!-- Total Logged Time: Details of Time Invoices where the sum of invoiced 
    time by the user is less than/greater than the given number of hours -->
-   <tr align="left">
+   <td width="25"></td>
       <td><%= select_tag("time_invoice_report[logged_operator_value]", 
        options_for_operator_type(params[:time_invoice_report] &&
-              params[:time_invoice_report][:logged_operator_value])) %>
-      <td>
+              params[:time_invoice_report][:logged_operator_value]),:prompt => "Choose Operator") %>
+      </td>
+       <td width="25"></td>
+      <td> 
        <%= text_field_tag "time_invoice_report[logged_time_compared_hours]",
          params[:time_invoice_report] && params[:time_invoice_report][:logged_time_compared_hours] %>
-      </td>    
+      </td> 
+      <td><b> Hours </b></td>
     </tr>
   </table>
+  <br/>
   <%= submit_tag 'Apply' %>
 <% end %>
 
