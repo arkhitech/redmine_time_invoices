@@ -1,4 +1,9 @@
-<p>
-  <label for="settings_mail">Mailing address of concerned person</label>
-<%= text_field_tag 'settings[mail]', settings['mail'] %>
-</p>
+<table>
+  <tr align="left">
+    <th>Time Invoice Supervisor</th>
+    <td>
+      <%= select_tag('settings[mail]', options_from_collection_for_select(Group.all, :id, :name, 
+          settings['mail']), multiple: true) %>
+    </td>
+  </tr>
+</table>
