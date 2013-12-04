@@ -13,9 +13,15 @@ class TimeInvoiceReportsController < ApplicationController
   def report
     @all_users = User.all
     @groups= Group.all
+ 
     #Making a model reference and assigning if to time_invoice_report variable | call initialize in model
+ 
+    if params[:time_invoice_report][:logged_time_compared_hours].blank?
+      flash[:error] = 'Please Choose A Report Generation Parameter!' 
+    else
     time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
     @time_invoice_details = time_invoice_report.generate
+    end
   end
 end
 
