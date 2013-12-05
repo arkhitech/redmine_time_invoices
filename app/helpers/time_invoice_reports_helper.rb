@@ -2,13 +2,7 @@ module TimeInvoiceReportsHelper
   
 
   include ActionView
-  
-  
-#   def options_for_operator_type(operator_value)
-#    options_for_select([['greater-than'],
-#                        ['less-than']],
-#                        operator_value)
-#  end
+
 
    def options_for_operator_type(operator_value)
     options_for_select([['Greater Than [>]','>'],
@@ -23,10 +17,10 @@ module TimeInvoiceReportsHelper
   end
   
    
-#   def group_options(timesheet)
-  def select_group_options(time_invoice_reports)
+
+  def select_group_options(selected_groups_from_view)
     available_groups = Group.all
-    selected_groups = time_invoice_reports
+    selected_groups = selected_groups_from_view
     options_from_collection_for_select(available_groups, :id, :name, :selected => selected_groups)
   end
   

@@ -58,13 +58,15 @@
     </tr>
     <tr align="left">
       <td> 
-        <%=select_tag "time_invoice_report[selected_users][]", 
-        options_from_collection_for_select(@all_users, "id", "name"),multiple: true%>
+        <% selected_users=params[:time_invoice_report] && params[:time_invoice_report][:selected_users]%>
+        <%= select_tag "time_invoice_report[selected_users][]", 
+         options_from_collection_for_select(@all_users, :id, :name,selected_users),multiple: true%>
       </td>
       <td  width='100'></td>
       <td>
-          <%= select_tag 'time_invoice_report[groups][]',
-          select_group_options(@time_invoice_details), multiple: true %>
+        <% selected_groups=params[:time_invoice_report] && params[:time_invoice_report][:groups]%>
+          <%= select_tag "time_invoice_report[groups][]",
+          select_group_options(selected_groups), multiple: true %>
       </td>
       
       <td  width='100'></td>
