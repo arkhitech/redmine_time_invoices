@@ -1,6 +1,5 @@
 class TimeInvoiceReport
   unloadable
-  #  validates_numericality_of :invoiced_time_compared_hours
   attr_accessor :report_options
   
   def initialize(options) 
@@ -11,8 +10,6 @@ class TimeInvoiceReport
     #@time_invoices = TimeInvoice
     @time_invoice_details=TimeInvoiceDetail.includes(:time_invoice)
     #@time_invoice_details=TimeInvoiceDetail.joins(:time_invoice)
-    #@invoice_data=[]
-    @foo="bar"
  
 #Start Date=====================================================================
     
@@ -51,14 +48,7 @@ class TimeInvoiceReport
       puts "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
     end   
     
-    # unless @report_options[:end_date_from].blank?
-    #   @time_invoices.where('end_date >= ?', @report_options[:end_date_from])
-    #   end
-    #    
-    #    unless @report_options[:end_date_to].blank?
-    #      @time_invoices.where('end_date <= ?', @report_options[:end_date_to])
-    #    end
-        
+   
 #===============================================================================    
 
     
@@ -68,11 +58,10 @@ class TimeInvoiceReport
       @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
     end
     puts "#{'-'*80}\nSeelcted Users Without Group #{selected_users}\n#{'*'*80}"
-    #    unless selected_users.nil?
-    #      @time_invoices.where(:time_invoice_reports.invoice_details.user_id =>
-    #                                 @report_options[:selected_users])
-    #    end
+
 #===============================================================================
+
+    
 #Group==========================================================================
 selected_groups = @report_options[:groups]
     puts "#{'*'*1000}These are selected groups #{selected_groups}"
@@ -91,9 +80,7 @@ selected_groups = @report_options[:groups]
 #      end
 #      selected_groups_users.flatten!
       puts "These are Redmine selected users #{selected_group_users}"
-      #      selected_group_users=
-      #      @assigned_issues= Issue.where(assigned_to_id: User.current.id).joins(:status).
-      #           where("#{IssueStatus.table_name}.is_closed" => false)
+
       
       selected_group_users.each do |group_user|
         selected_users << User.find(group_user).id.to_s
@@ -186,17 +173,7 @@ selected_groups = @report_options[:groups]
       
     end  
     #
-    #    unless @report_options[:logged_time_compared_hours].nil?
-    #      
-    #          logged_operator_value=@report_options[:logged_operator_value]
-    #      if logged_operator_value =="<"
-    #      @time_invoices.where(:time_invoice_report.time_invoice_details.logged_hours <
-    #          @report_options[:logged_time_compared_hours])
-    #      else
-    #       @time_invoices.where(:time_invoice_report.time_invoice_details.logged_hours >
-    #           @report_options[:logged_time_compared_hours])  
-    #      end
-    #    end
+ 
 #===============================================================================
 
     puts "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
