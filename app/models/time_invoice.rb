@@ -10,7 +10,7 @@ class TimeInvoice < ActiveRecord::Base
   
   def build_time_invoice_details
     parent_project_id = self.project_id
-    child_projects = Project.where(parent_id: parent_project_id)
+    child_projects = Project.find(parent_project_id).descendants
     child_projects_id = []
     child_projects.each do |project_id|
       child_projects_id << project_id.id
