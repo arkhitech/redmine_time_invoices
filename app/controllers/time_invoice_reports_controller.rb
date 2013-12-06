@@ -35,6 +35,13 @@ class TimeInvoiceReportsController < ApplicationController
     time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
     @time_invoice_details = time_invoice_report.generate
     end
+    
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render :pdf => "file_name"
+      end
+    end
   end
 end
 

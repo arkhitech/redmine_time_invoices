@@ -2,6 +2,7 @@ module TimeInvoiceReportsHelper
   
 
   include ActionView
+  include QueriesHelper
 
 
    def options_for_operator_type(operator_value)

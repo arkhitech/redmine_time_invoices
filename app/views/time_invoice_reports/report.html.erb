@@ -52,7 +52,20 @@
       </tr>
     <% end%>
   </tbody>
+  
+  <tr></tr>
+  <tr><td>
+<% other_formats_links do |f| %>
+  <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
+  <%= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '330px'); return false;" %>
+  <%= f.link_to 'PDF', :url => params %>
+<% end %>
+      
+      
+ </td></tr>
+  
 </table>
 
 <%#*<!-- Generate Reports in SCV, pdf, atom Issue Display page-->%>
+
 <% end %>  
