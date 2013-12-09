@@ -31,8 +31,12 @@ class TimeInvoice < ActiveRecord::Base
   def correctness_of_date
     if start_date.present? && end_date.present? && start_date > end_date
       errors.add(:Date_format, ": 'end date' less than 'start date' is not permitted")
+      else
+      errors.add(:start_date, "is required") if !start_date.present?
+      errors.add(:end_date, "is required") if !start_date.present? 
     end
   end
+  
 def overlapping
     time_invoices=TimeInvoice.where("project_id=? AND ((start_date<=? AND end_date>=?) OR (start_date<=? AND end_date>=?))", project_id,start_date,start_date,end_date,end_date)
     puts "#{"*"*300}these are the results we got form sir's query#{time_invoices.inspect},#{time_invoices.count}"
