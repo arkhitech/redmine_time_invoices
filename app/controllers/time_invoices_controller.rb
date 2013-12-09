@@ -8,8 +8,8 @@ class TimeInvoicesController < ApplicationController
   private :init_project
   
   def new
-    project = Project.find(params[:project_id])
-    return deny_access unless User.current.allowed_to?(:generate_time_invoices , project)
+#    project = Project.find(params[:project_id])
+    return deny_access unless User.current.allowed_to?(:generate_time_invoices , @project)
 
     @time_invoice=TimeInvoice.new(:project_id => (@project && @project.id))
   end
