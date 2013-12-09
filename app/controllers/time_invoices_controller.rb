@@ -8,11 +8,12 @@ class TimeInvoicesController < ApplicationController
   private :init_project
   
   def new
-    project = Project.find(params[:project_id])
-    return deny_access unless User.current.allowed_to?(:generate_time_invoices , project)
+   
+    return deny_access unless User.current.allowed_to?(:generate_time_invoices , @project)
 
     @time_invoice=TimeInvoice.new(:project_id => (@project && @project.id))
   end
+  
   def topnew
     return deny_access unless User.current.allowed_to_globally?(:submit_invoiceable_time ,{}) || 
       User.current.allowed_to_globally?(:generate_time_invoices , {})
@@ -22,12 +23,12 @@ class TimeInvoicesController < ApplicationController
   end
 
   def index
-    @project_id=params[:project_id]
-    project = Project.find(params[:project_id])
-    return deny_access unless User.current.allowed_to?(:submit_invoiceable_time , project) || 
-      User.current.allowed_to?(:generate_time_invoices , project)
+    #@project_id=params[:project_id]
+    #project = Project.find(params[:project_id])
+    return deny_access unless User.current.allowed_to?(:submit_invoiceable_time , @project) || 
+      User.current.allowed_to?(:generate_time_invoices , @project)
     
-    @time_invoices = TimeInvoice.where(project_id: project.id)
+    @time_invoices = TimeInvoice.where(project_id: @project.id)
   end
   
   def indexall

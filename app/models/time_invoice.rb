@@ -31,6 +31,9 @@ class TimeInvoice < ActiveRecord::Base
   def correctness_of_date
     if start_date.present? && end_date.present? && start_date > end_date
       errors.add(:Date_format, ": 'end date' less than 'start date' is not permitted")
+      else
+      errors.add(:start_date, "is required") if !start_date.present?
+      errors.add(:end_date, "is required") if !start_date.present? 
     end
   end
   def overlapping
