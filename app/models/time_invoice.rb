@@ -33,11 +33,14 @@ class TimeInvoice < ActiveRecord::Base
       errors.add(:Date_format, ": 'end date' less than 'start date' is not permitted")
     end
   end
-  def overlapping
+def overlapping
     time_invoices=TimeInvoice.where("project_id=? AND ((start_date<=? AND end_date>=?) OR (start_date<=? AND end_date>=?))", project_id,start_date,start_date,end_date,end_date)
     puts "#{"*"*300}these are the results we got form sir's query#{time_invoices.inspect},#{time_invoices.count}"
-    if time_invoices.count>0
+    array_ids=time_invoices.collect{|ti| ti.id}
+    puts "#{'*'*300}this is the collection of IDS: #{array_ids}"
+    if time_invoices.count>0 && !array_ids.include?(id)
       errors.add(:Overlapping, ":Time invoices cannot overlap,Change the date range")
     end
   end
 end
+
