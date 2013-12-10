@@ -20,7 +20,7 @@
     </tr>
 
 
-<%# @time_invoice_reports.each do |time_invoice_report|%>
+
     <% @time_invoice_details.each do |time_invoice_details| %>
     <%time_invoice = time_invoice_details.time_invoice%>
       <tr align="left" class="<%= cycle("odd", "even")%>">
@@ -50,20 +50,38 @@
   <%#*</td>%>
   <%# end %>
       </tr>
-    <% end%>
-  </tbody>
+ 
+
   
   <tr></tr>
   <tr><td>
-<% other_formats_links do |f| %>
-  <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
-  <%= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '330px'); return false;" %>
-  <%= f.link_to 'PDF', :url => params %>
-<% end %>
+      <% other_formats_links do |f| %>
+          <%= f.link_to 'Atom', :url => {:key => User.current.rss_key} %>
+          <%#= f.link_to 'CSV', :url => params, :onclick => "showModal('csv-export-options', '330px'); return false;" %>
+          <%= f.link_to 'CSV', {controller: :time_invoice_reports, action: :report, params: params, format: :csv} %>
+          <%= f.link_to 'PDF', :url => params %>
+          
+        <% end %>
+  
+      <%#= link_to 'Show', time_invoice_report_path(time_invoice_report_id)%>
+       <%= link_to 'Download CSV', {controller: :time_invoice_reports, action: :report, params: params, format: :csv}%>
+      <%= stylesheet_link_tag 'application', :media => "all" %>
+      <%= link_to 'Download Pdf', {controller: :time_invoice_reports, action: :report, params: params, format: :pdf}%>
+     
+    
+
       
+        <% content_for :header_tags do %>
+          <%= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key},
+            :title => "#{time_invoice.id} - #{time_invoice.start_date}
+          ##{time_invoice.end_date}: #{time_invoice.submitted_by.name}:
+        #{time_invoice.project.name}: #{time_invoice.comment}") %>
+        <% end %>
       
+    <% end%>     
  </td></tr>
   
+   </tbody> 
 </table>
 
 <%#*<!-- Generate Reports in SCV, pdf, atom Issue Display page-->%>

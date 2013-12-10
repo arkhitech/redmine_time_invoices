@@ -179,4 +179,7 @@ selected_groups = @report_options[:groups]
     puts "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
     @time_invoice_details
   end
+  
+   
+  
 end

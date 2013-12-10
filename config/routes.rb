@@ -7,7 +7,7 @@ get '/time_invoices/all/new', to: 'time_invoices#topnew' , as: :topnew
 match '/time_invoice_reports/test' => 'time_invoice_reports#test'
 match '/time_invoice_reports/index' => 'time_invoice_reports#index'
 match '/time_invoice_reports/report' => 'time_invoice_reports#report'
-#match '/time_invoice_reports/test', to: 'time_invoice_reports#test' , as: :test
+
 
 resources :projects, only: [] do
   resources :time_invoices
@@ -15,3 +15,5 @@ resources :projects, only: [] do
 end
 
 resources :time_invoices
+#resources :time_invoice_reports #check index duplicate
+#match '/time_invoice_reports/download' => 'time_invoice_reports#download'
