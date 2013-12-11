@@ -8,16 +8,16 @@
 <% else %>
 
   <table border="1">
-    
+
     <tbody>
       <tr align="left">
-        <th>Invoice ID</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Invoice Owner</th>
-        <th>Project ID</th>
-        <th>Remarks</th>
-        <th>Action</th>
+        <th align="center">Invoice ID</th>
+        <th align="center">Start Date</th>
+        <th align="center">End Date</th>
+        <th align="center">Invoice Owner</th>
+        <th align="center">Project Title</th>
+        <th align="center">Remarks</th>
+        <th align="center">Action</th>
       </tr>
 
 
@@ -25,59 +25,51 @@
       <% @time_invoice_details.each do |time_invoice_details| %>
         <%time_invoice = time_invoice_details.time_invoice%>
         <tr align="left" class="<%= cycle("odd", "even")%>">
-          <td><%= time_invoice.id%></td>
-          <td><%= time_invoice.start_date %></td>
-          <td><%= time_invoice.end_date %></td>
-          <td><%=  time_invoice.submitted_by && time_invoice.submitted_by.name%></td>
-          <td><%= time_invoice.project.name %></td>
-          <td><%= time_invoice.comment %></td>
+          <td align="center"><%= time_invoice.id%></td>
+          <td align="center"><%= time_invoice.start_date %></td>
+          <td align="center"><%= time_invoice.end_date %></td>
+          <td align="center"><%=  time_invoice.submitted_by && time_invoice.submitted_by.name%></td>
+          <td align="center"><%= time_invoice.project.name %></td>
+          <td align="center"><%= time_invoice.comment %></td>
 
 
           <%if time_invoice.submitted_by %>
-            <td>
+            <td align="center">
               <%=  link_to 'View', time_invoice%>
             </td>
           <%else%>
-            <td>
+            <td align="center">
               <%=  link_to 'Edit/Submit', edit_time_invoice_path(time_invoice) %>
             </td>
           <%end%>
 
         </tr>
 
-
-
-        <tr></tr>
-        <tr><td>
+       <tr></tr>  
+       
+        <!-- Generate Reports in SCV, pdf, atom Issue Display page-->     
+        <tr>
+          <td colspan="7" align="right">
             <% other_formats_links do |f| %>
               <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
               <%= f.link_to 'CSV', :url => params %>
               <%= f.link_to 'PDF', :url => params %>
 
             <% end %>
-
-        
-            
-    <%#= link_to 'Download CSV', {controller: :time_invoice_reports, action: :report, params: params, format: :csv}%>
-    <%#= stylesheet_link_tag 'application', :media => "all" %>
-    <%#= link_to 'Download PDF', {controller: :time_invoice_reports, action: :report, params: params, format: :pdf}%>
-
-
-
-
-            <%# content_for :header_tags do %>
-              <%#= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key},
-                :title => "#{time_invoice.id} - #{time_invoice.start_date}
-               ##{time_invoice.end_date}: #{time_invoice.submitted_by.name}:
-              #{time_invoice.project.name}: #{time_invoice.comment}") %>
-            <%# end %>
-
           <% end%>     
-        </td></tr>
+        </td>
+        </tr>
 
     </tbody> 
   </table>
 
-  <%#*<!-- Generate Reports in SCV, pdf, atom Issue Display page-->%>
+
 
 <% end %>  
+
+            <!-- Alternate Way -->      
+    <%#= link_to 'Download CSV', {controller: :time_invoice_reports, 
+                                action: :report, params: params, format: :csv}%>
+    <%#= stylesheet_link_tag 'application', :media => "all" %>
+    <%#= link_to 'Download PDF', {controller: :time_invoice_reports,
+                                action: :report, params: params, format: :pdf}%>

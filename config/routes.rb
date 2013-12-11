@@ -12,11 +12,7 @@ match '/feed' => 'time_invoice_reports#feed',:as => :feed, :defaults => { :forma
 
 resources :projects, only: [] do
   resources :time_invoices
-  #resources :time_invoice_reports
 end
 
 resources :time_invoices
 resources :time_invoice_reports #check index duplicate
-
-
-#match '/time_invoice_reports/download' => 'time_invoice_reports#download'
