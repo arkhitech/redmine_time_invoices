@@ -5,6 +5,24 @@ class TimeInvoiceReport
   def initialize(options) 
     @report_options = options
   end
+
+  # returns nil if validation completes
+  # returns an error string or array of string when validation fails
+  def validate
+    if @report_options[:start_date_from] > @report_options[:start_date_to] && 
+        @report_options[:end_date_from] <= @report_options[:end_date_to]
+      return 'For Start Date :From Date Cannot Be smaller than To Date ' 
+    else if  @report_options[:end_date_from] > @report_options[:end_date_to] &&
+          @report_options[:start_date_from] <= @report_options[:start_date_to]
+        return 'For End Date :From Cannot Be Smaller than To Date '
+      else if @report_options[:start_date_from] > @report_options[:start_date_to] &&
+            @report_options[:end_date_from] > @report_options[:end_date_to]
+            return 'From Dates Cannot Be Smaller than To Dates'
+        end
+      end
+    end
+    nil
+  end
   
   def generate
     #@time_invoices = TimeInvoice
@@ -13,10 +31,6 @@ class TimeInvoiceReport
  
 #Start Date=====================================================================
     
-    if @report_options[:start_date_from] > @report_options[:start_date_to]
-      #      redirect_to time_invoice_reports_index_path
-      flash[:error] = 'For Start Date :From Date cannot be smaller than To Date ' 
-    else
       unless @report_options[:start_date_from].blank?
         @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
           @report_options[:start_date_from])
@@ -26,17 +40,14 @@ class TimeInvoiceReport
           @report_options[:start_date_to])
       end 
       
-       logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
-    end
+       ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+
 
 #===============================================================================
 
 #End Date=======================================================================    
      
-    if  @report_options[:end_date_from] > @report_options[:end_date_to]
-      #      redirect_to time_invoice_reports_index_path
-      flash.now[:error] = 'For End Date :From Cannot be smaller than To Date '
-    else
+
       unless @report_options[:end_date_from].blank?
         @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date >= ?", 
           @report_options[:end_date_from])
@@ -45,8 +56,8 @@ class TimeInvoiceReport
         @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
           @report_options[:end_date_to])
       end  
-       logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
-    end   
+       ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+
     
    
 #===============================================================================    
@@ -57,14 +68,14 @@ class TimeInvoiceReport
     if selected_users.present?
       @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
     end
-     logger.debug "#{'-'*80}\nSeelcted Users Without Group #{selected_users}\n#{'*'*80}"
+     ActiveRecord::Base.logger.debug "#{'-'*80}\nSeelcted Users Without Group #{selected_users}\n#{'*'*80}"
 
 #===============================================================================
 
     
 #Group==========================================================================
 selected_groups = @report_options[:groups]
-     logger.debug "#{'*'*1000}These are selected groups #{selected_groups}"
+     ActiveRecord::Base.logger.debug "#{'*'*1000}These are selected groups #{selected_groups}"
     unless selected_groups.nil?
       
             selected_group_users = User.active.joins(:groups).
@@ -75,7 +86,7 @@ selected_groups = @report_options[:groups]
         selected_users=[]
       end
 
-       logger.debug "These are Redmine selected users #{selected_group_users}"
+       ActiveRecord::Base.logger.debug "These are Redmine selected users #{selected_group_users}"
 
       
       selected_group_users.each do |group_user|
@@ -86,7 +97,7 @@ selected_groups = @report_options[:groups]
       
       unless selected_users.nil?
         @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
-         logger.debug "#{'+'*80}\nSeelcted Users #{selected_users}\n#{'*'*80}"
+         ActiveRecord::Base.logger.debug "#{'+'*80}\nSeelcted Users #{selected_users}\n#{'*'*80}"
       end
     end
     
@@ -100,7 +111,7 @@ selected_groups = @report_options[:groups]
       @time_invoice_details = @time_invoice_details.
         where("#{TimeInvoice.table_name}.submitted_by_id" =>
           @report_options[:submitted_by_user])
-       logger.debug "#{'SBU-'*80}\nTime Invoice Submitted by User 
+       ActiveRecord::Base.logger.debug "#{'SBU-'*80}\nTime Invoice Submitted by User 
                                 {@time_invoice_details.count(:all)}\n#{'*'*80}#"
     end
     
@@ -112,7 +123,7 @@ selected_groups = @report_options[:groups]
         
     unless @report_options[:invoiced_time_compared_hours].blank?
           
-       logger.debug "#{'%'*80}\nInside Time Invoice Report 
+       ActiveRecord::Base.logger.debug "#{'%'*80}\nInside Time Invoice Report 
                     {@report_options[:invoiced_time_compared_hours]}\n#{'*'*80}#"
           
       invoiced_operator_value=@report_options[:invoiced_operator_value]
@@ -124,7 +135,7 @@ selected_groups = @report_options[:groups]
 
         @time_invoice_details = @time_invoice_details.
           where(user_id: sum_invoiced_time_users.collect{|it| it.user_id})          
-         logger.debug "#{'IT'*80}\nInside Less than Invoice Condition "
+         ActiveRecord::Base.logger.debug "#{'IT'*80}\nInside Less than Invoice Condition "
       end
           
       if invoiced_operator_value =='>'
@@ -133,7 +144,7 @@ selected_groups = @report_options[:groups]
           having('SUM(invoiced_hours) > ?', @report_options[:invoiced_time_compared_hours].to_i)
             
         @time_invoice_details = @time_invoice_details.where(user_id: sum_invoiced_time_users.collect{|it| it.user_id})          
-         logger.debug "#{'IT'*80}\nInside Greater  than Invoice Condition "
+         ActiveRecord::Base.logger.debug "#{'IT'*80}\nInside Greater  than Invoice Condition "
               
       end
       
@@ -143,7 +154,7 @@ selected_groups = @report_options[:groups]
 #Logged Time===================================================================
         
     unless @report_options[:logged_time_compared_hours].blank?          
-       logger.debug "#{'%'*80}\nInside Time Invoice Report 
+       ActiveRecord::Base.logger.debug "#{'%'*80}\nInside Time Invoice Report 
                     {@report_options[:logged_time_compared_hours]}\n#{'*'*80}#"          
       logged_operator_value=@report_options[:logged_operator_value]
           
@@ -151,10 +162,10 @@ selected_groups = @report_options[:groups]
         sum_logged_time_users = @time_invoice_details.dup
         sum_logged_time_users = sum_logged_time_users.group(:user_id).
           having('SUM(logged_hours) < ?', @report_options[:logged_time_compared_hours].to_i)
-         logger.debug "Got logged_time_users: #{sum_logged_time_users.inspect}"
+         ActiveRecord::Base.logger.debug "Got logged_time_users: #{sum_logged_time_users.inspect}"
         @time_invoice_details = @time_invoice_details.
           where(user_id: sum_logged_time_users.collect{|it| it.user_id})          
-         logger.debug "#{'LT'*80}\nInside Less than Logged Condition "
+         ActiveRecord::Base.logger.debug "#{'LT'*80}\nInside Less than Logged Condition "
       end
           
       if logged_operator_value =='>'
@@ -163,7 +174,7 @@ selected_groups = @report_options[:groups]
           having('SUM(logged_hours) > ?', @report_options[:logged_time_compared_hours].to_i)
             
         @time_invoice_details = @time_invoice_details.where(user_id: sum_logged_time_users.collect{|it| it.user_id})          
-         logger.debug "#{'LT'*80}\nInside Greater  than Logged Condition "
+         ActiveRecord::Base.logger.debug "#{'LT'*80}\nInside Greater  than Logged Condition "
               
       end
       
@@ -172,7 +183,7 @@ selected_groups = @report_options[:groups]
  
 #===============================================================================
 
-     logger.debug "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+     ActiveRecord::Base.logger.debug "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
     @time_invoice_details
   end
   

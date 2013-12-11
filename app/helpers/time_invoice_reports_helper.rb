@@ -17,7 +17,9 @@ module TimeInvoiceReportsHelper
                      
   end
   
-   
+   def flash_for_view(message)
+     flash[:error] = message.to_s
+   end
 
   def select_group_options(selected_groups_from_view)
     available_groups = Group.all

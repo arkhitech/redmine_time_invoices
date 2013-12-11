@@ -9,19 +9,19 @@ class TimeInvoiceReportsController < ApplicationController
     @groups= Group.all
   end
   
-  def download
-    @time_invoice_details=TimeInvoiceDetail.all
-  end
  
   def report
+
     @all_users = User.all
     @groups= Group.all
- 
+     
     #Making a model reference and assigning if to time_invoice_report variable |
     # call initialize in model
-    
+    #OR if pr[:all].blank?
+        
     pr=params[:time_invoice_report]
-    if pr[:start_date_from].blank? &&
+    
+    if pr.nil? || (pr[:start_date_from].blank? &&
         pr[:start_date_to].blank? &&
         pr[:end_date_from].blank? &&
         pr[:end_date_to].blank? &&
@@ -31,16 +31,33 @@ class TimeInvoiceReportsController < ApplicationController
         pr[:invoiced_time_compared_hours].blank? &&
         pr[:invoiced_operator_value].blank? &&
         pr[:logged_operator_value].blank? &&
-        pr[:logged_time_compared_hours].blank? 
-     
-      #OR if pr[:all].blank?
-        
-      flash[:error] = 'Please Choose A Report Generation Parameter!' 
+        pr[:logged_time_compared_hours].blank?)
+    
+      flash[:error] = 'No Results For Empty Filters ----|----  
+                         Please Choose Atleast One Report Generation Parameter!'
+      redirect_to action: :index            
     else
+      
+     #1
+     #render retains values but if refreshed with URL : gives error
+     #redirect_to resets values but does not give error on refresh
+     
       time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
+      error_message = time_invoice_report.validate
+      if !error_message.nil?  
+        flash[:error] = error_message
+        #redirect_to action: :index
+        render 'index'
+      else
+        
       @time_invoice_details = time_invoice_report.generate
     
-      #-------------------------------------------------------------------------------     
+      #Display view if data is available
+      if @time_invoice_details.nil? ||  @time_invoice_details.empty? || @time_invoice_details.blank?
+      flash[:error] = 'No Results Found!'
+      end
+      
+#-------------------------------------------------------------------------------     
      
       respond_to do |format|
         format.html { render :template => 'time_invoice_reports/report',
@@ -60,6 +77,7 @@ class TimeInvoiceReportsController < ApplicationController
       end
       #------------------------------------------------------------------------------- 
     end
+   end
   end
   
   def render_ti_feed(items, options={})
