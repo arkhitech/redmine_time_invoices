@@ -8,18 +8,9 @@ module TimeInvoiceReportsHelper
    def options_for_operator_type(operator_value)
     options_for_select([['Greater Than [>]','>'],
                         ['Less    Than [<]','<']],
-                        operator_value)
-#                      
-#     options_for_select([['Choose Operator',0],
-#                        ['>',1],
-#                        ['<',2]],
-#                        operator_value)
-                     
+                        operator_value)                  
   end
-  
-   def flash_for_view(message)
-     flash[:error] = message.to_s
-   end
+ 
 
   def select_group_options(selected_groups_from_view)
     available_groups = Group.all
