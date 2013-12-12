@@ -8,7 +8,7 @@ match '/time_invoice_reports/test' => 'time_invoice_reports#test'
 match '/time_invoice_reports/index' => 'time_invoice_reports#index'
 match '/time_invoice_reports/report' => 'time_invoice_reports#report'
 match '/feed' => 'time_invoice_reports#feed',:as => :feed, :defaults => { :format => 'atom' }
-
+match '/time_invoices/indexall' => 'time_invoices#indexall'
 
 resources :projects, only: [] do
   resources :time_invoices
