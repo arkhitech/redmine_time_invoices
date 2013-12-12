@@ -2,6 +2,8 @@ class TimeInvoicesController < ApplicationController
   unloadable
   before_filter :init_project
 
+  include ContactsHelper
+  
   def init_project
     @project = params[:project_id] && Project.find(params[:project_id])    
   end
@@ -15,6 +17,11 @@ class TimeInvoicesController < ApplicationController
   end
   
   def indexall
+    contact_invoice = Redmine::Plugin.find(:redmine_contacts_invoices)
+    puts contact_invoice.inspect
+    a = Contact.find_by_id(1)
+    puts "**********#{a.inspect}**********"
+       
     time_invoices = TimeInvoice.includes(:project).all
     @time_invoices = time_invoices.delete_if {|ti| !User.current.allowed_to?(:submit_invoiceable_time , ti.project)}
   end
