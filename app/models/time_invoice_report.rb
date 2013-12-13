@@ -97,7 +97,7 @@ selected_groups = @report_options[:groups]
       
       unless selected_users.nil?
         @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
-         ActiveRecord::Base.logger.debug "#{'+'*80}\nSeelcted Users #{selected_users}\n#{'*'*80}"
+         ActiveRecord::Base.logger.debug "#{'+'*80}\nSelcted Users #{selected_users}\n#{'*'*80}"
       end
     end
     
