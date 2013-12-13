@@ -8,16 +8,17 @@ Redmine::Plugin.register :redmine_time_invoices do
    
   project_module :time_invoices do
     permission :submit_invoiceable_time,:time_invoices => :index
-    
+    permission :generate_time_invoices,:time_invoices => [:index, :new]
+
     menu :project_menu, :time_invoices, 
-      { controller: 'time_invoices', action: 'index' }, 
-       after: :activity, param: :project_id,
-      if: Proc.new {|project| User.current.allowed_to?(:submit_invoiceable_time, project)}
+      { controller: :time_invoices, :action => 'index' }, 
+      after: :activity, param: :project_id
+
     
-    menu :top_menu, :time_invoices, 
-      { controller: 'time_invoices', action: 'indexall' }, 
-       if: Proc.new {User.current.allowed_to_globally?(:submit_invoiceable_time,{})}
-  
-  end
-  settings default: {'mail' => 'info@arkhitech.com'}, partial: 'settings/invoice_settings'
-end
+      menu :top_menu, :time_invoices, 
+        { controller: :time_invoices, action: 'indexall' } 
+
+      end
+      
+      settings default: {'mail' => 'finance@example.com'}, partial: 'settings/invoice_settings'
+    end

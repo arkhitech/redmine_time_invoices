@@ -1,6 +1,8 @@
 <h3><%="TimeInvoice for #{@time_invoice.project.name}"%></h3>
 <%="For Duration of #{@time_invoice.start_date} -  #{@time_invoice.end_date}"%><br/>
+<%unless @time_invoice.submitted_by.nil?%>
 <strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong><br/>
+<%end%>
 <strong><%='Remarks:'%><br/></strong><%=@time_invoice.comment%><br/>
 <table border="1">
   <%time_invoice_detail=@time_invoice.time_invoice_details%>

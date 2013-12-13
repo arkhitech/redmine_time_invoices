@@ -1,6 +1,7 @@
 
-<h3><%=  'List of TimeInvoices'%></h3>
-
+<h3>List of TimeInvoices</h3>
+<%  id=@project.id%>
+<%= link_to 'Generate a new invoice', :controller=>'time_invoices',:action=>'new',:project_id=>@project.id%><br/><br/>
 <% if @time_invoices.empty? %>
 <br/><label><%= 'No TimeInvoices to show yet' %></label>
 <%else%>
