@@ -2,8 +2,8 @@
   <tr align="left">
     <th>Time Invoice Supervisor</th>
     <td>
-      <%= select_tag('settings[mail]', options_from_collection_for_select(Group.all, :id, :name, 
-          settings['mail']), multiple: true) %>
+      <%= select_tag('settings[group_mail]', options_from_collection_for_select(Group.all, :id, :name, 
+          settings['group_mail']), multiple: true) %>
     </td>
   </tr>
 </table>

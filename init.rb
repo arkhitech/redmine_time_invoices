@@ -20,5 +20,5 @@ Redmine::Plugin.register :redmine_time_invoices do
 
       end
       
-      settings default: {'mail' => 'finance@example.com'}, partial: 'settings/invoice_settings'
+      settings default: {'group_mail' => [1]}, partial: 'settings/invoice_settings'
     end
