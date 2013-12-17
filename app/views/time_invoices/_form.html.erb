@@ -1,10 +1,10 @@
 <%= form_for @time_invoice do |f|%>
   <% if @time_invoice.errors.any? %>
-    <h2><%= pluralize(@time_invoice.errors.count, "error") %> prohibited
-      this post from being updated:</h2>
+    <% flash[:error] = "#{pluralize(@time_invoice.errors.count, "error")} prohibited
+    this post from being updated: <br/>" %>
     <ul>
     <% @time_invoice.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+      <% flash[:error] += "<li>#{msg}</li>" %>
     <% end %>
     </ul>
   <% end %>
