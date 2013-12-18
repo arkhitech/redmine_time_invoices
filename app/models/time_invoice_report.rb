@@ -10,13 +10,14 @@ class TimeInvoiceReport
   # returns an error string or array of string when validation fails
   def validate
     if @report_options[:start_date_from] > @report_options[:start_date_to] && 
-        @report_options[:end_date_from] <= @report_options[:end_date_to]
+        @report_options[:end_date_from] <= @report_options[:end_date_to] && !report_options[:start_date_to].blank?
       return 'For Start Date :From Date Cannot Be smaller than To Date ' 
     else if  @report_options[:end_date_from] > @report_options[:end_date_to] &&
-          @report_options[:start_date_from] <= @report_options[:start_date_to]
+          @report_options[:start_date_from] <= @report_options[:start_date_to] && !report_options[:end_date_to].blank?
         return 'For End Date :From Cannot Be Smaller than To Date '
       else if @report_options[:start_date_from] > @report_options[:start_date_to] &&
-            @report_options[:end_date_from] > @report_options[:end_date_to]
+            @report_options[:end_date_from] > @report_options[:end_date_to] &&
+            !report_options[:start_date_to].blank? && !report_options[:end_date_to].blank?
             return 'From Dates Cannot Be Smaller than To Dates'
         end
       end
