@@ -5,14 +5,14 @@ class TimeInvoiceReportsController < ApplicationController
   include TimeInvoiceReportsHelper
 
   def index
-    @all_users = User.all
+    @all_users = User.active
     @groups= Group.all
   end
   
  
   def report
 
-    @all_users = User.all
+    @all_users = User.active
     @groups= Group.all
      
     #Making a model reference and assigning if to time_invoice_report variable |

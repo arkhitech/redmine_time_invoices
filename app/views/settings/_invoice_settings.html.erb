@@ -13,7 +13,7 @@
     <tr align="left">
       <th>Eligible for Leave Group(s)</th>
       <td><%= select_tag('settings[eligible_to_submit_invoices_users]', 
-              options_from_collection_for_select(User.all, :id, :name, 
+              options_from_collection_for_select(User.active, :id, :name, 
                 settings['eligible_to_submit_invoices_users']), 
               multiple: true) %>
       </td>
