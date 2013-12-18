@@ -1,9 +1,21 @@
 class TimeInvoiceReport
+  include ActiveModel::Validations
+  
   unloadable
   attr_accessor :report_options
+  validates :start_date_from, :date => true,:allow_nil => true
+  validates :start_date_to, :date => true,:allow_nil => true
+  validates :end_date_from, :date => true,:allow_nil => true
+  validates :end_date_to, :date => true,:allow_nil => true
+  
+  attr_accessor :start_date_from, :start_date_to,:end_date_from,:end_date_to
   
   def initialize(options) 
     @report_options = options
+    self.start_date_from = options[:start_date_from]
+    self.start_date_to = options[:start_date_to]
+    self.end_date_from = options[:end_date_from]
+    self.end_date_to = options[:end_date_to]
   end
 
   # returns nil if validation completes
