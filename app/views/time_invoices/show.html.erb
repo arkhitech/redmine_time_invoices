@@ -4,6 +4,7 @@
 <strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong><br/>
 <%end%>
 <strong><%='Remarks:'%><br/></strong><%=@time_invoice.comment%><br/>
+<%if @time_invoice.time_invoice_details%>
 <table border="1">
   <%time_invoice_detail=@time_invoice.time_invoice_details%>
   <tr>
@@ -21,3 +22,4 @@
     </tr>
   <%end%>
 </table>
+<%end%>
