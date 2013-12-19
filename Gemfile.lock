@@ -137,9 +137,6 @@ GEM
     whenever (0.8.4)
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
-    wicked_pdf (0.9.8)
-      rails
-    wkhtmltopdf-binary (0.9.9.1)
 
 PLATFORMS
   ruby
@@ -153,5 +150,3 @@ DEPENDENCIES
   rspec-rails (>= 2.13.1)
   spork-rails (= 4.0.0)
   whenever (>= 0.8.4)
-  wicked_pdf
-  wkhtmltopdf-binary
