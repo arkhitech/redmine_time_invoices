@@ -14,7 +14,7 @@ class TimeInvoiceMailer < ActionMailer::Base
     @time_invoice=time_invoice
 
     group_users ||= begin
-      groups = Setting.plugin_redmine_time_invoices['group_mail']
+      groups = Setting.plugin_redmine_time_invoices['mail']
       if groups.present?
         User.active.joins(:groups).
           where("#{User.table_name_prefix}groups_users#{User.table_name_suffix}.id" => groups)      
