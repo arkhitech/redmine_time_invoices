@@ -70,9 +70,7 @@ class TimeInvoiceReportsController < ApplicationController
       @time_invoice_details = time_invoice_report.generate
     
       #Display view if data is available
-      if @time_invoice_details.nil? ||  @time_invoice_details.empty? || @time_invoice_details.blank?
-      flash[:error] = 'No Results Found!'
-      end
+      flash[:error] = 'No Results Found!' if @time_invoice_details.blank?
       
 #-------------------------------------------------------------------------------     
      

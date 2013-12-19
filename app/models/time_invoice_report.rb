@@ -135,8 +135,7 @@ selected_groups = @report_options[:groups]
         
 #Invoiced Time==================================================================
         
-    unless @report_options[:invoiced_time_compared_hours].blank? && 
-                            @report_options[:invoiced_time_compared_hours].empty?
+    unless @report_options[:invoiced_time_compared_hours].blank?
           
        ActiveRecord::Base.logger.debug "#{'%'*80}\nInside Time Invoice Report 
                     {@report_options[:invoiced_time_compared_hours]}\n#{'*'*80}#"
