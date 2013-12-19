@@ -19,6 +19,7 @@ class TimeInvoicesController < ApplicationController
       User.current.allowed_to_globally?(:generate_time_invoices , {})
     @projects=Project.all
     @projects = @projects.delete_if {|project| !User.current.allowed_to?(:generate_time_invoices , project)}
+    return deny_access if @projects.empty?
     @time_invoice=TimeInvoice.new
   end
 
