@@ -21,10 +21,13 @@ Redmine::Plugin.register :redmine_time_invoices do
       after: :activity, param: :project_id
 
     
-      menu :top_menu, :time_invoices, 
-        { controller: :time_invoices, action: 'indexall' } 
-
-      end
+    menu :top_menu, :time_invoices, 
+      { controller: :time_invoices, action: 'indexall' },
+    if: Proc.new {User.current.allowed_to_globally?(:submit_invoiceable_time,{}) ||
+      User.current.allowed_to_globally?(:generate_time_invoices,{})
+    
+      }
+  end
       
-      settings default: {'group_mail' => [1]}, partial: 'settings/invoice_settings'
-    end
+  settings default: {'group_mail' => [1]}, partial: 'settings/invoice_settings'
+end
