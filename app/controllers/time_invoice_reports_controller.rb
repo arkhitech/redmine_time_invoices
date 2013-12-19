@@ -29,13 +29,26 @@ class TimeInvoiceReportsController < ApplicationController
         pr[:groups].blank? &&
         pr[:submitted_by_user].blank? &&
         pr[:invoiced_time_compared_hours].blank? &&
-        pr[:invoiced_operator_value].blank? &&
-        pr[:logged_operator_value].blank? &&
         pr[:logged_time_compared_hours].blank?)
     
-      flash[:error] = 'No Results For Empty Filters ----|----  
+      if (!pr[:invoiced_operator_value].blank? && pr[:logged_operator_value].blank?)
+        flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
+        
+      elsif (!pr[:logged_operator_value].blank? && pr[:invoiced_operator_value].blank?)
+         flash[:error] = 'Please Enter Logged Hours To Fetch Results!'
+      elsif (!pr[:invoiced_operator_value].blank? && !pr[:logged_operator_value].blank?)
+        flash[:error] = 'Please Enter Invoiced And Logged Hours To Fetch Results!'
+      else
+        flash[:error] = 'No Results For Empty Filters ----|----  
                          Please Choose Atleast One Report Generation Parameter!'
-      redirect_to action: :index            
+      end   
+        respond_to do |format|
+          format.html {redirect_to action: :index}
+          format.json { render json: "No result founds", :status => :unprocessable_entity }
+          format.all {render :nothing => true, :status => :unprocessable_entity}
+          
+        end
+        
     else
       
      #1
@@ -43,11 +56,15 @@ class TimeInvoiceReportsController < ApplicationController
      #redirect_to resets values but does not give error on refresh
      
       time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
-      error_message = time_invoice_report.validate
-      if !error_message.nil?  
-        flash[:error] = error_message
+      
+      if !time_invoice_report.valid?
+        flash[:error] = time_invoice_report.errors.full_messages.join("\n")
         #redirect_to action: :index
-        render 'index'
+        respond_to do |format|
+          format.html {render 'index'}
+          format.json { render json: time_invoice_report.errors, :status => :unprocessable_entity }
+          format.all {render :nothing => true, :status => :unprocessable_entity}
+        end
       else
         
       @time_invoice_details = time_invoice_report.generate
@@ -96,7 +113,7 @@ class TimeInvoiceReportsController < ApplicationController
   def generate_csv(time_invoice_details)
     
     
-    FCSV.generate(:col_sep => ' ') do |csv|
+    FCSV.generate(:col_sep => ',') do |csv|
       # csv header fields
       csv  << TimeInvoiceDetail.column_names
       

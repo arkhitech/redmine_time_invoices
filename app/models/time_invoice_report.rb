@@ -3,10 +3,11 @@ class TimeInvoiceReport
   
   unloadable
   attr_accessor :report_options
-  validates :start_date_from, :date => true,:allow_nil => true
-  validates :start_date_to, :date => true,:allow_nil => true
-  validates :end_date_from, :date => true,:allow_nil => true
-  validates :end_date_to, :date => true,:allow_nil => true
+  validates :start_date_from, :allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
+  validates :start_date_to, :allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
+  validates :end_date_from, :allow_blank=> true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
+  validates :end_date_to,:allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
+  validate  :validate_date_pairs
   
   attr_accessor :start_date_from, :start_date_to,:end_date_from,:end_date_to
   
@@ -20,17 +21,17 @@ class TimeInvoiceReport
 
   # returns nil if validation completes
   # returns an error string or array of string when validation fails
-  def validate
+  def validate_date_pairs
     if @report_options[:start_date_from] > @report_options[:start_date_to] && 
         @report_options[:end_date_from] <= @report_options[:end_date_to] && !report_options[:start_date_to].blank?
-      return 'For Start Date :From Date Cannot Be smaller than To Date ' 
+      errors.add(:start_date, 'From Date Cannot Be smaller than To Date') 
     else if  @report_options[:end_date_from] > @report_options[:end_date_to] &&
           @report_options[:start_date_from] <= @report_options[:start_date_to] && !report_options[:end_date_to].blank?
-        return 'For End Date :From Cannot Be Smaller than To Date '
+        errors.add(:end_date, 'From Cannot Be Smaller than To Date')
       else if @report_options[:start_date_from] > @report_options[:start_date_to] &&
             @report_options[:end_date_from] > @report_options[:end_date_to] &&
             !report_options[:start_date_to].blank? && !report_options[:end_date_to].blank?
-            return 'From Dates Cannot Be Smaller than To Dates'
+            errors.add(:date, 'From Dates Cannot Be Smaller than To Dates')
         end
       end
     end
@@ -134,7 +135,8 @@ selected_groups = @report_options[:groups]
         
 #Invoiced Time==================================================================
         
-    unless @report_options[:invoiced_time_compared_hours].blank?
+    unless @report_options[:invoiced_time_compared_hours].blank? && 
+                            @report_options[:invoiced_time_compared_hours].empty?
           
        ActiveRecord::Base.logger.debug "#{'%'*80}\nInside Time Invoice Report 
                     {@report_options[:invoiced_time_compared_hours]}\n#{'*'*80}#"
