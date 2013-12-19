@@ -1,10 +1,16 @@
-#require 'redmine'
+require 'redmine'
 Mime::SET << Mime::PDF unless Mime::SET.include?(Mime::PDF)
 Mime::SET << Mime::ATOM unless Mime::SET.include?(Mime::ATOM)
 Rails.configuration.middleware.use "PDFKit::Middleware", :print_media_type => true
 Rails.configuration.serve_static_assets = true
 #The above three lines are setting Redmine level settings for the plug in
 
+Rails.configuration.to_prepare do
+  require_dependency 'user'
+  User.send(:include, RedmineTimeInvoices::Patches::UserAndProjectPatch)
+  require_dependency 'project'
+  Project.send(:include, RedmineTimeInvoices::Patches::UserAndProjectPatch)
+end
 Redmine::Plugin.register :redmine_time_invoices do
   name 'Redmine Time Invoices'
   author 'Arkhitech'
