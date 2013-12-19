@@ -49,9 +49,6 @@ GEM
       lumberjack (~> 1.0)
       pry (>= 0.9.12)
       thor (>= 0.18.1)
-    guard-rspec (2.5.0)
-      guard (>= 1.1)
-      rspec (~> 2.11)
     guard-spork (1.5.0)
       childprocess (>= 0.2.3)
       guard (>= 1.1)
@@ -137,21 +134,18 @@ GEM
     whenever (0.8.4)
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
-    wicked_pdf (0.9.8)
-      rails
     wkhtmltopdf-binary (0.9.9.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  childprocess (= 0.3.6)
+  childprocess
   factory_girl_rails
-  guard-rspec (= 2.5.0)
-  guard-spork (= 1.5.0)
+  guard-spork
   pdfkit
-  rspec-rails (>= 2.13.1)
-  spork-rails (= 4.0.0)
-  whenever (>= 0.8.4)
-  wicked_pdf
+  rspec
+  rspec-rails
+  spork-rails
+  whenever
   wkhtmltopdf-binary
