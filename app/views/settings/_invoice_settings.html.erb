@@ -1,9 +1,12 @@
-<table>
-  <tr align="left">
-    <th>Time Invoice Supervisor</th>
-    <td>
-      <%= select_tag('settings[group_mail]', options_from_collection_for_select(Group.all, :id, :name, 
-          settings['group_mail']), multiple: true) %>
-    </td>
-  </tr>
-</table>
+<p>
+  <label for="settings_mail">Time Invoice Supervisor</label>
+  <%= text_field_tag 'settings[group_mail]', settings['group_mail'] %>
+  
+  <br/>
+  <% if  Redmine::Plugin.installed?(:redmine_contacts_invoices) %>
+    <label>Generate Billing Invoice</label>
+    <%= check_box_tag 'settings[billing_invoice]', true, settings['billing_invoice'] %>
+  <% else %>
+    <br/>If You install RedmineCRM Invoice Plugin, then billing invoice generation will be automatic.
+  <% end %>
+</p>

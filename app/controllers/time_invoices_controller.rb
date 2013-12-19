@@ -2,6 +2,8 @@ class TimeInvoicesController < ApplicationController
   unloadable
   before_filter :init_project
 
+  include ContactsHelper
+  
   def init_project
     @project = params[:project_id] && Project.find(params[:project_id])
   end
