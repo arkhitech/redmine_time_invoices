@@ -1,7 +1,8 @@
 <p>
-  <label for="settings_mail">Time Invoice Supervisor</label>
-  <%= text_field_tag 'settings[group_mail]', settings['group_mail'] %>
-  
+  <label for="settings_mail">Time Invoice Supervisor</label>    
+  <%= select_tag('settings[group_mail]', options_from_collection_for_select(Group.all, :id, :name, 
+          settings['group_mail']), 
+        multiple: true) %>  
   <br/>
   <% if  Redmine::Plugin.installed?(:redmine_contacts_invoices) %>
     <label>Generate Billing Invoice</label>
