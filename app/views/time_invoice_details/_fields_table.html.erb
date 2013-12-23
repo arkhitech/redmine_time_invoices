@@ -13,7 +13,7 @@
       <%=f.hidden_field :user_id%>
     </td>
     <td>
-      <%=  f.text_field :logged_hours, disabled: true%>
+      <%=  f.text_field :logged_hours, disabled: true, default: f.object.logged_hours%>
     </td>
     <td><%=  f.text_field :invoiced_quantity%></td>
     <td><%=  f.select :invoiced_unit, 
