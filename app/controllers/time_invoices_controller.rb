@@ -44,7 +44,7 @@ class TimeInvoicesController < ApplicationController
   def create
     @time_invoice = TimeInvoice.new(params[:time_invoice])
     if @time_invoice.save
-      redirect_to @time_invoice
+      redirect_to @time_invoice, :flash=>{:notice=> 'Time invoice was successfully created! Go to edit page to enter details of activity.'}
     else
       unless params[:project_id].nil?
         render 'new'
