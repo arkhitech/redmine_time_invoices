@@ -75,7 +75,7 @@ class TimeInvoicesController < ApplicationController
           create!(number: "Billing Invoice for #{Project.find(@time_invoice.project_id).name}",
           invoice_date: DateTime.now, project_id: @time_invoice.project_id, status_id: 1)
         billing_invoice.lines.build(invoice_id: billing_invoice.id, 
-          quantity: TimeInvoice.find(@time_invoice.id).time_invoice_details.sum(:invoiced_quantity), description: "Billing Invoice")        
+          quantity: @time_invoice.time_invoice_details.sum(:invoiced_quantity), description: "Billing Invoice")        
         billing_invoice.save!
       end
       redirect_to @time_invoice
