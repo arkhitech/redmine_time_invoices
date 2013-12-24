@@ -1,4 +1,10 @@
-<strong><%= "#{@time_invoice.submitted_by.name}"%></strong> has submitted <strong><%= "Invoice: #{@time_invoice.id}"%></strong> with <strong><%= "Date Range: #{@time_invoice.start_date} - #{@time_invoice.end_date}"%></strong> for <strong><%= "Project: #{@time_invoice.project}"%></strong>
+<strong><%=link_to "#{@time_invoice.submitted_by.name}", user_url(User.find(@time_invoice.submitted_by))%></strong>
+has submitted 
+<strong><%= "Invoice##{@time_invoice.id}"%></strong>
+with 
+<strong><%= "Date Range: #{@time_invoice.start_date} - #{@time_invoice.end_date}"%></strong>
+for 
+<strong><%= link_to "Project: #{@time_invoice.project}", project_url(Project.find(@time_invoice.project.id))%></strong>
 <br/>
 <strong><%='Remarks:'%></strong><%=@time_invoice.comment%>
 <table border="1">
