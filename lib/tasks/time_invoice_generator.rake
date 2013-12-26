@@ -6,7 +6,7 @@ namespace :redmine_time_invoices do
     enabled_modules = EnabledModule.joins(:project).where(name: 'time_invoices', 
       "#{Project.table_name}.status" => Project::STATUS_ACTIVE)
   
-    start_date = Date.today.beginning_of_month#-1.month
+    start_date = Date.today.beginning_of_month-1.month
     end_date = start_date.end_of_month
    
     enabled_modules.each do |enabled_module|

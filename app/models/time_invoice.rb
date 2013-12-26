@@ -39,19 +39,18 @@ class TimeInvoice < ActiveRecord::Base
       users=[]
       members = self.project.users
       members.each do |member|
-        if User.exists?(member.user_id)
-          users[] << User.find(member.user_id)
+        if User.exists?(member.id)
+          users << User.find(member.id)
         else
-          users[] << Group.find(member.user_id).users
+          users << Group.find(member.id).users
         end
-        users=user.flatten.uniq
-        users.delete_if{|user| user.allowed_to?(:submit_invoiceable_time,self.project)}
-        unless users.nil?
-          users.each {|user| TimeInvoiceMailer.
-              time_invoice_notification_mail(user,self).deliver }
-        else
-          logger.debug "Project: #{enabled_module.project.name} does not have any member with submit invoice permission"
-        end
+      end
+      users=users.flatten.uniq
+      users.delete_if{|user| !user.allowed_to?(:submit_invoiceable_time,self.project)}
+      unless users.blank?        
+        users.each {|user| TimeInvoiceMailer.
+            time_invoice_notification_mail(user,self).deliver 
+        }
       end
     end
   end
