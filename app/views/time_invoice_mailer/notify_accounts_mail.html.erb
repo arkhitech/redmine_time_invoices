@@ -1,5 +1,11 @@
- <%=link_to("#{@time_invoice.project}#{@time_invoice.start_date} - #{@time_invoice.end_date}", {controller: 'time_invoices', action: 'show',id: @time_invoice,only_path: false})%>
-<strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong>
+<strong><%=link_to "#{@time_invoice.submitted_by.name}", user_url(User.find(@time_invoice.submitted_by))%></strong>
+has submitted 
+<strong><%= "Invoice##{@time_invoice.id}"%></strong>
+with 
+<strong><%= "Date Range: #{@time_invoice.start_date} - #{@time_invoice.end_date}"%></strong>
+for 
+<strong><%= link_to "Project: #{@time_invoice.project}", project_url(Project.find(@time_invoice.project.id))%></strong>
+<br/>
 <strong><%='Remarks:'%></strong><%=@time_invoice.comment%>
 <table border="1">
   <%time_invoice_detail=@time_invoice.time_invoice_details%>
