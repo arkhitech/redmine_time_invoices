@@ -1,4 +1,4 @@
-<%= form_for [@project,@time_invoice] do |f|%>
+<%= form_for [@project, @time_invoice] do |f|%>
   <% if @time_invoice.errors.any? %>
     <% flash.now[:error] = "#{pluralize(@time_invoice.errors.count, "error")} prohibited
     this post from being updated: <br/>" %>
