@@ -7,9 +7,9 @@ Rails.configuration.serve_static_assets = true
 
 Rails.configuration.to_prepare do
   require_dependency 'user'
-  User.send(:include, RedmineTimeInvoices::Patches::UserAndProjectPatch)
+  User.send(:include, RedmineTimeInvoices::Patches::UserPatch)
   require_dependency 'project'
-  Project.send(:include, RedmineTimeInvoices::Patches::UserAndProjectPatch)
+  Project.send(:include, RedmineTimeInvoices::Patches::ProjectPatch)
 end
 Redmine::Plugin.register :redmine_time_invoices do
   name 'Redmine Time Invoices'
