@@ -4,23 +4,25 @@ has submitted
 with 
 <strong><%= "Date Range: #{@time_invoice.start_date} - #{@time_invoice.end_date}"%></strong>
 for 
-<strong><%= link_to "Project: #{@time_invoice.project}", project_url(Project.find(@time_invoice.project.id))%></strong>
+<strong><%= link_to "#{@time_invoice.project}", project_url(Project.find(@time_invoice.project.id))%></strong>
 <br/>
 <strong><%='Remarks:'%></strong><%=@time_invoice.comment%>
-<table border="1">
-  <%time_invoice_detail=@time_invoice.time_invoice_details%>
-  <tr>
-    <th>User</th>
-    <th>Logged hours</th>
-    <th>Invoiced hours</th>
-    <th>comments</th>
-  </tr>
-  <%time_invoice_detail.each do |details|%>
+<% unless @time_invoice.time_invoice_details.blank? %>
+  <table border="1">
+    <%time_invoice_detail=@time_invoice.time_invoice_details%>
     <tr>
-      <td><%=details.user.name%></td>
-      <td><%=details.logged_hours%></td>
-      <td><%=details.invoiced_hours%></td>
-      <td><%=details.comment%></td>
+      <th>User</th>
+      <th>Logged hours</th>
+      <th>Invoiced hours</th>
+      <th>comments</th>
     </tr>
-  <%end%>
-</table>
+    <%time_invoice_detail.each do |details|%>
+      <tr>
+        <td><%=details.user.name%></td>
+        <td><%=details.logged_hours%></td>
+        <td><%=details.invoiced_hours%></td>
+        <td><%=details.comment%></td>
+      </tr>
+    <%end%>
+  </table>
+<% end %>
