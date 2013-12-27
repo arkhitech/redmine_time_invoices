@@ -4,7 +4,7 @@ class TimeInvoice < ActiveRecord::Base
   has_many :time_invoice_details, dependent: :destroy
   belongs_to :submitted_by, class_name: User.name   
   accepts_nested_attributes_for :time_invoice_details
-  validate :correctness_of_date, :overlapping
+  validate :correctness_of_date, :overlapping, :on=> :create
   after_save :notify_the_concerned_person
 
   
@@ -73,10 +73,7 @@ class TimeInvoice < ActiveRecord::Base
 
     
     if time_invoices.count>0 
-      if time_invoices.count!=1 && !array_ids.include?(id)
-        errors.add(:Overlapping, ":Time invoices cannot overlap,Change the date range")
-      end
-        
+      errors.add(:Overlapping, ":Time invoices cannot overlap,Change the date range")
     end
   end
 end
