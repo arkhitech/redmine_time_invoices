@@ -27,8 +27,6 @@ class TimeInvoicesController < ApplicationController
   end
 
   def index
-    #@project_id=params[:project_id]
-    #project = Project.find(params[:project_id])
     return deny_access unless User.current.allowed_to?(:submit_invoiceable_time , @project) || 
       User.current.allowed_to?(:generate_time_invoices , @project)
     
@@ -47,7 +45,12 @@ class TimeInvoicesController < ApplicationController
   def create
     @time_invoice = TimeInvoice.new(params[:time_invoice])
     if @time_invoice.save
-      redirect_to :indexall, :flash=>{:notice=> 'Time invoice has been successfully created!'}
+      unless params[:project_id].nil?
+        redirect_to :controller => 'time_invoices', :action=> 'index',
+          :project_id=>params[:project_id]
+      else
+        redirect_to :indexall, :flash=>{:notice=> 'Time invoice has been successfully created!'}
+      end
     else
       unless params[:project_id].nil?
         init_project
@@ -83,9 +86,6 @@ class TimeInvoicesController < ApplicationController
           description: "Billing Invoice")        
         billing_invoice.save!
       end
-      puts '*'*100
-      puts params[:project_id]
-      init_project
       redirect_to :controller => 'time_invoices', :action=> 'show',:id=>@time_invoice.id,
         :project_id=>params[:project_id]
     else
@@ -97,9 +97,6 @@ class TimeInvoicesController < ApplicationController
   
   end
   def show
-    puts 'This is the SHOW'
-    puts '*'*100
-    puts params[:project_id]
     @time_invoice = TimeInvoice.find(params[:id])
     return deny_access unless User.current.allowed_to?(:submit_invoiceable_time , @time_invoice.project) || 
       User.current.allowed_to?(:generate_time_invoices , @time_invoice.project)
