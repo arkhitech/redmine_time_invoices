@@ -5,15 +5,15 @@ class TimeInvoiceReportsController < ApplicationController
   include TimeInvoiceReportsHelper
 
   def index
-    @all_users = User.active
-    @groups= Group.all
+    @all_users = User.active.sort_by{|e| e[:firstname]}
+    @groups= Group.all.sort_by{|e| e[:firstname]}
   end
   
  
   def report
 
-    @all_users = User.active
-    @groups= Group.all
+    @all_users = User.active.sort_by{|e| e[:firstname]}
+    @groups= Group.all.sort_by{|e| e[:firstname]}
      
     #Making a model reference and assigning if to time_invoice_report variable |
     # call initialize in model
