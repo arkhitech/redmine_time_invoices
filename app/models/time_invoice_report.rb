@@ -31,7 +31,7 @@ class TimeInvoiceReport
       else if @report_options[:start_date_from] > @report_options[:start_date_to] &&
             @report_options[:end_date_from] > @report_options[:end_date_to] &&
             !report_options[:start_date_to].blank? && !report_options[:end_date_to].blank?
-            errors.add(:date, 'From Dates Cannot Be Smaller than To Dates')
+            errors.add(:date, 'From Dates Cannot Be Smaller than To Date')
         end
       end
     end

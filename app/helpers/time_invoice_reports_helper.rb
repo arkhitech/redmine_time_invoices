@@ -13,7 +13,7 @@ module TimeInvoiceReportsHelper
  
 
   def select_group_options(selected_groups_from_view)
-    available_groups = Group.all
+    available_groups = Group.all.sort_by{|e| e[:firstname]}
     selected_groups = selected_groups_from_view
     options_from_collection_for_select(available_groups, :id, :name, :selected => selected_groups)
   end
@@ -32,6 +32,6 @@ def eligible_to_submit_invoices_users
 #        user_ids).group("#{User.table_name}.id")
 #    end
 #  end
-   User.active.all
+   User.active.all.sort_by{|e| e[:firstname]}
    end
 end
