@@ -144,7 +144,7 @@ selected_groups = @report_options[:groups]
           
       if invoiced_operator_value =='<'
         sum_invoiced_time_users = @time_invoice_details.dup
-        sum_invoiced_time_users = sum_invoiced_time_users.group(:user_id).
+        sum_invoiced_time_users = sum_invoiced_time_users.select(:user_id).group(:user_id).
           having('SUM(invoiced_hours) < ?', @report_options[:invoiced_time_compared_hours].to_i)
 
         @time_invoice_details = @time_invoice_details.
@@ -154,7 +154,7 @@ selected_groups = @report_options[:groups]
           
       if invoiced_operator_value =='>'
         sum_invoiced_time_users = @time_invoice_details.dup
-        sum_invoiced_time_users = sum_invoiced_time_users.group(:user_id).
+        sum_invoiced_time_users = sum_invoiced_time_users.select(:user_id).group(:user_id).
           having('SUM(invoiced_hours) > ?', @report_options[:invoiced_time_compared_hours].to_i)
             
         @time_invoice_details = @time_invoice_details.where(user_id: sum_invoiced_time_users.collect{|it| it.user_id})          
@@ -174,7 +174,7 @@ selected_groups = @report_options[:groups]
           
       if logged_operator_value =='<'
         sum_logged_time_users = @time_invoice_details.dup
-        sum_logged_time_users = sum_logged_time_users.group(:user_id).
+        sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
           having('SUM(logged_hours) < ?', @report_options[:logged_time_compared_hours].to_i)
          ActiveRecord::Base.logger.debug "Got logged_time_users: #{sum_logged_time_users.inspect}"
         @time_invoice_details = @time_invoice_details.
@@ -184,7 +184,7 @@ selected_groups = @report_options[:groups]
           
       if logged_operator_value =='>'
         sum_logged_time_users = @time_invoice_details.dup
-        sum_logged_time_users = sum_logged_time_users.group(:user_id).
+        sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
           having('SUM(logged_hours) > ?', @report_options[:logged_time_compared_hours].to_i)
             
         @time_invoice_details = @time_invoice_details.where(user_id: sum_logged_time_users.collect{|it| it.user_id})          
