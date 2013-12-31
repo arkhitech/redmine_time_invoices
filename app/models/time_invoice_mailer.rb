@@ -14,17 +14,20 @@ class TimeInvoiceMailer < ActionMailer::Base
     @time_invoice=time_invoice
 
     group_users ||= begin
-      groups = Setting.plugin_redmine_time_invoices['mail']
+      groups = Setting.plugin_redmine_time_invoices['group_mail']
       if groups.present?
         User.active.joins(:groups).
           where("#{User.table_name_prefix}groups_users#{User.table_name_suffix}.id" => groups)      
       end
     end
 
+    group_users_emails = []
     unless group_users.nil?
-      group_users.each do |user|        
-        mail(to: user.mail, subject: "TimeInvoice available for submission #{@time_invoice.project}")
+      group_users.each do |user|
+        group_users_emails << user.mail
       end
-    end 
+    end
+   
+    mail(to: group_users_emails, subject: "TimeInvoice available for submission #{@time_invoice.project}")
   end
 end

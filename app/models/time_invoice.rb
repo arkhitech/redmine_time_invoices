@@ -4,7 +4,7 @@ class TimeInvoice < ActiveRecord::Base
   has_many :time_invoice_details, dependent: :destroy
   belongs_to :submitted_by, class_name: User.name   
   accepts_nested_attributes_for :time_invoice_details
-  validate :correctness_of_date, :overlapping
+  validate :correctness_of_date, :overlapping, :on=> :create
   after_save :notify_the_concerned_person
 
   
@@ -34,6 +34,26 @@ class TimeInvoice < ActiveRecord::Base
   def notify_the_concerned_person
     unless self.submitted_by.nil?
       TimeInvoiceMailer.notify_accounts_mail(self).deliver
+    
+    else
+      users=[]
+      members = self.project.users
+      members.each do |member|
+        if User.exists?(member.id)
+          users << User.find(member.id)
+        else
+          users << Group.find(member.id).users
+        end
+      end
+      users = users.flatten.uniq
+      users.delete_if{|user| !user.allowed_to?(:submit_invoiceable_time,self.project)}
+      unless users.nil?
+        users.each {|user| TimeInvoiceMailer.
+            time_invoice_notification_mail(user,self).deliver }
+      else
+        logger.debug "Project: #{enabled_module.project.name} does not have any member with submit invoice permission"
+      end
+      
     end
   end
   private :notify_the_concerned_person
@@ -41,7 +61,7 @@ class TimeInvoice < ActiveRecord::Base
   def correctness_of_date
     if start_date.present? && end_date.present? && start_date > end_date
       errors.add(:Date_format, ": 'end date' less than 'start date' is not permitted")
-      else
+    else
       errors.add(:start_date, "is required") if !start_date.present?
       errors.add(:end_date, "is required") if !start_date.present? 
     end
@@ -53,10 +73,7 @@ class TimeInvoice < ActiveRecord::Base
 
     
     if time_invoices.count>0 
-      if time_invoices.count!=1 && !array_ids.include?(id)
       errors.add(:Overlapping, ":Time invoices cannot overlap,Change the date range")
-      end
-        
     end
   end
 end

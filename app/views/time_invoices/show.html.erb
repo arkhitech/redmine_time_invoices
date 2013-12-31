@@ -3,8 +3,10 @@
 <%unless @time_invoice.submitted_by.nil?%>
 <strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong><br/>
 <%end%>
+<%unless @time_invoice.comment.blank?%>
 <strong><%='Remarks:'%><br/></strong><%=@time_invoice.comment%><br/>
-<%if @time_invoice.time_invoice_details%>
+<%end%>
+<%unless @time_invoice.time_invoice_details.empty?%>
 <table border="1">
   <%time_invoice_detail=@time_invoice.time_invoice_details%>
   <tr>
