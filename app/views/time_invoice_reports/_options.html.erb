@@ -1,6 +1,7 @@
 <%=  form_tag controller: 'time_invoice_reports', action: 'report' do %>
-  <%= stylesheet_link_tag "table" %>
-
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'table', :plugin => 'redmine_time_invoices' %>
+<% end %>
   <!-- OLD START DATE ----------------------------------------------------------->
   <div class="table-class">
     <p><%= link_to 'Back', :controller=>'time_invoices',:action=>'indexall'%><br/></p>
@@ -14,7 +15,7 @@
       </span>
 
 
-      <span style="margin-left: 100px;"><strong>To</strong> </span>
+      <span style="margin-left: 50px;"><strong>To</strong> </span>
       <span> <%= text_field_tag "time_invoice_report[start_date_to]",
           params[:time_invoice_report] && params[:time_invoice_report][:start_date_to] %> 
         <%= calendar_for 'time_invoice_report_start_date_to' %>
@@ -24,7 +25,7 @@
   <br/> <br/>
 
   <!-- Added END DATE-------------------------------------------------------------------------------------------------------------------------- -->
-  <div class="table-class">
+  <div class="table-class-end-date">
 
     <h4>End Date Range</h4>
 
@@ -47,42 +48,37 @@
 
   <!-- USER AND GROUP FILTERS-------------------------------------------------------------------------------------------------------------------------- --> 
   <div class="table-class">
-    <h4>User And Group Filters</h4>
+      <h4>User And Group Filters</h4>
+  
+      <h4 style="float: left;">User</h4>
+      <h4 style="float: left; margin-left: 120px;">Group</h4>
+      <h4 style="float: left; margin-left: 150px">Submitted By User</h4>
+  
+      <div align="left" style="margin-top: 40px;">
+  
+        <span style="float: left;">
+          <% selected_users=params[:time_invoice_report] && params[:time_invoice_report][:selected_users]%>
+          <%= select_tag "time_invoice_report[selected_users][]", 
+            options_from_collection_for_select(@all_users, :id, :name,selected_users),multiple: true%>
+        </span> 
+        <span style="float: left;  margin-left: 35px;">
+          <% selected_groups=params[:time_invoice_report] && params[:time_invoice_report][:groups]%>
+          <%= select_tag "time_invoice_report[groups][]",
+            select_group_options(selected_groups), multiple: true %>
+        </span>
+        <span style="float: left;  margin-left: 50px;">
+          <%= select_tag("time_invoice_report[submitted_by_user]",
+            submitted_by_user_options(params[:time_invoice_report] &&
+                params[:time_invoice_report][:submitted_by_user]),:include_blank => true) %> 
+  
+        </span>
+      </div>
+    </div>
+  
+  <br/><br/>
 
-
-    <span style="float: left;"> <h4>User</h4></span> 
-    <span style="float: left;  margin-left: 160px;"><h4>Group</h4></span>
-    <span style="float: left;  margin-left: 100px;"><h4>Submitted By User</h4></span>
-
-  </div>
-
-  <div align="left" style="margin-top: 40px;">
-    <span> 
-      <% selected_users=params[:time_invoice_report] && params[:time_invoice_report][:selected_users]%>
-      <%= select_tag "time_invoice_report[selected_users][]", 
-        options_from_collection_for_select(@all_users, :id, :name,selected_users),multiple: true%>
-    </span>
-
-    <span  style="margin-left: 40px;">
-      <% selected_groups=params[:time_invoice_report] && params[:time_invoice_report][:groups]%>
-      <%= select_tag "time_invoice_report[groups][]",
-        select_group_options(selected_groups), multiple: true %>
-    </span>
-
-    <span style="margin-left: 40px; "></span>
-    <span > <!-- From User_Leaves_Reports | Use permissions in helpers **-->
-      <%= select_tag("time_invoice_report[submitted_by_user]",
-        submitted_by_user_options(params[:time_invoice_report] &&
-            params[:time_invoice_report][:submitted_by_user]),:include_blank => true) %>
-    </span>
-
-  </div>
-
-
-  <br/>
-
-  <div>
-    <p align="left"><h4>Time Filters</h4></p>
+  <div class="table-class-end-date">
+    <h4>Time Filters</h4>
   <h4> Total Invoiced Time is</h4>  
 
   <!-- Total Invoiced Time: Details of Time Invoices where the sum of invoiced
@@ -113,8 +109,11 @@
       params[:time_invoice_report] && params[:time_invoice_report][:logged_time_compared_hours] %>
   </span> 
   <span><b> Hours </b></span>
-  <br/><br/>
-  <%= submit_tag 'Apply' %>
+  </div>
+    <br/><br/>
+    
+  <div class="table-submit-btn">
+   <%= submit_tag 'Apply' %> 
+    
   </div>
 <% end %>
-

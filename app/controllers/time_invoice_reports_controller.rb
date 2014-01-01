@@ -7,13 +7,14 @@ class TimeInvoiceReportsController < ApplicationController
   def index
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
+    @show_options = true
   end
-  
  
   def report
 
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
+    @show_options = true
      
     #Making a model reference and assigning if to time_invoice_report variable |
     # call initialize in model
@@ -73,9 +74,11 @@ class TimeInvoiceReportsController < ApplicationController
       flash[:error] = 'No Results Found!' if @time_invoice_details.blank?
       
 #-------------------------------------------------------------------------------     
-     
       respond_to do |format|
-        format.html { render :template => 'time_invoice_reports/report',
+        format.html { 
+          @show_options = false if request.env["Rack-Middleware-PDFKit"] == "true"            
+          
+          render :template => 'time_invoice_reports/report',
           :layout => !request.xhr? }
         format.api  {
           TimeInvoiceReport.load_visible_relations

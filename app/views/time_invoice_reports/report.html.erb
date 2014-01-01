@@ -1,7 +1,13 @@
-<h2> Time Invoices Report Results </h2>
 
 <% logger.debug "#{'*'*80}\nChecking value of time invoices #{@time_invoice_details}\n#{'*'*80}"%>
-<% render 'options' %><br/><br/>
+<%if @show_options%>
+<%= render 'options' %><br/><br/>
+<%end%>
+
+<br/><br/><br/><br/><br/><br/>
+<div class="table-submit-btn">
+<h2> Time Invoices Report Results </h2>
+
 
 <% unless @time_invoice_details.nil? ||  @time_invoice_details.empty? || @time_invoice_details.blank?%> <!--  Previously user_time_invoices aye ga -->
 
@@ -62,7 +68,7 @@
     </tbody> 
   </table>
 
-
+</div>
 
 <% end %>  
 
