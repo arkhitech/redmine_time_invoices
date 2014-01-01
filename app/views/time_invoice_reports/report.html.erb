@@ -6,11 +6,10 @@
 
 <br/><br/><br/><br/><br/><br/>
 <div class="table-submit-btn">
-<h2> Time Invoices Report Results </h2>
-
 
 <% unless @time_invoice_details.nil? ||  @time_invoice_details.empty? || @time_invoice_details.blank?%> <!--  Previously user_time_invoices aye ga -->
 
+ <h2> Time Invoices Report Results </h2>
   <table border="1">
 
     <tbody>
@@ -21,7 +20,10 @@
         <th align="center">Invoice Submitter</th>
         <th align="center">Project Title</th>
         <th align="center">Remarks</th>
-        <th align="center">Action</th>
+        <th align="center">Invoice User</th>
+        <th align="center">Logged Hours</th>
+        <th align="center">Invoiced Hours</th>
+        <%#*<th align="center">Action</th>%>
       </tr>
 
 
@@ -33,19 +35,22 @@
           <td align="center"><%= time_invoice.start_date %></td>
           <td align="center"><%= time_invoice.end_date %></td>
           <td align="center"><%=  time_invoice.submitted_by && time_invoice.submitted_by.name%></td>
-          <td align="center"><%= time_invoice.project.name %></td>
+          <td align="center"><%= link_to time_invoice.project.name,project_path(time_invoice.project.id) %></td>
           <td align="center"><%= time_invoice.comment %></td>
+          <td align="center"><%= link_to time_invoice_details.user,user_path(time_invoice_details.user.id) %></td>
+          <td align="center"><%= time_invoice_details.logged_hours %></td>
+          <td align="center"><%= time_invoice_details.invoiced_hours%></td>
 
 
-          <%if time_invoice.submitted_by %>
-            <td align="center">
-              <%=  link_to 'View', time_invoice%>
-            </td>
-          <%else%>
-            <td align="center">
-              <%=  link_to 'Edit/Submit', edit_time_invoice_path(time_invoice) %>
-            </td>
-          <%end%>
+          <%#if time_invoice.submitted_by %>
+            <%#*<td align="center">%>
+              <%#=  link_to 'View', time_invoice%>
+            <%#*</td>%>
+          <%#else%>
+            <%#*<td align="center">%>
+              <%#=  link_to 'Edit/Submit', edit_time_invoice_path(time_invoice) %>
+            <%#*</td>%>
+          <%#end%>
 
         </tr>
 
@@ -54,7 +59,7 @@
         <% end%> 
         <!-- Generate Reports in SCV, pdf, atom Issue Display page-->     
         <tr>
-          <td colspan="7" align="right">
+          <td colspan="10" align="right">
             <% other_formats_links do |f| %>
               <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
               <%= f.link_to 'CSV', :url => params %>
