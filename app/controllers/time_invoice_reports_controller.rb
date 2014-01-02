@@ -95,31 +95,6 @@ class TimeInvoiceReportsController < ApplicationController
     end
     
     #else all is good
-    
-#    if pr.blank? && (pr[:start_date_from].blank? &&
-#        pr[:start_date_to].blank? &&
-#        pr[:end_date_from].blank? &&
-#        pr[:end_date_to].blank? &&
-#        pr[:selected_users].blank? &&
-#        pr[:groups].blank? &&
-#        pr[:submitted_by_user].blank? &&
-#        pr[:invoiced_time_compared_hours].blank? &&
-#        pr[:logged_time_compared_hours].blank? &&
-#        pr[:projects].blank?)
-#    
-#      if (!pr[:invoiced_operator_value].blank? && pr[:logged_operator_value].blank?)
-#        flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
-#        
-#      elsif (!pr[:logged_operator_value].blank? && pr[:invoiced_operator_value].blank?)
-#         flash[:error] = 'Please Enter Logged Hours To Fetch Results!'
-#      elsif (!pr[:invoiced_operator_value].blank? && !pr[:logged_operator_value].blank?)
-#        flash[:error] = 'Please Enter Invoiced And Logged Hours To Fetch Results!'
-#      else
-#        flash[:error] = 'No Results For Empty Filters ----|----  
-#                         Please Choose Atleast One Report Generation Parameter!#'
-#      end   
-#        
-#    else
       
      #1
      #render retains values but if refreshed with URL : gives error
