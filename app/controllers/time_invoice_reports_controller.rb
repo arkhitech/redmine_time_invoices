@@ -21,37 +21,105 @@ class TimeInvoiceReportsController < ApplicationController
     #OR if pr[:all].blank?
         
     pr=params[:time_invoice_report]
-    
-    if pr.nil? || (pr[:start_date_from].blank? &&
-        pr[:start_date_to].blank? &&
-        pr[:end_date_from].blank? &&
-        pr[:end_date_to].blank? &&
-        pr[:selected_users].blank? &&
-        pr[:groups].blank? &&
-        pr[:submitted_by_user].blank? &&
-        pr[:invoiced_time_compared_hours].blank? &&
-        pr[:logged_time_compared_hours].blank? &&
-        pr[:projects].blank?)
-    
-      if (!pr[:invoiced_operator_value].blank? && pr[:logged_operator_value].blank?)
-        flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
-        
-      elsif (!pr[:logged_operator_value].blank? && pr[:invoiced_operator_value].blank?)
-         flash[:error] = 'Please Enter Logged Hours To Fetch Results!'
-      elsif (!pr[:invoiced_operator_value].blank? && !pr[:logged_operator_value].blank?)
-        flash[:error] = 'Please Enter Invoiced And Logged Hours To Fetch Results!'
-      else
-        flash[:error] = 'No Results For Empty Filters ----|----  
+    all_ok = true
+    if pr.blank?
+      flash[:error] = 'No Results For Empty Filters ----|----  
                          Please Choose Atleast One Report Generation Parameter!'
-      end   
-        respond_to do |format|
-          format.html {redirect_to action: :index}
-          format.json { render json: "No result founds", :status => :unprocessable_entity }
-          format.all {render :nothing => true, :status => :unprocessable_entity}
-          
-        end
+      all_ok = false
+    elsif !pr[:invoiced_operator_value].blank? && !pr[:logged_operator_value].blank?
+      #check for both errors
+      if pr[:invoiced_time_compared_hours].blank? && pr[:logged_time_compared_hours].blank?
+        flash[:error] = 'Please Enter Invoiced And Logged Hours To Fetch Results!'
+         all_ok = false
+      elsif pr[:invoiced_time_compared_hours].blank?
+        flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
+         all_ok = false
+      elsif pr[:logged_time_compared_hours].blank?          
+        flash[:error] = 'Please Enter Logged Hours To Fetch Results!'
+         all_ok = false
+      end
+    elsif !pr[:invoiced_operator_value].blank? && pr[:invoiced_time_compared_hours].blank?
+      flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
+      all_ok = false      
+    elsif !pr[:logged_operator_value].blank? && pr[:logged_time_compared_hours].blank?
+      flash[:error] = 'Please Enter Logged Hours To Fetch Results!'
+      all_ok = false
+      
+    #---------------------------------------------------------------------------
+    
+    elsif !pr[:invoiced_time_compared_hours].blank? && !pr[:logged_time_compared_hours].blank?
+      #check for both errors
+      if pr[:invoiced_operator_value].blank? && pr[:logged_operator_value].blank?
+        flash[:error] = 'Please Enter Invoiced And Logged Operators To Fetch Results!'
+         all_ok = false
+      elsif pr[:invoiced_operator_value].blank?
+        flash[:error] = 'Please Enter Invoiced Operator  To Fetch Results'
+         all_ok = false
+      elsif pr[:logged_operator_value].blank?          
+        flash[:error] = 'Please Enter Logged Operator To Fetch Results!'
+         all_ok = false
+      end
+    elsif pr[:invoiced_operator_value].blank? && !pr[:invoiced_time_compared_hours].blank?
+      flash[:error] = 'Please Enter Invoiced Operator   To Fetch Results'
+      all_ok = false      
+    elsif pr[:logged_operator_value].blank? && !pr[:logged_time_compared_hours].blank?
+      flash[:error] = 'Please Enter Logged Operator To Fetch Results!'
+      all_ok = false    
+    elsif (pr[:start_date_from].blank? &&
+          pr[:start_date_to].blank? &&
+          pr[:end_date_from].blank? &&
+          pr[:end_date_to].blank? &&
+          pr[:selected_users].blank? &&
+          pr[:groups].blank? &&
+          pr[:submitted_by_user].blank? &&
+          (pr[:invoiced_time_compared_hours].blank? ||
+            pr[:invoiced_operator_value].blank?) &&
+          (pr[:logged_time_compared_hours].blank? ||
+            pr[:logged_operator_value].blank?) &&
+          pr[:projects].blank?)                 
+      flash[:error] = 'No Results For Empty Filters ----|----  
+                         Please Choose Atleast One Report Generation Parameter!'
+      all_ok = false    
+    end
+  
+    #---------------------------------------------------------------------------
+    
+    if !all_ok
+      respond_to do |format|
+        format.html {redirect_to action: :index}
+        format.json { render json: "No result founds", :status => :unprocessable_entity }
+        format.all {render :nothing => true, :status => :unprocessable_entity}
         
-    else
+      end
+      return
+    end
+    
+    #else all is good
+    
+#    if pr.blank? && (pr[:start_date_from].blank? &&
+#        pr[:start_date_to].blank? &&
+#        pr[:end_date_from].blank? &&
+#        pr[:end_date_to].blank? &&
+#        pr[:selected_users].blank? &&
+#        pr[:groups].blank? &&
+#        pr[:submitted_by_user].blank? &&
+#        pr[:invoiced_time_compared_hours].blank? &&
+#        pr[:logged_time_compared_hours].blank? &&
+#        pr[:projects].blank?)
+#    
+#      if (!pr[:invoiced_operator_value].blank? && pr[:logged_operator_value].blank?)
+#        flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
+#        
+#      elsif (!pr[:logged_operator_value].blank? && pr[:invoiced_operator_value].blank?)
+#         flash[:error] = 'Please Enter Logged Hours To Fetch Results!'
+#      elsif (!pr[:invoiced_operator_value].blank? && !pr[:logged_operator_value].blank?)
+#        flash[:error] = 'Please Enter Invoiced And Logged Hours To Fetch Results!'
+#      else
+#        flash[:error] = 'No Results For Empty Filters ----|----  
+#                         Please Choose Atleast One Report Generation Parameter!#'
+#      end   
+#        
+#    else
       
      #1
      #render retains values but if refreshed with URL : gives error
@@ -96,7 +164,7 @@ class TimeInvoiceReportsController < ApplicationController
       end
       #------------------------------------------------------------------------------- 
     end
-   end
+#   end
   end
   
   def render_ti_feed(items, options={})
