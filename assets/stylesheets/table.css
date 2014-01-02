@@ -12,6 +12,12 @@
 .table-submit-btn{
     float: left;
     margin-left: -880px;
+    margin-top: 240px;
+}
+
+.table-project{
+    float: left;
+    margin-left: -880px;
     margin-top: 130px;
 }
 

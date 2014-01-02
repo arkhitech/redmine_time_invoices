@@ -1,7 +1,7 @@
 <%=  form_tag controller: 'time_invoice_reports', action: 'report' do %>
-<% content_for :header_tags do %>
+  <% content_for :header_tags do %>
     <%= stylesheet_link_tag 'table', :plugin => 'redmine_time_invoices' %>
-<% end %>
+  <% end %>
   <!-- OLD START DATE ----------------------------------------------------------->
   <div class="table-class">
     <p><%= link_to 'Back', :controller=>'time_invoices',:action=>'indexall'%><br/></p>
@@ -48,72 +48,92 @@
 
   <!-- USER AND GROUP FILTERS-------------------------------------------------------------------------------------------------------------------------- --> 
   <div class="table-class">
-      <h4>User And Group Filters</h4>
-  
-      <h4 style="float: left;">User</h4>
-      <h4 style="float: left; margin-left: 120px;">Group</h4>
-      <h4 style="float: left; margin-left: 150px">Submitted By User</h4>
-  
-      <div align="left" style="margin-top: 40px;">
-  
-        <span style="float: left;">
-          <% selected_users=params[:time_invoice_report] && params[:time_invoice_report][:selected_users]%>
-          <%= select_tag "time_invoice_report[selected_users][]", 
-            options_from_collection_for_select(@all_users, :id, :name,selected_users),multiple: true%>
-        </span> 
-        <span style="float: left;  margin-left: 35px;">
-          <% selected_groups=params[:time_invoice_report] && params[:time_invoice_report][:groups]%>
-          <%= select_tag "time_invoice_report[groups][]",
-            select_group_options(selected_groups), multiple: true %>
-        </span>
-        <span style="float: left;  margin-left: 50px;">
-          <%= select_tag("time_invoice_report[submitted_by_user]",
-            submitted_by_user_options(params[:time_invoice_report] &&
-                params[:time_invoice_report][:submitted_by_user]),:include_blank => true) %> 
-  
-        </span>
-      </div>
+    <h4>User And Group Filters</h4>
+
+    <h4 style="float: left;">User</h4>
+    <h4 style="float: left; margin-left: 120px;">Group</h4>
+    <h4 style="float: left; margin-left: 150px">Submitted By User</h4>
+
+    <div align="left" style="margin-top: 40px;">
+
+      <span style="float: left;">
+        <% selected_users=params[:time_invoice_report] && params[:time_invoice_report][:selected_users]%>
+        <%= select_tag "time_invoice_report[selected_users][]", 
+          options_from_collection_for_select(@all_users, :id, :name,selected_users),multiple: true%>
+      </span> 
+      <span style="float: left;  margin-left: 35px;">
+        <% selected_groups=params[:time_invoice_report] && params[:time_invoice_report][:groups]%>
+        <%= select_tag "time_invoice_report[groups][]",
+          select_group_options(selected_groups), multiple: true %>
+      </span>
+      <span style="float: left;  margin-left: 50px;">
+        <%= select_tag("time_invoice_report[submitted_by_user]",
+          submitted_by_user_options(params[:time_invoice_report] &&
+              params[:time_invoice_report][:submitted_by_user]),:include_blank => true) %> 
+
+      </span>
     </div>
-  
-  <br/><br/>
+  </div>
+
+  <br/><br/>  
 
   <div class="table-class-end-date">
     <h4>Time Filters</h4>
-  <h4> Total Invoiced Time is</h4>  
+    <h4> Total Invoiced Time is</h4>  
 
-  <!-- Total Invoiced Time: Details of Time Invoices where the sum of invoiced
-    time by the user is less than/greater than the given number of hours-->
-  <span><%= select_tag("time_invoice_report[invoiced_operator_value]", 
-      options_for_operator_type(params[:time_invoice_report] &&
-          params[:time_invoice_report][:invoiced_operator_value]),:prompt => "Choose Operator") %>
-  </span>
+    <!-- Total Invoiced Time: Details of Time Invoices where the sum of invoiced
+      time by the user is less than/greater than the given number of hours-->
+    <span><%= select_tag("time_invoice_report[invoiced_operator_value]", 
+        options_for_operator_type(params[:time_invoice_report] &&
+            params[:time_invoice_report][:invoiced_operator_value]),:prompt => "Choose Operator") %>
+    </span>
 
 
-  <span><%= text_field_tag "time_invoice_report[invoiced_time_compared_hours]",
-      params[:time_invoice_report] && params[:time_invoice_report][:invoiced_time_compared_hours] %>
-  </span>
-  <span><b> Hours </b></span>
+    <span><%= text_field_tag "time_invoice_report[invoiced_time_compared_hours]",
+        params[:time_invoice_report] && params[:time_invoice_report][:invoiced_time_compared_hours] %>
+    </span>
+    <span><b> Hours </b></span>
+
+    <br/><br/>
+
+    <h4> Total Logged Time is </h4> 
+
+    <!-- Total Logged Time: Details of Time Invoices where the sum of invoiced 
+    time by the user is less than/greater than the given number of hours -->
+    <span><%= select_tag("time_invoice_report[logged_operator_value]", 
+        options_for_operator_type(params[:time_invoice_report] &&
+            params[:time_invoice_report][:logged_operator_value]),:prompt => "Choose Operator") %>
+    </span>
+    <span> 
+      <%= text_field_tag "time_invoice_report[logged_time_compared_hours]",
+        params[:time_invoice_report] && params[:time_invoice_report][:logged_time_compared_hours] %>
+    </span> 
+    <span><b> Hours </b></span>
+  </div>
+  <br/><br/>
+
+  <!-- PROJECT FILTER-------------------------------------------------------------------------------------------------------------------------- --> 
+  <div class="table-project">
+    <h4>Project Filter</h4>
+
+    <h4 style="float: left;">Project</h4>
+
+    <div align="left" style="margin-top: 40px;">
+
+      <span style="float: left;">
+        <% selected_projects=params[:time_invoice_report] && params[:time_invoice_report][:projects]%>
+        <%= select_tag "time_invoice_report[projects][]",
+          select_project_options(selected_projects), multiple: true %>
+      </span>
+
+    </div>
+
+  </div>
 
   <br/><br/>
 
-  <h4> Total Logged Time is </h4> 
-
-  <!-- Total Logged Time: Details of Time Invoices where the sum of invoiced 
-  time by the user is less than/greater than the given number of hours -->
-  <span><%= select_tag("time_invoice_report[logged_operator_value]", 
-      options_for_operator_type(params[:time_invoice_report] &&
-          params[:time_invoice_report][:logged_operator_value]),:prompt => "Choose Operator") %>
-  </span>
-  <span> 
-    <%= text_field_tag "time_invoice_report[logged_time_compared_hours]",
-      params[:time_invoice_report] && params[:time_invoice_report][:logged_time_compared_hours] %>
-  </span> 
-  <span><b> Hours </b></span>
-  </div>
-    <br/><br/>
-    
   <div class="table-submit-btn">
-   <%= submit_tag 'Apply' %> 
-    
+    <%= submit_tag 'Apply' %> 
+
   </div>
 <% end %>
