@@ -75,18 +75,7 @@ class TimeInvoiceReport
     
    
 #===============================================================================    
-
-    
-#User===========================================================================
-    selected_users = @report_options[:selected_users]
-    if selected_users.present?
-      @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
-    end
-     ActiveRecord::Base.logger.debug "#{'-'*80}\nSeelcted Users Without Group #{selected_users}\n#{'*'*80}"
-
-#===============================================================================
-
-    
+   
 #Group==========================================================================
 selected_groups = @report_options[:groups]
      ActiveRecord::Base.logger.debug "#{'*'*1000}These are selected groups #{selected_groups}"
@@ -115,23 +104,7 @@ selected_groups = @report_options[:groups]
       end
     end
     
-    
-    
-    
 #===============================================================================
-
-#Submitted By User==============================================================  
-    unless @report_options[:submitted_by_user].blank?
-      @time_invoice_details = @time_invoice_details.
-        where("#{TimeInvoice.table_name}.submitted_by_id" =>
-          @report_options[:submitted_by_user])
-       ActiveRecord::Base.logger.debug "#{'SBU-'*80}\nTime Invoice Submitted by User 
-                                {@time_invoice_details.count(:all)}\n#{'*'*80}#"
-    end
-    
-    
-#===============================================================================
-    
         
 #Invoiced Time==================================================================
         
@@ -193,7 +166,16 @@ selected_groups = @report_options[:groups]
       end
       
     end  
+
+#===============================================================================    
     
+    
+#User===========================================================================
+    selected_users = @report_options[:selected_users]
+    if selected_users.present?
+      @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
+    end
+     ActiveRecord::Base.logger.debug "#{'-'*80}\nSeelcted Users Without Group #{selected_users}\n#{'*'*80}"    
  
 #===============================================================================
 
