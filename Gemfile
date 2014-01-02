@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
-gem 'whenever',">=0.8.4"
-#gem "whenever"
+#gem 'whenever',">=0.8.4"
+gem "whenever"
 gem 'wkhtmltopdf-binary'
 gem 'pdfkit'
 
