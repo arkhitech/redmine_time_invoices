@@ -197,6 +197,19 @@ selected_groups = @report_options[:groups]
  
 #===============================================================================
 
+    #Project====================================================================
+    
+    unless @report_options[:projects].blank?
+      @time_invoice_details = @time_invoice_details.
+        where("#{TimeInvoice.table_name}.project_id" =>
+          @report_options[:projects])
+      
+       ActiveRecord::Base.logger.debug "#{'P-'*80}\nTime Invoice Projects 
+                                #{@time_invoice_details.count(:all)}\n#{'*'*80}#"
+    end
+    
+    #===========================================================================
+
      ActiveRecord::Base.logger.debug "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
     @time_invoice_details
   end

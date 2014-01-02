@@ -30,7 +30,8 @@ class TimeInvoiceReportsController < ApplicationController
         pr[:groups].blank? &&
         pr[:submitted_by_user].blank? &&
         pr[:invoiced_time_compared_hours].blank? &&
-        pr[:logged_time_compared_hours].blank?)
+        pr[:logged_time_compared_hours].blank? &&
+        pr[:selected_projects].blank?)
     
       if (!pr[:invoiced_operator_value].blank? && pr[:logged_operator_value].blank?)
         flash[:error] = 'Please Enter Invoiced Hours  To Fetch Results'
