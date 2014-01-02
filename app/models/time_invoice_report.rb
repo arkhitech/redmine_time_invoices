@@ -39,53 +39,21 @@ class TimeInvoiceReport
   end
   
   def generate
-    #@time_invoices = TimeInvoice
+   
     @time_invoice_details=TimeInvoiceDetail.includes(:time_invoice)
     #@time_invoice_details=TimeInvoiceDetail.joins(:time_invoice)
  
-#Start Date=====================================================================
-    
-    unless @report_options[:start_date_from].blank?
-      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        @report_options[:start_date_from])
-    end
-    unless @report_options[:start_date_to].blank?
-      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date <= ?", 
-        @report_options[:start_date_to])
-    end 
-      
-    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
-
-
-#===============================================================================
-
-#End Date=======================================================================    
-     
-
-    unless @report_options[:end_date_from].blank?
-      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date >= ?", 
-        @report_options[:end_date_from])
-    end
-    unless @report_options[:end_date_to].blank?
-      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
-        @report_options[:end_date_to])
-    end  
-    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
-
-
-#==============================================================================
-    
-#User===========================================================================
+    #User===========================================================================
     selected_users = @report_options[:selected_users]
     if selected_users.present?
       @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
     end
-    ActiveRecord::Base.logger.debug "#{'-'*80}\nSelected Users Without Group #{selected_users}\n#{'*'*80}"    
- 
-#===============================================================================
+    ActiveRecord::Base.logger.debug "#{'-'*80}\nSeelcted Users Without Group #{selected_users}\n#{'*'*80}"
+
+    #===============================================================================
     
-    
-#Group==========================================================================
+   
+    #Group==========================================================================
     selected_groups = @report_options[:groups]
     ActiveRecord::Base.logger.debug "#{'*'*1000}These are selected groups #{selected_groups}"
     unless selected_groups.nil?
@@ -113,9 +81,9 @@ class TimeInvoiceReport
       end
     end
     
-#===============================================================================
+    #===============================================================================
         
-#Invoiced Time==================================================================
+    #Invoiced Time==================================================================
         
     unless @report_options[:invoiced_time_compared_hours].blank?
           
@@ -145,9 +113,9 @@ class TimeInvoiceReport
       end
       
     end
-#===============================================================================
+    #===============================================================================
      
-#Logged Time===================================================================
+    #Logged Time===================================================================
         
     unless @report_options[:logged_time_compared_hours].blank?          
       ActiveRecord::Base.logger.debug "#{'%'*80}\nInside Time Invoice Report 
@@ -176,23 +144,56 @@ class TimeInvoiceReport
       
     end  
 
-#===============================================================================    
+    #===============================================================================    
     
-#===============================================================================
+    #Start Date=====================================================================
+    
+    unless @report_options[:start_date_from].blank?
+      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
+        @report_options[:start_date_from])
+    end
+    unless @report_options[:start_date_to].blank?
+      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date <= ?", 
+        @report_options[:start_date_to])
+    end 
+      
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
 
-#Submitted By User==============================================================  
+
+    #===============================================================================
+
+    #End Date=======================================================================    
+     
+
+    unless @report_options[:end_date_from].blank?
+      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date >= ?", 
+        @report_options[:end_date_from])
+    end
+    unless @report_options[:end_date_to].blank?
+      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
+        @report_options[:end_date_to])
+    end  
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+
+    
+   
+    #===============================================================================  s
+    
+    #===============================================================================
+
+    #Submitted By User==============================================================  
     unless @report_options[:submitted_by_user].blank?
       @time_invoice_details = @time_invoice_details.
         where("#{TimeInvoice.table_name}.submitted_by_id" =>
           @report_options[:submitted_by_user])
-       ActiveRecord::Base.logger.debug "#{'SBU-'*80}\nTime Invoice Submitted by User 
+      ActiveRecord::Base.logger.debug "#{'SBU-'*80}\nTime Invoice Submitted by User 
                                 {@time_invoice_details.count(:all)}\n#{'*'*80}#"
     end
     
     
-#===============================================================================
+    #===============================================================================
     
-#Project========================================================================
+    #Project========================================================================
     
     unless @report_options[:projects].blank?
       @time_invoice_details = @time_invoice_details.
