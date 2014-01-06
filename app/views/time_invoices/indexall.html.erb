@@ -11,10 +11,10 @@
       <th>Invoice Submitter</th> <th>Project Name</th> <th>Remarks</th>
       <th>Action</th>
     </tr>
-    <%  @time_invoices.each do |ti| %>
+    <%  @time_invoices.each do |ti| %>      
       <tr>
         <td>
-          <%=  ti.id%>
+          <%=  ti.id%>          
         </td>
         <td>
           <%=  ti.start_date%>
@@ -34,6 +34,9 @@
         <%if ti.submitted_by %>
           <td>
             <%=  link_to 'View', ti%>
+            <% if User.current.allowed_to? :edit_invoiceable_time, ti.project %>
+              | <%=  link_to 'Edit/Submit', edit_time_invoice_path(ti) %>
+            <% end %>
           </td>
         <%else%>
           <td>
@@ -41,7 +44,7 @@
               <%=  link_to 'Edit/Submit', edit_time_invoice_path(ti) %>
             <% end %>
           </td>
-        <%end%>
+        <%end%>          
       </tr>
     <%end%>
   </table>
