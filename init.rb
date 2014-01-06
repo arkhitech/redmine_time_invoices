@@ -22,6 +22,7 @@ Redmine::Plugin.register :redmine_time_invoices do
   project_module :time_invoices do
     permission :submit_invoiceable_time,:time_invoices => :index
     permission :generate_time_invoices,:time_invoices => [:index, :new]
+    permission :edit_invoiceable_time, :time_invoices => :edit
 
     menu :project_menu, :time_invoices, 
       { controller: :time_invoices, :action => 'index' }, 
