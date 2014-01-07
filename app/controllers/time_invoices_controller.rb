@@ -19,9 +19,9 @@ class TimeInvoicesController < ApplicationController
   
   def topnew
     return deny_access unless User.current.allowed_to_globally?(:submit_invoiceable_time ,{}) || 
-      User.current.allowed_to_globally?(:generate_time_invoices , {})
-    @projects=Project.all
-    @projects = @projects.delete_if {|project| !User.current.allowed_to?(:generate_time_invoices , project)}
+      User.current.allowed_to_globally?(:generate_time_invoices , {}) ||
+      User.current.allowed_to_globally?(:edit_invoiceable_time,{})
+    @projects=projects_all
     return deny_access if @projects.empty?
     @time_invoice=TimeInvoice.new
   end
@@ -35,10 +35,12 @@ class TimeInvoicesController < ApplicationController
   
   def indexall     
     return deny_access unless User.current.allowed_to_globally?(:submit_invoiceable_time ,{}) || 
-      User.current.allowed_to_globally?(:generate_time_invoices , {})
+      User.current.allowed_to_globally?(:generate_time_invoices , {}) ||
+      User.current.allowed_to_globally?(:edit_invoiceable_time,{})
     time_invoices = TimeInvoice.includes(:project).all
     @time_invoices = time_invoices.delete_if {|ti| (!User.current.allowed_to?(:submit_invoiceable_time , ti.project) &&
-          !User.current.allowed_to?(:generate_time_invoices , ti.project)
+          !User.current.allowed_to?(:generate_time_invoices , ti.project) &&
+          !User.current.allowed_to?(:edit_invoiceable_time, ti.project)
       )}
   end
   
@@ -52,10 +54,12 @@ class TimeInvoicesController < ApplicationController
         redirect_to :indexall, :flash=>{:notice=> 'Time invoice has been successfully created!'}
       end
     else
-      unless params[:project_id].nil?
+      unless params[:project_id].blank?
         init_project
         render 'new'
       else
+        @projects=projects_all
+        return deny_access if @projects.empty?
         render 'topnew'
       end
     end
@@ -103,5 +107,9 @@ class TimeInvoicesController < ApplicationController
     @time_invoice = TimeInvoice.find(params[:id])
     return deny_access unless User.current.allowed_to?(:submit_invoiceable_time , @time_invoice.project) || 
       User.current.allowed_to?(:generate_time_invoices , @time_invoice.project)
+  end
+  def projects_all
+    projects=Project.all
+    projects.delete_if {|project| !User.current.allowed_to?(:generate_time_invoices , project)}
   end
 end
