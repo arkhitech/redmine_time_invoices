@@ -86,12 +86,20 @@ class TimeInvoicesController < ApplicationController
     return deny_access unless allowed_to_submit?(@time_invoice)
     if @time_invoice.update_attributes(params[:time_invoice])
       if Setting.plugin_redmine_time_invoices['billing_invoice'] && Redmine::Plugin.installed?(:redmine_contacts_invoices)        
-        billing_invoice = Invoice.
-          create!(number: "Billing Invoice for #{Project.find(@time_invoice.project_id).name}",
-          invoice_date: DateTime.now, project_id: @time_invoice.project_id, status_id: 1)
-        billing_invoice.lines.build(quantity: @time_invoice.time_invoice_details.sum(:invoiced_quantity),
-          description: "Billing Invoice")        
-        billing_invoice.save!
+        unless @time_invoice.invoice_id.present?
+          billing_invoice = Invoice.
+            create!(number: "Invoice-#{Time.now.strftime("%Y%m%d%H%M%S")}",
+            invoice_date: DateTime.now, project_id: @time_invoice.project_id, status_id: 1)
+          billing_invoice.lines.build(quantity: @time_invoice.time_invoice_details.sum(:invoiced_quantity),
+            description: "Billing Invoice")        
+          billing_invoice.save!
+          @time_invoice.invoice_id = billing_invoice.id
+          @time_invoice.save!
+        else
+          billing_invoice = Invoice.find(@time_invoice.invoice_id)
+          billing_invoice.lines.first.quantity = @time_invoice.time_invoice_details.sum(:invoiced_quantity)          
+          billing_invoice.lines.first.save!
+        end        
       end
       redirect_to :controller => 'time_invoices', :action=> 'show',:id=>@time_invoice.id,
         :project_id=>params[:project_id]
