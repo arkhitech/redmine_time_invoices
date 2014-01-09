@@ -1,9 +1,9 @@
 class TimeInvoiceDetail < ActiveRecord::Base
   unloadable
-      belongs_to :time_invoice
+  belongs_to :time_invoice
   belongs_to :user
   before_save :reset_protected_attributes
-  
+  validates :user_id, uniqueness: {scope: :time_invoice_id}
   validate :validate_invoiced_quantity_input
   
   def reset_protected_attributes
@@ -22,7 +22,7 @@ class TimeInvoiceDetail < ActiveRecord::Base
   
   def logged_hours
     read_attribute(:logged_hours) || reset_logged_hours
-#    read_attribute(:logged_hours) || reset_logged_hours
+    #    read_attribute(:logged_hours) || reset_logged_hours
   end
     
   def reset_invoiced_hours
