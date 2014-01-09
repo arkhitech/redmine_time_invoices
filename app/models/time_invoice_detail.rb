@@ -13,8 +13,12 @@ class TimeInvoiceDetail < ActiveRecord::Base
   private :reset_protected_attributes
   
   def reset_logged_hours
+    id=self.time_invoice.project_id
+    child_projects = Project.find(id).descendants
+    child_projects.collect{|u| u.id}
+    child_projects << id
     self.logged_hours = TimeEntry.where(
-      project_id: self.time_invoice.project_id,
+      project_id: child_projects,
       spent_on: self.time_invoice.start_date..self.time_invoice.end_date,
       user_id: self.user_id
     ).sum(:hours)
