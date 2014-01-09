@@ -1,7 +1,7 @@
 require 'redmine'
 Mime::SET << Mime::PDF unless Mime::SET.include?(Mime::PDF)
 Mime::SET << Mime::ATOM unless Mime::SET.include?(Mime::ATOM)
-Rails.configuration.middleware.use "PDFKit::Middleware", :print_media_type => true
+Rails.configuration.middleware.use "PDFKit::Middleware", {:print_media_type => true},:only => '/time_invoice_reports/report'
 Rails.configuration.serve_static_assets = true
 #The above three lines are setting Redmine level settings for the plug in
 

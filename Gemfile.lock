@@ -127,7 +127,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.38)
-    whenever (0.9.0)
+    whenever (>= 0.8.4)
       activesupport (>= 2.3.4)
       chronic (>= 0.6.3)
     wkhtmltopdf-binary (0.9.9.1)
@@ -142,5 +142,5 @@ DEPENDENCIES
   guard-spork
   pdfkit
   spork-rails
-  whenever
+  whenever (>= 0.8.4)
   wkhtmltopdf-binary
