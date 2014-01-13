@@ -5,7 +5,7 @@ class TimeInvoice < ActiveRecord::Base
   belongs_to :submitted_by, class_name: User.name   
   accepts_nested_attributes_for :time_invoice_details
   validate :correctness_of_date, :overlapping, :on=> :create
-  after_save :notify_the_concerned_person
+  after_save :notify_time_invoice_saved
 
   
   def build_time_invoice_details
@@ -31,32 +31,15 @@ class TimeInvoice < ActiveRecord::Base
     end
   end
 
-  def notify_the_concerned_person
+  def notify_time_invoice_saved
     unless self.submitted_by.nil?
-      TimeInvoiceMailer.notify_accounts_mail(self).deliver
+      TimeInvoiceMailer.notify_time_invoice_generated(self,self.project).deliver
     
     else
-      users=[]
-      members = self.project.users
-      members.each do |member|
-        if User.exists?(member.id)
-          users << User.find(member.id)
-        else
-          users << Group.find(member.id).users
-        end
-      end
-      users = users.flatten.uniq
-      users.delete_if{|user| !user.allowed_to?(:submit_invoiceable_time,self.project)}
-      unless users.nil?
-        users.each {|user| TimeInvoiceMailer.
-            time_invoice_notification_mail(user,self).deliver }
-      else
-        logger.debug "Project: #{enabled_module.project.name} does not have any member with submit invoice permission"
-      end
-      
+        TimeInvoiceMailer.notify_time_invoice_submitted(self).deliver      
     end
   end
-  private :notify_the_concerned_person
+  private :notify_time_invoice_saved
   
   def correctness_of_date
     if start_date.present? && end_date.present? && start_date > end_date
