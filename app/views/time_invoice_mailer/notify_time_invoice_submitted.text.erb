@@ -1,0 +1,10 @@
+<%= @time_invoice.submitted_by.name%> [<%=user_url(User.find(@time_invoice.submitted_by))%>]
+has submitted Invoice#<%= @time_invoice.id%> with <%= "Date Range: #{@time_invoice.start_date} - #{@time_invoice.end_date}"%>
+for <%= @time_invoice.project.name %>[<%=project_url(Project.find(@time_invoice.project.id))%>]
+Remarks: <%=@time_invoice.comment%>
+<% unless @time_invoice.time_invoice_details.blank? %>
+User    Logged Hours    Invoice Hours   Comments
+    <%@time_invoice.time_invoice_details.each do |details|%>
+<%=details.user.name%>    <%=details.logged_hours%>   <%=details.invoiced_hours%>   <%=details.comment%>
+    <%end%>
+<% end %>

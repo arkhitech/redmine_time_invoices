@@ -4,13 +4,32 @@ class TimeInvoiceMailer < ActionMailer::Base
   def self.default_url_options
     Mailer.default_url_options
   end
-  def time_invoice_notification_mail(user,time_invoice)
-    @user=user
-    @time_invoice=time_invoice
-    mail(to: @user.mail, subject: "TimeInvoice for Project: #{@time_invoice.project}" )
+  
+  def notify_time_invoice_generated(time_invoice,self_project)
+    users=[]
+    #self.project.users
+    members = self_project.users
+    members.each do |member|
+      if User.exists?(member.id)
+        users << User.find(member.id)
+      else
+        users << Group.find(member.id).users
+      end
+    end
+    users = users.flatten.uniq
+    users.delete_if{|user| !user.allowed_to?(:submit_invoiceable_time,self_project)}
+    unless users.nil?
+      users.each do |user|
+        @user=user
+        @time_invoice=time_invoice
+        mail(to: @user.mail, subject: "Time Invoice Created for Project: #{@time_invoice.project}" )
+      end
+    else
+      logger.debug "Project: #{enabled_module.project.name} does not have any member with submit invoice permission"
+    end
   end
   
-  def notify_accounts_mail(time_invoice)
+  def notify_time_invoice_submitted(time_invoice)
     @time_invoice=time_invoice
 
     group_users ||= begin
@@ -21,13 +40,13 @@ class TimeInvoiceMailer < ActionMailer::Base
       end
     end
 
-    group_users_emails = []
     unless group_users.nil?
+      group_users_emails = Set.new
       group_users.each do |user|
         group_users_emails << user.mail
       end
-    end
-   
-    mail(to: group_users_emails, subject: "TimeInvoice available for submission #{@time_invoice.project}")
+      
+      mail(to: group_users_emails, subject: "Time Invoice Submitted for Project: #{@time_invoice.project}")
+    end   
   end
 end
