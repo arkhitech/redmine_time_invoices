@@ -1,33 +1,37 @@
-<%= form_for [@project, @time_invoice] do |f|%>
-  <% if @time_invoice.errors.any? %>
-    <% flash.now[:error] = "#{pluralize(@time_invoice.errors.count, "error")} prohibited
+<h2>Update time invoice</h2>
+<div class="box tabular">
+  <%= form_for [@project, @time_invoice] do |f|%>
+    <% if @time_invoice.errors.any? %>
+      <% flash.now[:error] = "#{pluralize(@time_invoice.errors.count, "error")} prohibited
     this post from being updated: <br/>" %>
-    <ul>
-    <% @time_invoice.errors.full_messages.each do |msg| %>
-      <% flash.now[:error] += "<li>#{msg}</li>" %>
+      <ul>
+        <% @time_invoice.errors.full_messages.each do |msg| %>
+          <% flash.now[:error] += "<li>#{msg}</li>" %>
+        <% end %>
+      </ul>
     <% end %>
-    </ul>
-  <% end %>
     <h3><%= @time_invoice.project.name %></h3><br/>
-  <p> <%=f.label :start_date %><br/>
-    <%=f.date_select :start_date, disabled: true%>
-  </p>
-  <p>
-    <%=f.label :end_date%><br/>
-    <%=f.date_select :end_date, disabled: true%>
-  </p>
-  <%=  f.hidden_field :submitted_by_id, :value=> User.current.id%>
-  <p> 
-    <%= f.label :comment %><br/>
-    <%=f.text_area :comment, :size => "60x3"%>
-  </p>
-  <%if @time_invoice.time_invoice_details.empty?%>
-    <%='No activity performed yet'%>
-  <%else%>
-    <%= render partial: 'time_invoice_details/fields_table', 
-      locals: {time_invoice_form: f} %>
-  <%end%>  
+    <p> <%=f.label :start_date %><br/>
+      <%=f.date_select :start_date, disabled: true%>
+    </p>
+    <p>
+      <%=f.label :end_date%><br/>
+      <%=f.date_select :end_date, disabled: true%>
+    </p>
+    <%=  f.hidden_field :submitted_by_id, :value=> User.current.id%>
+    <p> 
+      <%= f.label :comment %><br/>
+      <%=f.text_area :comment, :size => "60x3"%>
+    </p>
+    <%if @time_invoice.time_invoice_details.empty?%>
+      <%='No activity performed yet'%>
+    <%else%>
+      <%= render partial: 'time_invoice_details/fields_table', 
+        locals: {time_invoice_form: f} %>
+    <%end%>  
+  </div>
   <p>
     <%= f.submit %>
   </p>
 <%end%>
+
