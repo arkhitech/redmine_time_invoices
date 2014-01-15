@@ -32,8 +32,8 @@ class TimeInvoice < ActiveRecord::Base
   end
 
   def notify_time_invoice_saved
-    unless self.submitted_by.nil?
-      TimeInvoiceMailer.notify_time_invoice_generated(self,self.project).deliver
+    if self.submitted_by.nil?
+      TimeInvoiceMailer.notify_time_invoice_generated(self).deliver
     
     else
         TimeInvoiceMailer.notify_time_invoice_submitted(self).deliver      

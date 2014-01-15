@@ -14,14 +14,17 @@ class TimeInvoiceDetail < ActiveRecord::Base
   
   def reset_logged_hours
     id=self.time_invoice.project_id
+    child_projects_id = [id]
     child_projects = Project.find(id).descendants
-    child_projects.collect{|u| u.id}
-    child_projects << id
+    child_projects.each do |child_project|
+      child_projects_id << child_project.id
+    end
     self.logged_hours = TimeEntry.where(
-      project_id: child_projects,
+      project_id: child_projects_id,
       spent_on: self.time_invoice.start_date..self.time_invoice.end_date,
       user_id: self.user_id
     ).sum(:hours)
+    puts self.logged_hours
   end
   
   def logged_hours
