@@ -1,27 +1,29 @@
 <h3><%="TimeInvoice for #{@time_invoice.project.name}"%></h3>
-<%="For Duration of #{@time_invoice.start_date} -  #{@time_invoice.end_date}"%><br/>
-<%unless @time_invoice.submitted_by.nil?%>
-<strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong><br/>
-<%end%>
-<%unless @time_invoice.comment.blank?%>
-<strong><%='Remarks:'%><br/></strong><%=@time_invoice.comment%><br/>
-<%end%>
-<%unless @time_invoice.time_invoice_details.empty?%>
-<table border="1">
-  <%time_invoice_detail=@time_invoice.time_invoice_details%>
-  <tr>
-    <th>User</th>
-    <th>Logged hours</th>
-    <th>Invoiced hours</th>
-    <th>comments</th>
-  </tr>
-  <%time_invoice_detail.each do |details|%>
-    <tr>
-      <td><%=details.user.name%></td>
-      <td><%=details.logged_hours%></td>
-      <td><%=details.invoiced_hours%></td>
-      <td><%=details.comment%></td>
-    </tr>
+<div class="box tabular">
+  <%="For Duration of #{@time_invoice.start_date} -  #{@time_invoice.end_date}"%><br/>
+  <%unless @time_invoice.submitted_by.nil?%>
+    <strong><%="Submitted By #{@time_invoice.submitted_by.name}"%></strong><br/>
   <%end%>
-</table>
-<%end%>
+  <%unless @time_invoice.comment.blank?%>
+    <strong><%='Remarks:'%><br/></strong><%=@time_invoice.comment%><br/>
+  <%end%>
+  <%unless @time_invoice.time_invoice_details.empty?%>
+    <table class="list issue">
+      <%time_invoice_detail=@time_invoice.time_invoice_details%>
+      <tr>
+        <th>User</th>
+        <th>Logged hours</th>
+        <th>Invoiced hours</th>
+        <th>comments</th>
+      </tr>
+      <%time_invoice_detail.each do |details|%>
+        <tr class="<%= cycle("odd", "even")%> issue">
+          <td><%= link_to details.user.name,user_path(details.user.id)%></td>
+          <td><%=details.logged_hours%></td>
+          <td><%=details.invoiced_hours%></td>
+          <td><%=details.comment%></td>
+        </tr>
+      <%end%>
+    </table>
+  <%end%>
+</div>

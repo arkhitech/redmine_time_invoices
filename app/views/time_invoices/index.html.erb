@@ -1,45 +1,45 @@
+<h2>List of TimeInvoices</h2>
+<div class="box tabular">
+  <%  id=@project.id%>
+  <%= link_to 'Generate a new invoice', :controller=>'time_invoices',:action=>'new',:project_id=>@project.id%><br/>
+  <%= link_to 'View Time Invoice Report', :controller=>'time_invoice_reports',:action=>'index'%><br/><br/>
+  <% if @time_invoices.empty? %>
+    <br/><strong><%= 'No TimeInvoices to show yet' %></strong>
+  <%else%>
+    <table class="list issues">
+      <tr><th>ID</th><th>Start Date</th> <th>End Date</th> <th>Invoice Submitter</th> <th>Project Name</th> <th>Remarks</th> <th>Action</th></tr>
+      <%  @time_invoices.each do |ti| %>
+        <tr class="<%= cycle("odd", "even")%> issue">
+          <td class="id">
+            <%=  ti.id%>
+          </td>
+          <td>
+            <%=  ti.start_date%>
+          </td>
+          <td>
+            <%=  ti.end_date%>
+          </td>
+          <td>
+            <%=  ti.submitted_by && (link_to ti.submitted_by.name, user_path(ti.submitted_by.id))%>
+          </td>
+          <td>
+            <%=  link_to ti.project.name, project_path(ti.project.id) %>
+          </td>
+          <td>
+            <%=  ti.comment %>
+          </td>
+          <%if ti.submitted_by %>
+            <td>
+              <%=  link_to 'View', [ti.project, ti]%>
+            </td>
+          <%else%>
+            <td>
+              <%=  link_to 'Edit/Submit', edit_project_time_invoice_path(ti.project, ti) %>
+            </td>
+          <%end%>
+        </tr>
+      <%end%>
+    </table>      
+  <%end%>
+</div>
 
-<h3>List of TimeInvoices</h3>
-<%  id=@project.id%>
-<%= link_to 'Generate a new invoice', :controller=>'time_invoices',:action=>'new',:project_id=>@project.id%><br/>
-<%= link_to 'View Time Invoice Report', :controller=>'time_invoice_reports',:action=>'index'%><br/><br/>
-<% if @time_invoices.empty? %>
-<br/><label><%= 'No TimeInvoices to show yet' %></label>
-<%else%>
-  <table border="1">
-    <tr><th>ID</th><th>Start Date</th> <th>End Date</th> <th>Invoice Submitter</th> <th>Project Name</th> <th>Remarks</th> <th>Action</th></tr>
-    <%  @time_invoices.each do |ti| %>
-      <tr>
-        <td>
-          <%=  ti.id%>
-        </td>
-        <td>
-          <%=  ti.start_date%>
-        </td>
-        <td>
-          <%=  ti.end_date%>
-        </td>
-        <td>
-          <%=  ti.submitted_by && ti.submitted_by.name%>
-        </td>
-        <td>
-          <%=  ti.project.name %>
-        </td>
-        <td>
-          <%=  ti.comment %>
-        </td>
-        <%if ti.submitted_by %>
-        <td>
-          <%=  link_to 'View', [ti.project, ti]%>
-         </td>
-        <%else%>
-        <td>
-          <%=  link_to 'Edit/Submit', edit_project_time_invoice_path(ti.project, ti) %>
-         </td>
-        <%end%>
-      </tr>
-    <%end%>
- </table>      
-<%end%>
-      
- 
