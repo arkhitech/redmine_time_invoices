@@ -72,7 +72,6 @@ class TimeInvoicesController < ApplicationController
   end
 
   def edit
-    session[:back_url] = 'edit'
     @time_invoice = TimeInvoice.includes(:project).find(params[:id])
     return deny_access unless allowed_to_submit?(@time_invoice)
     
