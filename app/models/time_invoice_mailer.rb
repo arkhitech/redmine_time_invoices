@@ -5,10 +5,10 @@ class TimeInvoiceMailer < ActionMailer::Base
     Mailer.default_url_options
   end
   
-  def notify_time_invoice_generated(time_invoice,self_project)
+  def notify_time_invoice_generated(time_invoice)
     users=[]
     #self.project.users
-    members = self_project.users
+    members = time_invoice.project.users
     members.each do |member|
       if User.exists?(member.id)
         users << User.find(member.id)
@@ -17,7 +17,7 @@ class TimeInvoiceMailer < ActionMailer::Base
       end
     end
     users = users.flatten.uniq
-    users.delete_if{|user| !user.allowed_to?(:submit_invoiceable_time,self_project)}
+    users.delete_if{|user| !user.allowed_to?(:submit_invoiceable_time,time_invoice.project)}
     unless users.nil?
       users.each do |user|
         @user=user

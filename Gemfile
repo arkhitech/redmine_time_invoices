@@ -3,6 +3,7 @@ gem "whenever",">=0.8.4"
 #gem "whenever"
 gem 'wkhtmltopdf-binary'
 gem 'pdfkit'
+gem 'lazy_high_charts'
 
 #for testing
 #gem 'rspec-rails','>= 2.13.1'

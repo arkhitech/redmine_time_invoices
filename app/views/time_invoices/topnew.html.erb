@@ -1,3 +1,12 @@
+<h3>Generate New Time Invoice </h3>
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
+  <% end %>
+
+<div id="timeinvoice-menu">
+     <%= render_menu(:time_invoices_menu)%>
+</div>
+
 <%= form_for [@time_invoice] do |f|%>
   <% if @time_invoice.errors.any? %>
 

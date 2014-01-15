@@ -1,0 +1,87 @@
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
+  <%= stylesheet_link_tag 'table', :plugin => 'redmine_time_invoices' %>
+  
+<% end %>
+
+<h3>Analytics Time Invoices</h3>
+<div id="timeinvoice-menu">
+  <%= render_menu(:time_invoices_menu)%>
+</div>
+
+<br/> <br/>
+<%=  form_tag controller: 'time_invoice_charts', action: 'index' do %>
+  <!-- OLD START DATE ----------------------------------------------------------->
+  <div class="table-class">
+    <h4 style="float: left;">Duration</h4>
+    <h4 style="margin-left: 570px;">Group</h4>
+    <br/>
+    <p align="left">
+      <span><strong>From</strong> </span>
+      <span>
+        <%= text_field_tag "time_invoice_chart[date_from]",
+          params[:time_invoice_chart] && params[:time_invoice_chart][:date_from] %>
+        <%= calendar_for 'time_invoice_chart_date_from' %>
+      </span>
+
+
+      <span style="margin-left: 50px;"><strong>To</strong> </span>
+      <span> <%= text_field_tag "time_invoice_chart[date_to]",
+          params[:time_invoice_chart] && params[:time_invoice_chart][:date_to] %> 
+        <%= calendar_for 'time_invoice_charts_date_to' %>
+      </span>
+
+      <span style="margin-left: 50px;">
+        <% selected_groups=params[:time_invoice_chart] && params[:time_invoice_chart][:groups]%>
+        <%= select_tag "time_invoice_chart[groups][]",
+          select_group_options(selected_groups), multiple: true %>
+      </span>
+
+    </p>
+  </div>
+  <br/> <br/>
+
+
+  <div class="table-class">
+  <%#*<h4 style="float: left;">User</h4>%>
+
+  <%#*<h4 style="float: left; margin-left: 150px">Submitted By User</h4>%>
+
+    <div align="left" style="margin-top: 40px;">
+
+  <%#*<span style="float: left;">%>
+  <%# selected_users=params[:time_invoice_charts] && params[:time_invoice_charts][:selected_users]%>
+  <%#= select_tag "time_invoice_charts[selected_users][]", 
+  options_from_collection_for_select(@all_users, :id, :name,selected_users),multiple: true%>
+  <%#*</span>%> 
+
+
+
+
+  <%#*<span style="float: left;  margin-left: 50px;">%>
+  <%#= select_tag("time_invoice_charts[submitted_by_user]",
+  submitted_by_user_options(params[:time_invoice_charts] &&
+  params[:time_invoice_charts][:submitted_by_user]),:include_blank => true) %> 
+
+  <%#*</span>%>
+    </div>
+  </div>
+
+  <br/><br/>
+
+  <div class="table-submit-btn">
+    <%= submit_tag 'Apply' %> 
+
+  </div>
+<% end %>
+
+ <div class="table-submit-btn">
+   
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<%= high_chart("my_id4", @chart) do |c| %>
+  <%= raw "options.tooltip.formatter = function() {return '<b> YUPI!! '+ this.point.name +'</b>: '+ this.y +' %';}"  %>
+  <%= raw "options.plotOptions.pie.dataLabels.formatter = function() { if (this.y > 5) return this.point.name; }"  %>
+<% end %>  
+     </div>
