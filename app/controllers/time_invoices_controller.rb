@@ -14,7 +14,9 @@ class TimeInvoicesController < ApplicationController
    
     return deny_access unless User.current.allowed_to?(:generate_time_invoices , @project)
 
-    @time_invoice=TimeInvoice.new(:project_id => (@project && @project.id))
+    @time_invoice=TimeInvoice.new(:project_id => (@project && @project.id), 
+      :start_date => (Date.today - 1.month).beginning_of_month, 
+      :end_date => (Date.today-1.month).end_of_month)
   end
   
   def topnew
@@ -23,7 +25,8 @@ class TimeInvoicesController < ApplicationController
       User.current.allowed_to_globally?(:edit_invoiceable_time,{})
     @projects=projects_all
     return deny_access if @projects.empty?
-    @time_invoice=TimeInvoice.new
+    @time_invoice=TimeInvoice.new(:start_date => (Date.today-1.month).beginning_of_month,
+      :end_date => (Date.today-1.month).end_of_month)
   end
 
   def index

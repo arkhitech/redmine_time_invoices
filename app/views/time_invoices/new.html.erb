@@ -13,12 +13,12 @@
     <% end %>
     <h3><%= @project.name %></h3><br/>
     <p> <%= f.label :start_date %><br/>
-      <%= f.text_field :start_date, disabled: false%>
+      <%= f.text_field :start_date%>
       <%= calendar_for 'time_invoice_start_date'%>
     </p>
     <p>
       <%= f.label :end_date%><br/>
-      <%= f.text_field :end_date, disabled: false%>
+      <%= f.text_field :end_date%>
       <%= calendar_for 'time_invoice_end_date'%>
     </p>
     <%=  f.hidden_field :submitted_by_id, :value=> nil%>
