@@ -47,7 +47,7 @@ Redmine::Plugin.register :redmine_time_invoices do
       
       Redmine::MenuManager.map :time_invoices_menu do |menu|
       menu.push :time_invoices,    { :controller => 'time_invoices', :action => 'indexall' }, :caption => 'Overview'
-      menu.push :time_invoices_topnew, { :controller => 'time_invoices', :action=>'topnew' }, :caption => 'Generate Invoice'
+      menu.push :time_invoices_topnew, { :controller => 'time_invoices', :action=>'topnew'}, :caption => 'Generate Invoice'
       menu.push :time_invoice_reports,    { :controller => 'time_invoice_reports', :action => 'index' }, :caption => 'Reports'
       menu.push :time_invoice_charts,      {:controller => 'time_invoice_charts', :action => 'index'}, :caption => 'Analytics'
     end
