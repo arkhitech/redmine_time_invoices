@@ -12,21 +12,23 @@
       </ul>
     <% end %>
     <h3><%= @project.name %></h3><br/>
-    <p> <%=f.label :start_date %><br/>
-      <%=f.date_select :start_date, disabled: false, default: (Date.today-1.month).beginning_of_month%>
+    <p> <%= f.label :start_date %><br/>
+      <%= f.text_field :start_date, disabled: false%>
+      <%= calendar_for 'time_invoice_start_date'%>
     </p>
     <p>
-      <%=f.label :end_date%><br/>
-      <%=f.date_select :end_date, disabled: false, default: (Date.today-1.month).end_of_month%>
+      <%= f.label :end_date%><br/>
+      <%= f.text_field :end_date, disabled: false%>
+      <%= calendar_for 'time_invoice_end_date'%>
     </p>
     <%=  f.hidden_field :submitted_by_id, :value=> nil%>
     <%=  f.hidden_field :project_id, :value=> @project.id%>
     <p>
       <%= f.label :comment %><br/>
-      <%=f.text_area :comment, :size => "60x3"%>
+      <%= f.text_area :comment, :size => "60x3"%>
     </p>
-    </div>
-    <p>
-      <%= f.submit %>
-    </p>
-  <%end%>
+  </div>
+  <p>
+    <%= f.submit %>
+  </p>
+<%end%>
