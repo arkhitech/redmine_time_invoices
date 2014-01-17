@@ -13,7 +13,7 @@
 </div>
 
 <br/> <br/>
-<%=  form_tag controller: 'time_invoice_charts', action: 'index' do %>
+<%=form_tag  controller: 'time_invoice_charts', action: 'index' do %>
   <!-- OLD START DATE ----------------------------------------------------------->
   <div class="box tabular" style= "display:inline-block">
 
@@ -22,34 +22,34 @@
     <span style="margin-left: 20px;"><strong>  From</strong> </span>
     <span>
       <%= text_field_tag "time_invoice_chart[date_from]",
-        params[:time_invoice_chart] && params[:time_invoice_chart][:date_from], :value => Date.today-1.year %>
+        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_from]) || Date.today-1.year %>
       <%= calendar_for 'time_invoice_chart_date_from' %>
     </span>
 
 
     <span style="margin-left: 50px;"><strong>To</strong> </span>
     <span> <%= text_field_tag "time_invoice_chart[date_to]",
-        params[:time_invoice_chart] && params[:time_invoice_chart][:date_to],:value => Date.today %> 
+        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_to]) || Date.today %> 
       <%= calendar_for 'time_invoice_chart_date_to' %>
     </span>
 
     <strong style="margin-left: 50px; color:#179; font-size: 18px">Group:   </strong>
     <span style="margin-left: 50px;">
-      <% selected_groups=params[:time_invoice_chart] && params[:time_invoice_chart][:groups]%>
-      <%= select_tag "time_invoice_chart[groups][]",
+      <% selected_groups=params[:time_invoice_chart] && params[:time_invoice_chart][:group]%>
+      <%= select_tag "time_invoice_chart[group]",
         select_group_options(selected_groups), multiple: false, include_blank: true %>
     </span>
 
     <strong style="margin-left: 50px; color:#179; font-size: 18px">User:   </strong>
     <span style="margin-left: 50px;">
-      <% selected_users=((params[:time_invoice_chart] && params[:time_invoice_chart][:selected_users]) || User.current.id)%>
-      <%= select_tag "time_invoice_chart[selected_users]", 
+      <% selected_users=((params[:time_invoice_chart] && params[:time_invoice_chart][:selected_user]) || User.current.id)%>
+      <%= select_tag "time_invoice_chart[selected_user]", 
         options_from_collection_for_select(@all_users, :id, :name,selected_users) %>
     </span>
 
     <span style="margin-left: 46px;">
       <%= submit_tag 'Analyze' %> 
-
+    </span>
   </div>
 <% end %>
 
