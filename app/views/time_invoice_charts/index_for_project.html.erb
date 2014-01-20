@@ -1,18 +1,15 @@
-
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
   <%= stylesheet_link_tag 'table', :plugin => 'redmine_time_invoices' %>
   <%= javascript_include_tag "highcharts", :plugin => 'redmine_time_invoices' %>
-    <%= javascript_include_tag "no-data-to-display.src.js", :plugin => 'redmine_time_invoices' %>
+  <%= javascript_include_tag "no-data-to-display.src.js", :plugin => 'redmine_time_invoices' %>
   <%= javascript_include_tag "exporting.js", :plugin => 'redmine_time_invoices' %>
-
 <% end %>
-
-<h3>Analytics Time Invoices</h3>
 <div id="timeinvoice-menu">
-  <%= render_menu(:time_invoices_menu)%>
+  <%= render_menu(:time_invoices_menu_project)%>
 </div>
 
+<h3>Analytics Time Invoices for <%= @project.name%></h3>
 <br/> <br/>
 <%=form_tag  controller: 'time_invoice_charts', action: 'index' do %>
   <!-- OLD START DATE ----------------------------------------------------------->
@@ -75,10 +72,9 @@
     <%= raw "options.tooltip.formatter = function() {return '<b>'+ this.point.name +'</b>: '+ this.y;}"  %>
     <%= raw "options.plotOptions.pie.dataLabels.formatter = function() { if (this.y > 5) return this.point.name; }"  %>
   <% end %>  
-
+  
 
 </div>
-
 
 <!-- INDIVIDUAL GRAPHS START FROM HERE-------------------------------------- -->
 <br/><br/>

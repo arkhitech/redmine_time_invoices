@@ -10,7 +10,6 @@ class TimeInvoiceChart
   attr_accessor :date_from, :date_to
   
   def initialize(options) 
-    ActiveRecord::Base.logger.debug "#{'*'*1000}Options #{options}"
     @chart_options = options
     self.date_from = options[:date_from]
     self.date_to = options[:date_to]

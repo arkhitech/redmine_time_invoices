@@ -22,18 +22,22 @@ Redmine::Plugin.register :redmine_time_invoices do
   
   project_module :time_invoices do
     permission :submit_invoiceable_time,:time_invoices => :index
-    permission :generate_time_invoices,:time_invoices => [:index, :new]
+    permission :generate_time_invoices,[:time_invoices => [:index, :new],:time_invoice_reports=>:project_index]
     permission :edit_invoiceable_time, :time_invoices => :edit
 
     menu :project_menu, :time_invoices, 
       { controller: :time_invoices, :action => 'index' }, 
       after: :activity, param: :project_id
     
+#     menu :project_menu, :time_invoice_reports, 
+#      { controller: :time_invoice_reports, :action => 'project_index' }, 
+#      after: :activity, param: :project_id
+    
       Redmine::MenuManager.map :time_invoices_menu_project do |menu|
-      menu.push :poverview,    { :controller => 'time_invoices', :action => 'index' },after: :activity, param: :project_id, :caption => 'Overview'
-      menu.push :pgenerate_time_invoices, { :controller => 'time_invoices', :action=>'new' },after: :activity, param: :project_id, :caption => 'Generate Invoice'
-      menu.push :preports,    { :controller => 'time_invoice_reports', :action => 'project_index' }, param: :project_id, :caption => 'Reports'
-      menu.push :ptime_invoice_charts,      {:controller => 'time_invoice_charts', :action => 'index'}, :caption => 'Analytics'
+       menu.push :time_invoices_index,    { :controller => 'time_invoices', :action => 'index' },after: :activity, param: :project_id,:caption => 'Overview Invoices'
+       menu.push :time_invoices_new, { :controller => 'time_invoices', :action=>'new' },after: :activity, param: :project_id, :caption => 'Generate Invoice'
+       menu.push :time_invoice_reports,    { :controller => 'time_invoice_reports', :action => 'project_index' },after: :activity, param: :project_id, :caption => 'Reports'
+       menu.push :time_invoice_charts,      {:controller => 'time_invoice_charts', :action => 'index_for_project'},after: :activity,param: :project_id, :caption => 'Analytics'
     end 
 
     

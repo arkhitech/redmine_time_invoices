@@ -2,13 +2,14 @@ class TimeInvoiceReportsController < ApplicationController
   unloadable
 
   before_filter :require_login
-  before_filter :init_project
+  before_filter :init_project_for_reports
   include TimeInvoiceReportsHelper
   
-   def init_project
+   def init_project_for_reports
     @project = params[:project_id] && Project.find(params[:project_id])
   end
-  private :init_project
+  
+  private :init_project_for_reports
 
   def index
     @all_users = User.active.sort_by{|e| e[:firstname]}
@@ -17,7 +18,6 @@ class TimeInvoiceReportsController < ApplicationController
   end
   
  def project_index
-#    puts "HELLLLLLLLLLLO #{@project.to_yaml}"
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
     @show_options = true

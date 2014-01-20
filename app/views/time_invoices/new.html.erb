@@ -17,7 +17,7 @@
         <% end %>
       </ul>
     <% end %>
-    <h3><%= @project.name %></h3><br/>
+    <h3>Generate New Invoice for <%= @project.name %></h3><br/>
     <p> <%= f.label :start_date %><br/>
       <%= f.text_field :start_date%>
       <%= calendar_for 'time_invoice_start_date'%>

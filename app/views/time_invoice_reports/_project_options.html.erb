@@ -4,7 +4,7 @@
   <% end %>
   <!-- OLD START DATE ----------------------------------------------------------->
   <div class="table-class">
-    <p><%= link_to 'Back', :controller=>'time_invoices',:action=>'indexall'%><br/></p>
+    <p><br/></p>
     <h4>Start Date Range</h4>
     <p align="left">
       <span><strong>From</strong> </span>
@@ -110,26 +110,9 @@
     </span> 
     <span><b> Hours </b></span>
   </div>
-  <br/><br/>
 
-  <!-- PROJECT FILTER-------------------------------------------------------------------------------------------------------------------------- --> 
-  <div class="table-project">
-    <h4>Project Filter</h4>
-
-    <h4 style="float: left;">Project</h4>
-
-    <div align="left" style="margin-top: 40px;">
-
-      <span style="float: left;">
-        <% selected_projects=params[:time_invoice_report] && params[:time_invoice_report][:projects]%>
-        <% params[:time_invoice_report][:projects]=@project.id%>
-      </span>
-
-    </div>
-
-  </div>
-
-  <br/><br/>
+  <!-- Project sent in hidden field -->
+  <%=  hidden_field_tag( :project_id, :value=> @project.id )%>
 
   <div class="table-submit-btn">
     <%= submit_tag 'Apply' %> 
