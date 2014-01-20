@@ -10,4 +10,10 @@
   <% else %>
     <br/>If You install RedmineCRM Invoice Plugin, then billing invoice generation will be automatic.
   <% end %>
+    <br/><br/>
+    <label>Total Working Hours For Graph Analysis</label>
+    <%= number_field_tag('settings[daily_working_hours]', settings['daily_working_hours'], :size=>"2",:step =>'1',:min=>0, :max=>24) %>
+    <br/> *Default set to 8 Hours
+    
+
 </p>

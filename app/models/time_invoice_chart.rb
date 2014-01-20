@@ -10,7 +10,7 @@ class TimeInvoiceChart
   attr_accessor :date_from, :date_to
   
   def initialize(options) 
-    puts "#{'*'*1000}Options #{options}"
+    ActiveRecord::Base.logger.debug "#{'*'*1000}Options #{options}"
     @chart_options = options
     self.date_from = options[:date_from]
     self.date_to = options[:date_to]
@@ -27,7 +27,7 @@ class TimeInvoiceChart
   def get_unique_all_or_group_users
     
     selected_group = @chart_options[:group]
-    puts "#{'*'*1000}This is selected group #{selected_group}"
+    ActiveRecord::Base.logger.debug "#{'*'*1000}This is selected group #{selected_group}"
     if !selected_group.nil? || !selected_group.blank?
       
       selected_group_users = User.active.joins(:groups).
@@ -35,7 +35,7 @@ class TimeInvoiceChart
           selected_group)
           
 
-#      puts "These are Redmine selected group users #{selected_group_users}"
+#      ActiveRecord::Base.logger.debug "These are Redmine selected group users #{selected_group_users}"
 
       selected_users=[]
       selected_group_users.each do |group_user|
@@ -48,11 +48,11 @@ class TimeInvoiceChart
       
       unless selected_users.nil?
         #        @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
-        puts "#{'+'*80}\nSelcted Users of Group #{selected_users}\n#{'*'*80}"
+        ActiveRecord::Base.logger.debug "#{'+'*80}\nSelcted Users of Group #{selected_users}\n#{'*'*80}"
       end
     else
       selected_users= User.pluck(:id) #CHECK
-      puts "#{'+'*80}\nAll Users #{selected_users}\n#{'*'*80}"
+      ActiveRecord::Base.logger.debug "#{'+'*80}\nAll Users #{selected_users}\n#{'*'*80}"
       #      @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
     end
     selected_users
@@ -64,7 +64,7 @@ class TimeInvoiceChart
     #Group=========================================================================
 
     selected_users=get_unique_all_or_group_users
-    puts "#{'+'*80}\nSelcted Users Count #{selected_users.count}"
+    ActiveRecord::Base.logger.debug "#{'+'*80}\nSelcted Users Count #{selected_users.count}"
     @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
 
     #===============================================================================
@@ -89,7 +89,7 @@ class TimeInvoiceChart
     
     
       
-    puts "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
 
 
     #===============================================================================
@@ -108,7 +108,7 @@ class TimeInvoiceChart
     else
       @time_invoice_details_individual =@time_invoice_details_individual.where(:user_id => User.current.id)
     end
-    puts "#{'-'*80}\nSelcted User Without Group #{selected_user}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'-'*80}\nSelcted User Without Group #{selected_user}\n#{'*'*80}"
 
     #===========================================================================
     
@@ -132,7 +132,7 @@ class TimeInvoiceChart
     
     
       
-    puts "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
 
 
     #===============================================================================
@@ -148,17 +148,17 @@ class TimeInvoiceChart
     if !@chart_options[:date_from].blank? && !@chart_options[:date_to].blank?
 #      @working_days=(Date::civil(@chart_options[:date_from])..Date::civil(@chart_options[:date_to])).count {|date| date.wday >= 1 && date.wday <= 5}
       @working_days= (@chart_options[:date_from].to_date..@chart_options[:date_to].to_date).count {|date| date.wday >= 1 && date.wday <= 5}
-      puts "Working Days From+To=true ================================== #{@working_days}"
+      ActiveRecord::Base.logger.debug "Working Days From+To=true ================================== #{@working_days}"
        
     elsif !@chart_options[:date_from].blank? && @chart_options[:date_to].blank?
       @working_days=(@chart_options[:date_from].to_date..(@chart_options[:date_from].to_date)+1.year).count {|date| date.wday >= 1 && date.wday <= 5}
-      puts "working days From=true ================================== #{@working_days}"
+      ActiveRecord::Base.logger.debug "working days From=true ================================== #{@working_days}"
       elseif @chart_options[:date_from].blank? && !@chart_options[:date_to].blank?
       @working_days=((@chart_options[:date_from].to_date)-1.year..@chart_options[:date_from].to_date).count {|date| date.wday >= 1 && date.wday <= 5}
-      puts "working days To=true================================== #{@working_days}"
+      ActiveRecord::Base.logger.debug "working days To=true================================== #{@working_days}"
     else
       @working_days=((Date.today-1.year)..Date.today).count {|date| date.wday >= 1 && date.wday <= 5}
-      puts "working days From+To=false ================================== #{@working_days}"
+      ActiveRecord::Base.logger.debug "working days From+To=false ================================== #{@working_days}"
     end
     
     @working_days
@@ -174,13 +174,13 @@ class TimeInvoiceChart
 #      total_leave_count=UserLeave.where(user_id:  selected_group_users,leave_date: start_date..end_date).sum(:fractional_leave)
       total_leave_count=UserLeave.where(user_id:  selected_group_users,leave_date: start_date..end_date).count
     end
-    puts "Total Leaves ================================== #{total_leave_count}"
+    ActiveRecord::Base.logger.debug "Total Leaves ================================== #{total_leave_count}"
     total_leave_count
   end
   
   def find_individual_leaves(start_date,end_date,user)
     individual_leave_count=UserLeave.where(user_id: user, leave_date: start_date..end_date).count
-    puts "Total Leaves Individual ================================== #{individual_leave_count}"
+    ActiveRecord::Base.logger.debug "Total Leaves Individual ================================== #{individual_leave_count}"
     individual_leave_count
      
   end
