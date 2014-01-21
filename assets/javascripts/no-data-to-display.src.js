@@ -127,3 +127,5 @@
 
 }(Highcharts));
 window.console && console.log('--- Running modules/no-data-to-display.src.js from GitHub, branch/commit/tag "master" ---');
+
+

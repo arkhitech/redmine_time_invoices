@@ -13,7 +13,7 @@ class TimeInvoiceChartsController < ApplicationController
     
     @all_users = User.active.sort_by{|e| e[:firstname]}
 
-    if params[:time_invoice_chart]
+    unless params[:time_invoice_chart].nil? || params[:time_invoice_chart].blank?
       start_date = params[:time_invoice_chart][:date_from]
       end_date   = params[:time_invoice_chart][:date_to]
       user       = params[:time_invoice_chart][:selected_user]
@@ -23,23 +23,22 @@ class TimeInvoiceChartsController < ApplicationController
       params[:time_invoice_chart][:date_from]=Date.today - 1.year
       params[:time_invoice_chart][:date_to]= Date.today
       params[:time_invoice_chart][:selected_user]=User.current.id
-      params[:time_invoice_chart][:group]=Group.all
+      params[:time_invoice_chart][:group]=nil
       start_date = Date.today - 1.year
       end_date   = Date.today
       user       = User.current.id
     end
          
     time_invoice_chart = TimeInvoiceChart.new(params[:time_invoice_chart])
-    #      time_invoice_chart.initialize(params[:time_invoice_chart])
     if !time_invoice_chart.valid?
       flash[:error] = time_invoice_chart.errors.full_messages.join("\n")
         
     else
       @time_invoice_details = time_invoice_chart.generate
       @time_invoice_details_individual=time_invoice_chart.generate_individual
-      flash[:error] = 'No Results Found For Group/All analytics :Showing Default Results!' if @time_invoice_details.blank?
-      flash[:error] = 'No Results Found For Individual analytics!' if @time_invoice_details_individual.blank?
-      
+#      flash[:error] = 'No Comparison Results Found For Group/All Analytics :Showing Default Results!' if @time_invoice_details.blank?
+#      flash[:error] = 'No Comparsion Results Found For Individual analytics! :Showing Default Results!' if @time_invoice_details_individual.blank?
+#      
       #------------------------------------------------------------------------------------------------------------------------
 
       workingdays=time_invoice_chart.find_working_days
@@ -634,6 +633,37 @@ class TimeInvoiceChartsController < ApplicationController
           }
         })
     end
+    
+    #No Data
+    @chart_no_data = LazyHighCharts::HighChart.new('pie') do |f|
+      f.chart({:defaultSeriesType=>"pie" , :margin=> [40,40,40,40]} )
+
+   
+         series = {
+        :type=> 'pie',
+        :name=> 'Data Parameters',
+        :data=>  []
+      }
+      
+      
+      f.series(series)
+      f.options[:title][:text] = "Analytics For Group/All Users Billable vs Billed vs Unbilled Hours"
+      f.legend(:layout=> 'vertical',:style=> {:left=> 'auto', :bottom=> 'auto',:right=> '50px',:top=> '100px'}) 
+      f.plot_options(:pie=>{
+          :allowPointSelect=>true, 
+          :cursor=>"pointer" , 
+          :dataLabels=>{
+            :enabled=>true,
+            :color=>"black",
+            :style=>{
+              :font=>"13px Trebuchet MS, Verdana, sans-serif"
+            }
+          }
+        })
+    end
+    
+    
+    
   end
   def individual
   end

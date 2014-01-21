@@ -27,14 +27,11 @@ class TimeInvoiceChart
     
     selected_group = @chart_options[:group]
     ActiveRecord::Base.logger.debug "#{'*'*1000}This is selected group #{selected_group}"
-    if !selected_group.nil? || !selected_group.blank?
+    if !selected_group.nil? && !selected_group.blank?
       
       selected_group_users = User.active.joins(:groups).
         where("#{User.table_name_prefix}groups_users#{User.table_name_suffix}.id" =>
           selected_group)
-          
-
-#      ActiveRecord::Base.logger.debug "These are Redmine selected group users #{selected_group_users}"
 
       selected_users=[]
       selected_group_users.each do |group_user|
@@ -45,10 +42,11 @@ class TimeInvoiceChart
       
       selected_users = selected_users.uniq
       
-      unless selected_users.nil?
-        #        @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
-        ActiveRecord::Base.logger.debug "#{'+'*80}\nSelcted Users of Group #{selected_users}\n#{'*'*80}"
+      unless !selected_users.empty? || !selected_users.blank?
+        selected_users= User.pluck(:id) #CHECK
       end
+      
+      
     else
       selected_users= User.pluck(:id) #CHECK
       ActiveRecord::Base.logger.debug "#{'+'*80}\nAll Users #{selected_users}\n#{'*'*80}"
@@ -56,6 +54,8 @@ class TimeInvoiceChart
     end
     selected_users
   end
+  
+  
   
   def generate
     @time_invoice_details=TimeInvoiceDetail.includes(:time_invoice)

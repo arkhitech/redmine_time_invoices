@@ -54,7 +54,7 @@
 <br/><br/>
 
 <!-- GROUP/ALL GRAPHS START FROM HERE-------------------------------------------->
-
+<% if !@time_invoice_details.blank? %>
 <div class="box tabular" style= "display:inline-block">
   <%= high_chart("my_id3", @barchart_billable_vs_billed_vs_logged)  %>
 </div>
@@ -75,9 +75,13 @@
   
 
 </div>
+<% else %>
+<%= render 'no_data_graph' %>
+<% end%>
 
 <!-- INDIVIDUAL GRAPHS START FROM HERE-------------------------------------- -->
 <br/><br/>
+<% if !@time_invoice_details_individual.blank? %>
 <div class="box tabular" style= "display:inline-block">
   <%= high_chart("my_id6", @barchart_indv_billable_vs_billed_vs_logged)  %>
 </div>
@@ -97,3 +101,7 @@
   <% end %>
 </div>
 
+
+<% else %>
+<%= render 'no_data_graph' %>
+<% end%>
