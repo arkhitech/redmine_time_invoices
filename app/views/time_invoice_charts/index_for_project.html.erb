@@ -1,0 +1,99 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
+  <%= stylesheet_link_tag 'table', :plugin => 'redmine_time_invoices' %>
+  <%= javascript_include_tag "highcharts", :plugin => 'redmine_time_invoices' %>
+  <%= javascript_include_tag "no-data-to-display.src.js", :plugin => 'redmine_time_invoices' %>
+  <%= javascript_include_tag "exporting.js", :plugin => 'redmine_time_invoices' %>
+<% end %>
+<div id="timeinvoice-menu">
+  <%= render_menu(:time_invoices_menu_project)%>
+</div>
+
+<h3>Analytics Time Invoices for <%= @project.name%></h3>
+<br/> <br/>
+<%=form_tag  controller: 'time_invoice_charts', action: 'index' do %>
+  <!-- OLD START DATE ----------------------------------------------------------->
+  <div class="box tabular" style= "display:inline-block">
+
+    <strong style="color: #179; font-size: 18px">Duration:</strong>
+
+    <span style="margin-left: 20px;"><strong>  From</strong> </span>
+    <span>
+      <%= text_field_tag "time_invoice_chart[date_from]",
+        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_from]) || Date.today-1.year %>
+      <%= calendar_for 'time_invoice_chart_date_from' %>
+    </span>
+
+
+    <span style="margin-left: 50px;"><strong>To</strong> </span>
+    <span> <%= text_field_tag "time_invoice_chart[date_to]",
+        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_to]) || Date.today %> 
+      <%= calendar_for 'time_invoice_chart_date_to' %>
+    </span>
+
+    <strong style="margin-left: 50px; color:#179; font-size: 18px">Group:   </strong>
+    <span style="margin-left: 50px;">
+      <% selected_groups=params[:time_invoice_chart] && params[:time_invoice_chart][:group]%>
+      <%= select_tag "time_invoice_chart[group]",
+        select_group_options(selected_groups), multiple: false, include_blank: true %>
+    </span>
+
+    <strong style="margin-left: 50px; color:#179; font-size: 18px">User:   </strong>
+    <span style="margin-left: 50px;">
+      <% selected_users=((params[:time_invoice_chart] && params[:time_invoice_chart][:selected_user]) || User.current.id)%>
+      <%= select_tag "time_invoice_chart[selected_user]", 
+        options_from_collection_for_select(@all_users, :id, :name,selected_users) %>
+    </span>
+
+    <span style="margin-left: 46px;">
+      <%= submit_tag 'Analyze' %> 
+    </span>
+  </div>
+<% end %>
+
+<br/><br/>
+
+<!-- GROUP/ALL GRAPHS START FROM HERE-------------------------------------------->
+
+<div class="box tabular" style= "display:inline-block">
+  <%= high_chart("my_id3", @barchart_billable_vs_billed_vs_logged)  %>
+</div>
+<br/>
+<div class="box tabular" style= "display:inline-block">
+  <%= high_chart("my_id4", @chart_billed_unbilled_vs_billable) do |c| %>
+    <%= raw "options.tooltip.formatter = function() {return '<b>'+ this.point.name +'</b>: '+ this.y;}"  %>
+    <%= raw "options.plotOptions.pie.dataLabels.formatter = function() { if (this.y > 5) return this.point.name; }"  %>
+  <% end %> 
+</div>
+
+<div class="box tabular" style= "display:inline-block">
+
+  <%= high_chart("my_id5",  @chart_logged_unlogged_vs_billable) do |d| %>
+    <%= raw "options.tooltip.formatter = function() {return '<b>'+ this.point.name +'</b>: '+ this.y;}"  %>
+    <%= raw "options.plotOptions.pie.dataLabels.formatter = function() { if (this.y > 5) return this.point.name; }"  %>
+  <% end %>  
+  
+
+</div>
+
+<!-- INDIVIDUAL GRAPHS START FROM HERE-------------------------------------- -->
+<br/><br/>
+<div class="box tabular" style= "display:inline-block">
+  <%= high_chart("my_id6", @barchart_indv_billable_vs_billed_vs_logged)  %>
+</div>
+<br/>
+<div class="box tabular" style= "display:inline-block">
+  <%= high_chart("my_id7", @chart_indv_billed_unbilled_vs_billable) do |c| %>
+    <%= raw "options.tooltip.formatter = function() {return '<b>'+ this.point.name +'</b>: '+ this.y;}"  %>
+    <%= raw "options.plotOptions.pie.dataLabels.formatter = function() { if (this.y > 5) return this.point.name; }"  %>
+  <% end %> 
+</div>
+
+<div class="box tabular" style= "display:inline-block">
+
+  <%= high_chart("my_id8",  @chart_indv_logged_unlogged_vs_billable) do |d| %>
+    <%= raw "options.tooltip.formatter = function() {return '<b>'+ this.point.name +'</b>: '+ this.y;}"  %>
+    <%= raw "options.plotOptions.pie.dataLabels.formatter = function() { if (this.y > 5) return this.point.name; }"  %>
+  <% end %>
+</div>
+

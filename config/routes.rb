@@ -6,9 +6,17 @@ get '/time_invoices/all/new', to: 'time_invoices#topnew' , as: :topnew
 
 match '/time_invoice_reports/test' => 'time_invoice_reports#test'
 match '/time_invoice_reports/index' => 'time_invoice_reports#index'
+
+match '/time_invoice_reports/:project_id/project_index' => 'time_invoice_reports#project_index'
+
 match '/time_invoice_reports/report' => 'time_invoice_reports#report'
 match '/feed' => 'time_invoice_reports#feed',:as => :feed, :defaults => { :format => 'atom' }
 match '/time_invoices/indexall' => 'time_invoices#indexall'
+
+match '/time_invoice_charts/index' => 'time_invoice_charts#index'
+match '/time_invoice_charts/:project_id/index_for_project' => 'time_invoice_charts#index_for_project'
+match '/time_invoice_charts/group' => 'time_invoice_charts#group'
+match '/time_invoice_charts/individual' => 'time_invoice_charts#individual'
 
 resources :projects, only: [] do
   resources :time_invoices

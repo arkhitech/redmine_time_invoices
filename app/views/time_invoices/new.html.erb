@@ -1,7 +1,13 @@
-<h2>New time invoice</h2>
-<div class="box tabular">
-  <%= form_for [@project, @time_invoice] do |f|%>
-    <% if @time_invoice.errors.any? %>
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
+  <% end %>
+
+<div id="timeinvoice-menu">
+     <%= render_menu(:time_invoices_menu_project)%>
+</div>
+
+<%= form_for [@project, @time_invoice] do |f|%>
+  <% if @time_invoice.errors.any? %>
 
       <% flash.now[:error] = "#{pluralize(@time_invoice.errors.count, "error")} prohibited
     this invoice from being saved: <br/>" %>
@@ -11,7 +17,7 @@
         <% end %>
       </ul>
     <% end %>
-    <h3><%= @project.name %></h3><br/>
+    <h3>Generate New Invoice for <%= @project.name %></h3><br/>
     <p> <%= f.label :start_date %><br/>
       <%= f.text_field :start_date%>
       <%= calendar_for 'time_invoice_start_date'%>
