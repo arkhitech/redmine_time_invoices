@@ -8,6 +8,7 @@ match '/time_invoice_reports/test' => 'time_invoice_reports#test'
 match '/time_invoice_reports/index' => 'time_invoice_reports#index'
 
 match '/time_invoice_reports/:project_id/project_index' => 'time_invoice_reports#project_index'
+match '/time_invoice_reports/:project_id/project_report' => 'time_invoice_reports#project_report'
 
 match '/time_invoice_reports/report' => 'time_invoice_reports#report'
 match '/feed' => 'time_invoice_reports#feed',:as => :feed, :defaults => { :format => 'atom' }
