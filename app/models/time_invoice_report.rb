@@ -55,7 +55,7 @@ class TimeInvoiceReport
    
     #Group==========================================================================
     selected_groups = @report_options[:groups]
-    ActiveRecord::Base.logger.debug "#{'*'*1000}These are selected groups #{selected_groups}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}These are selected groups #{selected_groups}"
     unless selected_groups.nil?
       
       selected_group_users = User.active.joins(:groups).
@@ -77,13 +77,27 @@ class TimeInvoiceReport
       
       unless selected_users.nil?
         @time_invoice_details = @time_invoice_details.where(:user_id => selected_users)
-        ActiveRecord::Base.logger.debug "#{'+'*80}\nSelcted Users #{selected_users}\n#{'*'*80}"
+        ActiveRecord::Base.logger.debug "#{'*'*80}\nSelcted Users #{selected_users}\n#{'*'*80}"
       end
     end
     
-    #===============================================================================
-        
-    #Invoiced Time==================================================================
+ #===============================================================================
+    
+#Project========================================================================
+    
+    unless @report_options[:projects].blank?
+      @time_invoice_details = @time_invoice_details.
+        where("#{TimeInvoice.table_name}.project_id" =>
+          @report_options[:projects])
+      
+      ActiveRecord::Base.logger.debug "#{'P-'*80}\nTime Invoice Projects 
+                                #{@time_invoice_details.count(:all)}\n#{'*'*80}#"
+    end
+    
+  #===========================================================================    
+    
+    
+#Invoiced Time==================================================================
         
     unless @report_options[:invoiced_time_compared_hours].blank?
           
@@ -92,21 +106,40 @@ class TimeInvoiceReport
           
       invoiced_operator_value=@report_options[:invoiced_operator_value]
           
+      ActiveRecord::Base.logger.debug "#{'$'*80}\n Projects in Invoiced Time  #{@report_options[:projects]}"
+        
       if invoiced_operator_value =='<'
         sum_invoiced_time_users = @time_invoice_details.dup
+        
+      
+        
+        unless @report_options[:projects].blank?
         sum_invoiced_time_users = sum_invoiced_time_users.select(:user_id).group(:user_id).
-          having('SUM(invoiced_hours) < ?', @report_options[:invoiced_time_compared_hours].to_i)
-
+          having("SUM(invoiced_hours) <  ? AND #{TimeInvoice.table_name}.project_id = ?", @report_options[:invoiced_time_compared_hours].to_i,@report_options[:projects])
+          ActiveRecord::Base.logger.debug "#{'$'*80}\n Inside Project Sum Hours <"
+        
+        else
+          sum_invoiced_time_users = sum_invoiced_time_users.select(:user_id).group(:user_id).
+          having('SUM(invoiced_hours) <  ?', @report_options[:invoiced_time_compared_hours].to_i)
+        end
+        
         @time_invoice_details = @time_invoice_details.
           where(user_id: sum_invoiced_time_users.collect{|it| it.user_id})          
-        ActiveRecord::Base.logger.debug "#{'IT'*80}\nInside Less than Invoice Condition "
+        ActiveRecord::Base.logger.debug "#{'*'*20}\nInside Less than Invoice Condition "
       end
           
       if invoiced_operator_value =='>'
         sum_invoiced_time_users = @time_invoice_details.dup
+        unless @report_options[:projects].blank?
+          ActiveRecord::Base.logger.debug "#{'$'*80}\n Inside Project Sum Hours >"
+          
+          sum_invoiced_time_users = sum_invoiced_time_users.select(:user_id).group(:user_id).
+          having("SUM(invoiced_hours) > ? AND #{TimeInvoice.table_name}.project_id = ?", @report_options[:invoiced_time_compared_hours].to_i,@report_options[:projects])
+        else
+        
         sum_invoiced_time_users = sum_invoiced_time_users.select(:user_id).group(:user_id).
           having('SUM(invoiced_hours) > ?', @report_options[:invoiced_time_compared_hours].to_i)
-            
+        end    
         @time_invoice_details = @time_invoice_details.where(user_id: sum_invoiced_time_users.collect{|it| it.user_id})          
         ActiveRecord::Base.logger.debug "#{'IT'*80}\nInside Greater  than Invoice Condition "
               
@@ -124,8 +157,16 @@ class TimeInvoiceReport
           
       if logged_operator_value =='<'
         sum_logged_time_users = @time_invoice_details.dup
+         unless @report_options[:projects].blank?
+           
+          sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
+          having("SUM(logged_hours) < ? AND #{TimeInvoice.table_name}.project_id = ?", @report_options[:logged_time_compared_hours].to_i,@report_options[:projects])
+         else
+           
+     
         sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
           having('SUM(logged_hours) < ?', @report_options[:logged_time_compared_hours].to_i)
+        end
         ActiveRecord::Base.logger.debug "Got logged_time_users: #{sum_logged_time_users.inspect}"
         @time_invoice_details = @time_invoice_details.
           where(user_id: sum_logged_time_users.collect{|it| it.user_id})          
@@ -134,9 +175,15 @@ class TimeInvoiceReport
           
       if logged_operator_value =='>'
         sum_logged_time_users = @time_invoice_details.dup
+        unless @report_options[:projects].blank?
+          
+          sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
+          having("SUM(logged_hours) > ? AND #{TimeInvoice.table_name}.project_id = ?", @report_options[:logged_time_compared_hours].to_i,@report_options[:projects])
+         else
         sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
           having('SUM(logged_hours) > ?', @report_options[:logged_time_compared_hours].to_i)
-            
+         end
+         
         @time_invoice_details = @time_invoice_details.where(user_id: sum_logged_time_users.collect{|it| it.user_id})          
         ActiveRecord::Base.logger.debug "#{'LT'*80}\nInside Greater  than Logged Condition "
               
@@ -193,18 +240,7 @@ class TimeInvoiceReport
     
     #===============================================================================
     
-    #Project========================================================================
     
-    unless @report_options[:projects].blank?
-      @time_invoice_details = @time_invoice_details.
-        where("#{TimeInvoice.table_name}.project_id" =>
-          @report_options[:projects])
-      
-      ActiveRecord::Base.logger.debug "#{'P-'*80}\nTime Invoice Projects 
-                                #{@time_invoice_details.count(:all)}\n#{'*'*80}#"
-    end
-    
-    #===========================================================================
 
     ActiveRecord::Base.logger.debug "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
     @time_invoice_details

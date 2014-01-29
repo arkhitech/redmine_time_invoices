@@ -2,14 +2,13 @@
   <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
 <% end %>
 
-<h3>List of TimeInvoices</h3>
 <% if User.current.allowed_to_globally?(:generate_time_invoices, {}) %>
   <div id="timeinvoice-menu">
     <%= render_menu(:time_invoices_menu)%>
   </div>
-  <%#= link_to 'Generate a new invoice', :controller=>'time_invoices',:action=>'topnew'%><br/>
-  <%#= link_to 'View Time Invoice Report', :controller=>'time_invoice_reports',:action=>'index'%><br/><br/>
   <% end %>
+
+<h3>List of Time Invoices</h3>
 
   <% if @time_invoices.empty? %>
     <br/><label><%= 'No TimeInvoices to show yet' %></label>
