@@ -41,8 +41,7 @@ class TimeInvoiceReport
   def generate
    
     @time_invoice_details = TimeInvoiceDetail.includes(:time_invoice)
-    time_invoice_details = TimeInvoiceDetail.includes(:time_invoice)
-    #@time_invoice_details=TimeInvoiceDetail.joins(:time_invoice)
+    time_invoice_details = TimeInvoiceDetail.joins(:time_invoice)
  
     #User===========================================================================
     selected_users = @report_options[:selected_users]
@@ -149,7 +148,7 @@ class TimeInvoiceReport
       logged_operator_value=@report_options[:logged_operator_value]
           
       if logged_operator_value =='<'
-        sum_logged_time_users = @time_invoice_details.clone
+        sum_logged_time_users = time_invoice_details
         
           sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
           having('SUM(logged_hours) < ?', @report_options[:logged_time_compared_hours].to_i)
@@ -162,7 +161,7 @@ class TimeInvoiceReport
       end
           
       if logged_operator_value =='>'
-        sum_logged_time_users = @time_invoice_details.clone
+        sum_logged_time_users = time_invoice_details
         
           sum_logged_time_users = sum_logged_time_users.select(:user_id).group(:user_id).
           having('SUM(logged_hours) > ?', @report_options[:logged_time_compared_hours].to_i)
