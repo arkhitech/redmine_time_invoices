@@ -150,10 +150,17 @@ class TimeInvoiceReportsController < ApplicationController
 #   end
   end
   
+  
+  #----------------------------------------------------------------------------
     def project_report
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
     @show_options = true
+    
+    params[:time_invoice_report][:projects]= Project.where(:identifier=>params[:project_id]).pluck(:id)
+    
+    puts "project value ^^^^^^^^^^^^^^^^^^^^^^^ #{params[:time_invoice_report][:projects]} "
+    puts "Project Params ^^^^^^^^^^^^^^^^^^^^^^^ #{params[:time_invoice_report]} "
     
     pr=params[:time_invoice_report]
     all_ok = true
@@ -221,7 +228,7 @@ class TimeInvoiceReportsController < ApplicationController
     
     if !all_ok
       respond_to do |format|
-        format.html {redirect_to action: :index}
+        format.html {redirect_to action: :project_index}
         format.json { render json: "No result founds", :status => :unprocessable_entity }
         format.all {render :nothing => true, :status => :unprocessable_entity}
         
@@ -241,7 +248,7 @@ class TimeInvoiceReportsController < ApplicationController
         flash[:error] = time_invoice_report.errors.full_messages.join("\n")
         #redirect_to action: :index
         respond_to do |format|
-          format.html {render 'index'}
+          format.html {render 'project_index'}
           format.json { render json: time_invoice_report.errors, :status => :unprocessable_entity }
           format.all {render :nothing => true, :status => :unprocessable_entity}
         end
@@ -257,7 +264,7 @@ class TimeInvoiceReportsController < ApplicationController
         format.html { 
           @show_options = false if request.env["Rack-Middleware-PDFKit"] == "true"            
           
-          render :template => 'time_invoice_reports/report',
+          render :template => 'time_invoice_reports/project_report',
           :layout => !request.xhr? }
         format.api  {
           TimeInvoiceReport.load_visible_relations
@@ -270,12 +277,12 @@ class TimeInvoiceReportsController < ApplicationController
         
         format.rss { render :layout => false }
         format.csv  { send_data(generate_csv(@time_invoice_details),
-            :type => 'text/csv; header=present', :filename => 'time_invoice_report.csv') }
+            :type => 'text/csv; header=present', :filename => 'time_invoice_project_report.csv') }
       end
       #------------------------------------------------------------------------------- 
     end
 #   end
-  end
+  end #END OF PROJECT REPORT
   
   
   def render_ti_feed(items, options={})

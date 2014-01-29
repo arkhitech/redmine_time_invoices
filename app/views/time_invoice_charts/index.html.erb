@@ -25,14 +25,14 @@
     <span style="margin-left: 20px;"><strong>  From</strong> </span>
     <span>
       <%= text_field_tag "time_invoice_chart[date_from]",
-        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_from]) || Date.today-1.year %>
+        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_from]) || Date.today-1.year, :required => true %>
       <%= calendar_for 'time_invoice_chart_date_from' %>
     </span>
 
 
     <span style="margin-left: 50px;"><strong>To</strong> </span>
     <span> <%= text_field_tag "time_invoice_chart[date_to]",
-        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_to]) || Date.today %> 
+        (params[:time_invoice_chart] && params[:time_invoice_chart][:date_to]) || Date.today, :required => true %> 
       <%= calendar_for 'time_invoice_chart_date_to' %>
     </span>
 

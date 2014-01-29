@@ -21,6 +21,7 @@ match '/time_invoice_charts/individual' => 'time_invoice_charts#individual'
 
 resources :projects, only: [] do
   resources :time_invoices
+  resources :time_invoice_reports
 end
 
 resources :time_invoices

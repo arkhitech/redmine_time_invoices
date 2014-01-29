@@ -3,12 +3,12 @@
   <% end %>
 
 <div id="timeinvoice-menu">
-     <%= render_menu(:time_invoices_menu)%>
+     <%= render_menu(:time_invoices_menu_project)%>
 </div>
 
 <% logger.debug "#{'*'*80}\nChecking value of time invoices #{@time_invoice_details}\n#{'*'*80}"%>
 <%if @show_options%>
-<%= render 'project_options' %><br/><br/>
+<%= render 'project_options' %> <br/><br/>
 <%end%>
 
 <br/><br/>
@@ -73,10 +73,3 @@
 </div>
 
 <% end %>  
-
-            <!-- Alternate Way -->      
-    <%#= link_to 'Download CSV', {controller: :time_invoice_reports, 
-                                action: :report, params: params, format: :csv}%>
-    <%#= stylesheet_link_tag 'application', :media => "all" %>
-    <%#= link_to 'Download PDF', {controller: :time_invoice_reports,
-                                action: :report, params: params, format: :pdf}%>
