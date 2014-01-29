@@ -158,10 +158,7 @@ class TimeInvoiceReportsController < ApplicationController
     @show_options = true
     
     params[:time_invoice_report][:projects]= Project.where(:identifier=>params[:project_id]).pluck(:id)
-    
-    puts "project value ^^^^^^^^^^^^^^^^^^^^^^^ #{params[:time_invoice_report][:projects]} "
-    puts "Project Params ^^^^^^^^^^^^^^^^^^^^^^^ #{params[:time_invoice_report]} "
-    
+   
     pr=params[:time_invoice_report]
     all_ok = true
     if pr.blank?
