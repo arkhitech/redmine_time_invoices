@@ -7,7 +7,7 @@
 </div>
 
 <% logger.debug "#{'*'*80}\nChecking value of time invoices #{@time_invoice_details}\n#{'*'*80}"%>
-<%if @show_options%>
+<%if @show_project_options%>
 <%= render 'project_options' %> <br/><br/>
 <%end%>
 
@@ -54,13 +54,15 @@
        <tr></tr>  
        
         <% end%> 
-        <!-- Generate Reports in SCV, pdf, atom Issue Display page-->     
+        <!-- Generate Reports in SCV, pdf, atom Display page-->     
         <tr>
           <td colspan="10" align="right">
             <% other_formats_links do |f| %>
               <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
               <%= f.link_to 'CSV', :url => params %>
               <%= f.link_to 'PDF', :url => params %>
+
+
 
             <% end %>
              

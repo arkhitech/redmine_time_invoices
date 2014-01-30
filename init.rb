@@ -1,7 +1,7 @@
 require 'redmine'
 Mime::SET << Mime::PDF unless Mime::SET.include?(Mime::PDF)
 Mime::SET << Mime::ATOM unless Mime::SET.include?(Mime::ATOM)
-Rails.configuration.middleware.use "PDFKit::Middleware", {:print_media_type => true},:only => '/time_invoice_reports/report'
+Rails.configuration.middleware.use "PDFKit::Middleware", {:print_media_type => true},:only => '/time_invoice_reports'
 Rails.configuration.serve_static_assets = true
 #The above three lines are setting Redmine level settings for the plug in
 
@@ -22,7 +22,7 @@ Redmine::Plugin.register :redmine_time_invoices do
   
   project_module :time_invoices do
     permission :submit_invoiceable_time,:time_invoices => :index
-    permission :generate_time_invoices,[:time_invoices => [:index, :new],:time_invoice_reports=>:project_index]
+    permission :generate_time_invoices,[:time_invoices => [:index, :new],:time_invoice_reports=> [:project_index,:project_report]]
     permission :edit_invoiceable_time, :time_invoices => :edit
 
     menu :project_menu, :time_invoices, 
