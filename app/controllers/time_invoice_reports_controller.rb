@@ -20,7 +20,7 @@ class TimeInvoiceReportsController < ApplicationController
  def project_index
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
-    @show_options = true
+    @show_project_options = true
   end
  
   def report
@@ -155,7 +155,7 @@ class TimeInvoiceReportsController < ApplicationController
     def project_report
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
-    @show_options = true
+    @show_project_options = true
     
     params[:time_invoice_report][:projects]= Project.where(:identifier=>params[:project_id]).pluck(:id)
    
@@ -233,12 +233,6 @@ class TimeInvoiceReportsController < ApplicationController
       return
     end
     
-    #else all is good
-      
-     #1
-     #render retains values but if refreshed with URL : gives error
-     #redirect_to resets values but does not give error on refresh
-     
       time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
       
       if !time_invoice_report.valid?
@@ -259,8 +253,9 @@ class TimeInvoiceReportsController < ApplicationController
 #-------------------------------------------------------------------------------     
       respond_to do |format|
         format.html { 
-          @show_options = false if request.env["Rack-Middleware-PDFKit"] == "true"            
+          @show_project_options = false if request.env["Rack-Middleware-PDFKit"] == "true"            
           
+            #this shows view
           render :template => 'time_invoice_reports/project_report',
           :layout => !request.xhr? }
         format.api  {
