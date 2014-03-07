@@ -2,9 +2,11 @@
     <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
   <% end %>
 
+<%if @show_menu%>
 <div id="timeinvoice-menu">
      <%= render_menu(:time_invoices_menu)%>
 </div>
+<%end%>
 
 <% logger.debug "#{'*'*80}\nChecking value of time invoices #{@time_invoice_details}\n#{'*'*80}"%>
 <%if @show_options%>

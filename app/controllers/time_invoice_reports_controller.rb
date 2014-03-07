@@ -15,18 +15,21 @@ class TimeInvoiceReportsController < ApplicationController
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
     @show_options = true
+    @show_menu=true
   end
   
  def project_index
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
     @show_project_options = true
+    @show_project_menu=true
   end
  
   def report
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
     @show_options = true
+    @show_menu=true
     
     pr=params[:time_invoice_report]
     all_ok = true
@@ -128,7 +131,8 @@ class TimeInvoiceReportsController < ApplicationController
 #-------------------------------------------------------------------------------     
       respond_to do |format|
         format.html { 
-          @show_options = false if request.env["Rack-Middleware-PDFKit"] == "true"            
+          @show_options = false if request.env["Rack-Middleware-PDFKit"] == "true"    
+          @show_menu = false if request.env["Rack-Middleware-PDFKit"] == "true" 
           
           render :template => 'time_invoice_reports/report',
           :layout => !request.xhr? }
@@ -156,6 +160,7 @@ class TimeInvoiceReportsController < ApplicationController
     @all_users = User.active.sort_by{|e| e[:firstname]}
     @groups= Group.all.sort_by{|e| e[:firstname]}
     @show_project_options = true
+    @show_project_menu=true
     
     params[:time_invoice_report][:projects]= Project.where(:identifier=>params[:project_id]).pluck(:id)
    
@@ -253,7 +258,8 @@ class TimeInvoiceReportsController < ApplicationController
 #-------------------------------------------------------------------------------     
       respond_to do |format|
         format.html { 
-          @show_project_options = false if request.env["Rack-Middleware-PDFKit"] == "true"            
+          @show_project_options = false if request.env["Rack-Middleware-PDFKit"] == "true"
+          @show_project_menu= false if request.env["Rack-Middleware-PDFKit"] == "true"
           
             #this shows view
           render :template => 'time_invoice_reports/project_report',
