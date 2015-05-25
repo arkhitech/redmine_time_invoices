@@ -1,10 +1,11 @@
 class TimeInvoicesController < ApplicationController
   unloadable
-    menu_item :time_invoices_all, :only => :indexall
-    menu_item :time_invoices_top, :only => :topnew
-    menu_item :time_invoices_index, :only => :index
-    menu_item :time_invoices_new, :only => :new
-
+    menu_item :time_invoices
+    #menu_item :time_invoices_all, :only => :indexall
+    #menu_item :time_invoices_top, :only => :topnew
+    #menu_item :time_invoices_index, :only => :index
+    #menu_item :time_invoices_new, :only => :new
+    #menu_item :time_invoices
   before_filter :init_project
   if Redmine::Plugin.installed?(:redmine_contacts_invoices)
     include ContactsHelper
