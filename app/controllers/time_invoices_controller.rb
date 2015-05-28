@@ -6,6 +6,7 @@ class TimeInvoicesController < ApplicationController
     #menu_item :time_invoices_index, :only => :index
     #menu_item :time_invoices_new, :only => :new
     #menu_item :time_invoices
+     
   before_filter :init_project
   if Redmine::Plugin.installed?(:redmine_contacts_invoices)
     include ContactsHelper
