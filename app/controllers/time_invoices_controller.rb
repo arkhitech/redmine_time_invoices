@@ -46,14 +46,19 @@ class TimeInvoicesController < ApplicationController
       User.current.allowed_to_globally?(:generate_time_invoices , {}) ||
       User.current.allowed_to_globally?(:edit_invoiceable_time,{})
     time_invoices = TimeInvoice.includes(:project).all
-    @time_invoices = time_invoices.delete_if {|ti| (!User.current.allowed_to?(:submit_invoiceable_time , ti.project) &&
+#    @time_invoices = time_invoices.delete_if {|ti| (!User.current.allowed_to?(:submit_invoiceable_time , ti.project) &&
+#          !User.current.allowed_to?(:generate_time_invoices , ti.project) &&
+#          !User.current.allowed_to?(:edit_invoiceable_time, ti.project)
+#      )}
+    @time_invoices = time_invoices.to_a.delete_if {|ti| (!User.current.allowed_to?(:submit_invoiceable_time , ti.project) &&
           !User.current.allowed_to?(:generate_time_invoices , ti.project) &&
           !User.current.allowed_to?(:edit_invoiceable_time, ti.project)
       )}
   end
   
   def create
-    @time_invoice = TimeInvoice.new(params[:time_invoice])
+#    @time_invoice = TimeInvoice.new(params[:time_invoice])
+    @time_invoice = TimeInvoice.new(permit_generate_invoice_params)
     if @time_invoice.save
       unless params[:project_id].nil?
         redirect_to :controller => 'time_invoices', :action=> 'index',
@@ -92,7 +97,8 @@ class TimeInvoicesController < ApplicationController
        
     @time_invoice = TimeInvoice.find(params[:id])
     return deny_access unless allowed_to_submit?(@time_invoice)
-    if @time_invoice.update_attributes(params[:time_invoice])
+#    if @time_invoice.update_attributes(params[:time_invoice])
+    if @time_invoice.update_attributes(permit_time_invoice_params)
       if Setting.plugin_redmine_time_invoices['billing_invoice'] && Redmine::Plugin.installed?(:redmine_contacts_invoices)        
         unless @time_invoice.invoice_id.present?
           billing_invoice = Invoice.
@@ -126,6 +132,17 @@ class TimeInvoicesController < ApplicationController
   end
   def projects_all
     projects=Project.all
-    projects.delete_if {|project| !User.current.allowed_to?(:generate_time_invoices , project)}
+#    projects.delete_if {|project| !User.current.allowed_to?(:generate_time_invoices , project)}
+    projects.to_a.delete_if {|project| !User.current.allowed_to?(:generate_time_invoices , project)}
+  end
+  
+  private
+  def permit_time_invoice_params
+    params.require(:time_invoice).permit(:submitted_by_id, :comment, 
+      time_invoice_details_attributes: [:user_id, :invoiced_quantity, :invoiced_unit, :comment])
+  end
+  
+  def permit_generate_invoice_params
+    params.require(:time_invoice).permit(:project_id, :start_date, :end_date, :submitted_by_id, :comment)
   end
 end

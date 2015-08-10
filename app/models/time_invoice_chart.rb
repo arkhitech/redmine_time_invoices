@@ -71,23 +71,28 @@ class TimeInvoiceChart
     #Start Date=====================================================================
     
     unless @chart_options[:date_from].blank?
-      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        @chart_options[:date_from])
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", @chart_options[:date_from])
+      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", @chart_options[:date_from]).references(:time_invoices)
     else
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
+#        Date.today-1.year)
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        Date.today-1.year)
+        Date.today-1.year).references(:time_invoices)
     end
     
     unless @chart_options[:date_to].blank?
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
+#        @chart_options[:date_to])
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
-        @chart_options[:date_to])
+        @chart_options[:date_to]).references(:time_invoices)
     else
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
+#        Date.today)
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        Date.today)
+        Date.today).references(:time_invoices)
     end
     
-    
-      
+
     ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
 
 
@@ -114,19 +119,28 @@ class TimeInvoiceChart
     #Start Date=====================================================================
     
     unless @chart_options[:date_from].blank?
+#      @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.start_date >= ?", 
+#        @chart_options[:date_from])
       @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        @chart_options[:date_from])
+        @chart_options[:date_from]).references(:time_invoices)
     else
+#      @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.start_date >= ?", 
+#        Date.today-1.year)
       @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        Date.today-1.year)
+        Date.today-1.year).references(:time_invoices)
     end
     
     unless @chart_options[:date_to].blank?
+#      @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.end_date <= ?", 
+#        @chart_options[:date_to])
       @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.end_date <= ?", 
-        @chart_options[:date_to])
+        @chart_options[:date_to]).references(:time_invoices)
     else
+#      @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.start_date >= ?", 
+#        Date.today)
       @time_invoice_details_individual =@time_invoice_details_individual.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        Date.today)
+        Date.today).references(:time_invoices)
+
     end
     
     
