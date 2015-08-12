@@ -178,13 +178,22 @@ class TimeInvoiceReport
     
     #Start Date=====================================================================
     
+#    unless @report_options[:start_date_from].blank?
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
+#        @report_options[:start_date_from])
+#    end
+#    unless @report_options[:start_date_to].blank?
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date <= ?", 
+#        @report_options[:start_date_to])
+#    end 
+
     unless @report_options[:start_date_from].blank?
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date >= ?", 
-        @report_options[:start_date_from])
+        @report_options[:start_date_from]).references(:time_invoices)
     end
     unless @report_options[:start_date_to].blank?
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.start_date <= ?", 
-        @report_options[:start_date_to])
+        @report_options[:start_date_to]).references(:time_invoices)
     end 
       
     ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
@@ -195,14 +204,24 @@ class TimeInvoiceReport
     #End Date=======================================================================    
      
 
+#    unless @report_options[:end_date_from].blank?
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date >= ?", 
+#        @report_options[:end_date_from])
+#    end
+#    unless @report_options[:end_date_to].blank?
+#      @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
+#        @report_options[:end_date_to])
+#    end  
+
     unless @report_options[:end_date_from].blank?
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date >= ?", 
-        @report_options[:end_date_from])
+        @report_options[:end_date_from]).references(:time_invoices)
     end
     unless @report_options[:end_date_to].blank?
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.end_date <= ?", 
-        @report_options[:end_date_to])
-    end  
+        @report_options[:end_date_to]).references(:time_invoices)
+    end     
+    
     ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
 
     
