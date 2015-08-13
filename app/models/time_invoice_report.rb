@@ -24,14 +24,14 @@ class TimeInvoiceReport
   def validate_date_pairs
     if @report_options[:start_date_from] > @report_options[:start_date_to] && 
         @report_options[:end_date_from] <= @report_options[:end_date_to] && !report_options[:start_date_to].blank?
-      errors.add(:start_date, 'From Date Cannot Be smaller than To Date') 
+      errors.add(:start_date, ':  From Date Cannot Be smaller than To Date') 
     else if  @report_options[:end_date_from] > @report_options[:end_date_to] &&
           @report_options[:start_date_from] <= @report_options[:start_date_to] && !report_options[:end_date_to].blank?
-        errors.add(:end_date, 'From Cannot Be Smaller than To Date')
+        errors.add(:end_date, ':   From Cannot Be Smaller than To Date')
       else if @report_options[:start_date_from] > @report_options[:start_date_to] &&
             @report_options[:end_date_from] > @report_options[:end_date_to] &&
             !report_options[:start_date_to].blank? && !report_options[:end_date_to].blank?
-          errors.add(:date, 'From Dates Cannot Be Smaller than To Date')
+          errors.add(:date, ':  From Dates Cannot Be Smaller than To Date')
         end
       end
     end
