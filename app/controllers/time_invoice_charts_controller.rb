@@ -28,7 +28,7 @@ class TimeInvoiceChartsController < ApplicationController
       end_date   = Date.today
       user       = User.current.id
     end
-         
+
     time_invoice_chart = TimeInvoiceChart.new(params[:time_invoice_chart])
     if !time_invoice_chart.valid?
       flash[:error] = time_invoice_chart.errors.full_messages.join("\n")
@@ -350,9 +350,10 @@ class TimeInvoiceChartsController < ApplicationController
       @time_invoice_details = @time_invoice_details.where("#{TimeInvoice.table_name}.project_id = ?", @project.id)
       
       @time_invoice_details_individual=time_invoice_chart.generate_individual
+#      @time_invoice_details_individual = @time_invoice_details_individual.where("#{TimeInvoice.table_name}.project_id = ?", 
+#        @project.id)
       @time_invoice_details_individual = @time_invoice_details_individual.where("#{TimeInvoice.table_name}.project_id = ?", 
-        @project.id)
-    
+        @project.id).references(:time_invoices)    
       flash[:error] = 'No Results Found!' if @time_invoice_details.blank?
       flash[:error] = 'No Results Found!' if @time_invoice_details_individual.blank?
       
