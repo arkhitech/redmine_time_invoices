@@ -1,0 +1,7 @@
+<strong><%= @user %></strong>
+<p>
+    <%= "Time Invoice of #{@time_invoice.project} for " %>
+<%="#{@time_invoice.start_date} - #{@time_invoice.end_date}"%>, 
+<%= url_for({controller: 'time_invoices', action: 'edit', id: @time_invoice}) %>
+is ready for viewing and submission.
+</p>

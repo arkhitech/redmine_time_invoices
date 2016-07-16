@@ -29,7 +29,7 @@ class TimeInvoiceChartsController < ApplicationController
       user       = User.current.id
     end
 
-    time_invoice_chart = TimeInvoiceChart.new(params[:time_invoice_chart])
+    time_invoice_chart = TimeInvoiceChart.new(params.require(:time_invoice_chart).permit!)
     if !time_invoice_chart.valid?
       flash[:error] = time_invoice_chart.errors.full_messages.join("\n")
         
@@ -339,7 +339,7 @@ class TimeInvoiceChartsController < ApplicationController
       user       = User.current.id
     end
          
-    time_invoice_chart = TimeInvoiceChart.new(params[:time_invoice_chart])
+    time_invoice_chart = TimeInvoiceChart.new(params.require(:time_invoice_chart).permit!)
     if !time_invoice_chart.valid?
       flash[:error] = time_invoice_chart.errors.full_messages.join("\n")
         

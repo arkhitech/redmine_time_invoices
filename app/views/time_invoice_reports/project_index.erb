@@ -1,0 +1,9 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'timeinvoice-menu', :plugin => 'redmine_time_invoices' %>
+  <% end %>
+
+<div id="timeinvoice-menu">
+     <%= render_menu(:time_invoices_menu_project)%>
+</div>
+<h3> Time Invoices Reports for <%= @project.name%></h3>
+<%= render 'project_options' %>

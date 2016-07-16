@@ -98,7 +98,7 @@ class TimeInvoicesController < ApplicationController
     @time_invoice = TimeInvoice.find(params[:id])
     return deny_access unless allowed_to_submit?(@time_invoice)
 #    if @time_invoice.update_attributes(params[:time_invoice])
-    if @time_invoice.update_attributes(permit_time_invoice_params)
+    if @time_invoice.update(permit_time_invoice_params)
       if Setting.plugin_redmine_time_invoices['billing_invoice'] && Redmine::Plugin.installed?(:redmine_contacts_invoices)        
         unless @time_invoice.invoice_id.present?
           billing_invoice = Invoice.

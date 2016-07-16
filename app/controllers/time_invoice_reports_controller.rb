@@ -111,7 +111,7 @@ class TimeInvoiceReportsController < ApplicationController
      #render retains values but if refreshed with URL : gives error
      #redirect_to resets values but does not give error on refresh
      
-      time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
+      time_invoice_report = TimeInvoiceReport.new(params.require(:time_invoice_report).permit!)
       
       if !time_invoice_report.valid?
         flash[:error] = time_invoice_report.errors.full_messages.join("\n")
@@ -238,7 +238,7 @@ class TimeInvoiceReportsController < ApplicationController
       return
     end
     
-      time_invoice_report = TimeInvoiceReport.new(params[:time_invoice_report])
+      time_invoice_report = TimeInvoiceReport.new(params.require(:time_invoice_report).permit!)
       
       if !time_invoice_report.valid?
         flash[:error] = time_invoice_report.errors.full_messages.join("\n")

@@ -1,0 +1,6 @@
+<strong><%= @user %></strong>
+<p>
+  <%= "Time Invoice of #{@time_invoice.project} for " %>
+  <%=link_to("#{@time_invoice.start_date} - #{@time_invoice.end_date}", {controller: 'time_invoices', action: 'edit',id: @time_invoice,only_path: false})%>
+  <%=' is ready for viewing and submission'%>
+</p>
