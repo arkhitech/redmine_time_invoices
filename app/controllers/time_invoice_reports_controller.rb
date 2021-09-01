@@ -1,8 +1,8 @@
 class TimeInvoiceReportsController < ApplicationController
   unloadable
 
-  before_filter :require_login
-  before_filter :init_project_for_reports
+  before_action :require_login
+  before_action :init_project_for_reports
   include TimeInvoiceReportsHelper
   
    def init_project_for_reports

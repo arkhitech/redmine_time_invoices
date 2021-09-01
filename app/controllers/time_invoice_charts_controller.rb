@@ -1,7 +1,7 @@
 class TimeInvoiceChartsController < ApplicationController
   unloadable
   
-  before_filter :init_project_for_charts
+  before_action :init_project_for_charts
   
   def init_project_for_charts
     @project = params[:project_id] && Project.find(params[:project_id])

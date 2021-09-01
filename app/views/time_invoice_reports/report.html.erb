@@ -60,9 +60,9 @@
         <tr>
           <td colspan="10" align="right">
             <% other_formats_links do |f| %>
-              <%= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
-              <%= f.link_to 'CSV', :url => params %>
-              <%= f.link_to 'PDF', :url => params %>
+              <%= f.link_to 'Atom', :url => params.to_unsafe_hash.merge(:key => User.current.rss_key) %>
+              <%= f.link_to 'CSV', :url => params.to_unsafe_hash %>
+              <%= f.link_to 'PDF', :url => params.to_unsafe_hash %>
 
             <% end %>
              
