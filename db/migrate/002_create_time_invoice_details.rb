@@ -1,5 +1,5 @@
-class CreateTimeInvoiceDetails < ActiveRecord::Migration
-  def change
+class CreateTimeInvoiceDetails < ActiveRecord::Migration[4.2]
+	def change
     create_table :time_invoice_details do |t|
       t.references :time_invoice
       t.references :user

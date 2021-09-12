@@ -1,5 +1,5 @@
-class CreateTimeInvoices < ActiveRecord::Migration
-  def change
+class CreateTimeInvoices < ActiveRecord::Migration[4.2]
+	def change
     create_table :time_invoices do |t|
       t.date :start_date
       t.date :end_date
