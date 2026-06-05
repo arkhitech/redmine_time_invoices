@@ -1,5 +1,4 @@
-class TimeInvoice < ActiveRecord::Base
-  unloadable
+class TimeInvoice < ApplicationRecord
   belongs_to :project
   has_many :time_invoice_details, dependent: :destroy
   belongs_to :submitted_by, class_name: User.name   

@@ -17,7 +17,7 @@ gem 'lazy_high_charts'
 
 group :test, :development do
   #gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'guard-rspec'
 #  gem 'spork-rails'
   gem 'guard-spork'

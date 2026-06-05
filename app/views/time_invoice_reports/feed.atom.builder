@@ -3,7 +3,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title "Time Invoices"
     xml.description "Report For Filtered Time Invoices Details "
-    url = url_for(:controller => 'time_invoice_reports',:action => 'report', :only_path => false)
+    url = url_for(controller: 'time_invoice_reports',action: 'report', :only_path => false)
     xml.link "rel" => "alternate", "href" => url
 
     for time_invoice_detail in @time_invoice_details

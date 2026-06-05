@@ -1,5 +1,4 @@
-class TimeInvoiceDetail < ActiveRecord::Base
-  unloadable
+class TimeInvoiceDetail < ApplicationRecord
   belongs_to :time_invoice
   belongs_to :user
   before_save :reset_protected_attributes

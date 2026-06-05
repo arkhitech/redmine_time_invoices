@@ -1,7 +1,6 @@
 class TimeInvoiceChart
   include ActiveModel::Validations
   
-  unloadable
   attr_accessor :chart_options
   validates :date_from, :allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
   validates :date_to, :allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
@@ -93,7 +92,7 @@ class TimeInvoiceChart
     end
     
 
-    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count}\n#{'*'*80}"
 
 
     #===============================================================================
@@ -145,7 +144,7 @@ class TimeInvoiceChart
     
     
       
-    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count}\n#{'*'*80}"
 
 
     #===============================================================================

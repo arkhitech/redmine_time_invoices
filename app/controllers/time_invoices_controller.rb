@@ -1,5 +1,4 @@
 class TimeInvoicesController < ApplicationController
-  unloadable
     menu_item :time_invoices_all, :only => :indexall
     menu_item :time_invoices_top, :only => :topnew
     menu_item :time_invoices_index, :only => :index
@@ -61,7 +60,7 @@ class TimeInvoicesController < ApplicationController
     @time_invoice = TimeInvoice.new(permit_generate_invoice_params)
     if @time_invoice.save
       unless params[:project_id].nil?
-        redirect_to :controller => 'time_invoices', :action=> 'index',
+        redirect_to controller: 'time_invoices', :action=> 'index',
           :project_id=>params[:project_id]
       else
         redirect_to :indexall, :flash=>{:notice=> 'Time invoice has been successfully created!'}
@@ -115,7 +114,7 @@ class TimeInvoicesController < ApplicationController
           billing_invoice.lines.first.save!
         end        
       end
-      redirect_to :controller => 'time_invoices', :action=> 'show',:id=>@time_invoice.id,
+      redirect_to controller: 'time_invoices', :action=> 'show',:id=>@time_invoice.id,
         :project_id=>params[:project_id]
     else
       unless params[:project_id].nil?

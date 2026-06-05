@@ -1,5 +1,4 @@
 class TimeInvoiceReportsController < ApplicationController
-  unloadable
 
   before_action :require_login
   before_action :init_project_for_reports

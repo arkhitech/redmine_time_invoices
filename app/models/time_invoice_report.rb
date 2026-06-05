@@ -1,7 +1,6 @@
 class TimeInvoiceReport
   include ActiveModel::Validations
   
-  unloadable
   attr_accessor :report_options
   validates :start_date_from, :allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
   validates :start_date_to, :allow_blank => true, :format => {:with => /\A\d{4}-\d{2}-\d{2}( 00:00:00)?\z/}
@@ -96,7 +95,7 @@ class TimeInvoiceReport
           @report_options[:projects])
       
       ActiveRecord::Base.logger.debug "#{'P-'*80}\nTime Invoice Projects 
-                                #{@time_invoice_details.count(:all)}\n#{'*'*80}#"
+                                #{@time_invoice_details.count}\n#{'*'*80}#"
     end
     
   #===========================================================================    
@@ -196,7 +195,7 @@ class TimeInvoiceReport
         @report_options[:start_date_to]).references(:time_invoices)
     end 
       
-    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice Start Time #{@time_invoice_details.count}\n#{'*'*80}"
 
 
     #===============================================================================
@@ -222,7 +221,7 @@ class TimeInvoiceReport
         @report_options[:end_date_to]).references(:time_invoices)
     end     
     
-    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'*'*80}\nTime invoice End Time #{@time_invoice_details.count}\n#{'*'*80}"
 
     
    
@@ -236,7 +235,7 @@ class TimeInvoiceReport
         where("#{TimeInvoice.table_name}.submitted_by_id" =>
           @report_options[:submitted_by_user])
       ActiveRecord::Base.logger.debug "#{'SBU-'*80}\nTime Invoice Submitted by User 
-                                {@time_invoice_details.count(:all)}\n#{'*'*80}#"
+                                {@time_invoice_details.count}\n#{'*'*80}#"
     end
     
     
@@ -244,7 +243,7 @@ class TimeInvoiceReport
     
     
 
-    ActiveRecord::Base.logger.debug "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count(:all)}\n#{'*'*80}"
+    ActiveRecord::Base.logger.debug "#{'F'*80}\nTime invoice End Time #{@time_invoice_details.count}\n#{'*'*80}"
     @time_invoice_details
   end
   

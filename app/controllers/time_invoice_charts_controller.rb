@@ -1,5 +1,4 @@
 class TimeInvoiceChartsController < ApplicationController
-  unloadable
   
   before_action :init_project_for_charts
   
