@@ -292,7 +292,7 @@ describe "TimeInvoiceReports" do
       User.stubs(:allowed_to?).with(:submit_invoiceable_time , @time_invoice.project).returns(true)
       TimeInvoice.stubs(:allowed_to_submit?).with(@time_invoice).returns(true) #return true if allowed to 
       
-#      @time_invoice.update_attributes(submitted_by_id: @user.id)
+#      @time_invoice.update(submitted_by_id: @user.id)
 #      @time_invoice.save!
 #      TimeInvoice.stubs(:notify_the_concerned_person).returns(false)
       
